@@ -1,0 +1,58 @@
+{% extends "account/account_base.html" %}
+{% load i18n %}
+
+{% block signup_form %}
+<div class="col-md-5">
+    <div class="card card-signup">
+        <div class="card-body">
+            <h4 class="card-title text-center">Register</h4>
+            {% for field, error_message in form.errors.items %}
+                <span name="registration-error" style="color:black; text-align:left;">{{ error_message }}</span>
+            {% endfor %}
+
+            <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}" onsubmit="checkForm(this);">
+                {% csrf_token %}
+                {% for field in form %}
+                    <div class="input-group">
+                        <span class="input-group-addon">
+                            {% if field.name == "email" %}
+                                <i class="now-ui-icons ui-1_email-85"></i>
+                            {% elif field.name == "password1" %}
+                                <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                            {% elif field.name == "password2" %}
+                                <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                            {% endif %}
+                        </span>
+                        {{ field }}
+                    </div>
+                {% endfor %}
+                <div class="input-group">
+                    <label class="form-check-label">
+                        <input type="checkbox" name="terms" id="terms" required style="-ms-transform: scale(2); -moz-transform: scale(2); -webkit-transform: scale(2); -o-transform: scale(2); padding: 10px; margin:15px;">
+                        <span class="form-check-sign"></span>
+                        {% blocktrans %}
+                        <span style="color:gray">I agree to the</span>
+                        <a style="color:black;" href="#">terms and conditions</a>.
+                        {% endblocktrans %}
+                    </label>
+                </div>
+                {% if redirect_field_value %}
+                <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                {% endif %}
+                <div class="card-footer text-center">
+                    <input type="submit" name="signup_submit" class="btn btn-primary btn-round btn-lg" value='{% trans "Sign up" %}'>
+                </div>
+            </form>
+            <p style="color:gray;">{% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}</p>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+function initialize_attrs() {
+    $("#id_email").addClass("form-control");
+    $("#id_password1").addClass("form-control");
+    $("#id_password2").addClass("form-control");
+}
+window.onload = initialize_attrs;
+</script>
+{% endblock signup_form %}

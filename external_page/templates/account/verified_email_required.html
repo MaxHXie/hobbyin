@@ -1,0 +1,37 @@
+{% extends "account/account_base.html" %}
+
+{% load i18n %}
+
+{% url 'account_email' as email_url %}
+
+{% block user_activation_modal %}
+<!-- User activation modal -->
+<div class="modal fade" id="userActivationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                </button>
+                <h4 class="title title-up"></h4>
+            </div>
+            <div class="modal-body">
+                <p>{% blocktrans %} This account doesn't seem to be activated. {% endblocktrans %}</p>
+                <p>{% blocktrans %}We have sent an e-mail to you for
+                    verification. Please click on the link inside this e-mail. Please
+                    contact us if you do not receive it within a few minutes.{% endblocktrans %}.</p>
+                <p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#userActivationModal').modal('show');
+    });
+</script>
+<!--  End Modal -->
+{% endblock user_activation_modal %}
