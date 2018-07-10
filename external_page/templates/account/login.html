@@ -5,55 +5,42 @@
 
 {% get_providers as socialaccount_providers %}
 
-{% block login-modal %}
-<!-- Login Modal -->
-<div class="modal fade modal-primary" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-login">
-        <div class="modal-content">
-            <div class="card card-login card-plain">
-                <div class="modal-header justify-content-center">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </button>
-                    <div class="header header-primary text-center">
-                        <div class="logo-container">
-                            <img src="{% static 'externalpage/assets/img/now-logo.png' %}" alt="">
+{% block body %}
+<body class="login-page sidebar-collapse">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent " color-on-scroll="400">
+        <div class="container">
+            <div class="navbar-translate">
+                <a class="navbar-brand" href="{% url 'index' %}" rel="tooltip" data-placement="bottom">
+                    <span style="font-size:1.5em;"><strong>Hobbin</strong></span>
+                </a>
+            </div>
+        </div>
+    </nav>
+    <!-- End Navbar -->
+    <div class="page-header" filter-color="orange">
+        <div class="page-header-image" style="background-image:url({% static 'external_page/assets/img/login.jpg')"></div>
+        <div class="container">
+            <div class="col-md-4 content-center">
+                <div class="card card-login card-plain">
+                    <form class="form" method="POST" action="{% url 'account_login' %}">
+                        {% csrf_token %}
+                        <div class="header header-primary text-center">
+                            <div class="logo-container">
+                                <img src="{% static 'external_page/assets/img/now-logo.png' %}" alt="">
+                            </div>
                         </div>
-                    </div>
-                </div>
-
-                {% if socialaccount_providers %}
-                <p>{% blocktrans with site.name as site_name %}Please sign in with one
-                of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
-                for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
-
-                <div class="socialaccount_ballot">
-
-                    <ul class="socialaccount_providers">
-                        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-                    </ul>
-
-                    <div class="login-or">{% trans 'or' %}</div>
-
-                </div>
-
-                {% include "socialaccount/snippets/login_extra.html" %}
-                {% endif %}
-
-                <form class="login" method="POST" action="{% url 'account_login' %}">
-                    {% csrf_token %}
-                    <div class="modal-body">
-                        <div class="card-content">
-                            {% for field, error_message in form.errors.items %}
-                                <span style="color:white;">{{ error_message }}</span>
+                        <div class="content">
+                            {% for error_field, error_message in form.errors.items %}
+                                {{error_message}}
                             {% endfor %}
                             {% for field in form %}
                             <div class="input-group form-group-no-border input-lg">
                                 <span class="input-group-addon">
                                   {% if field.name == "login" %}
-                                  <i class="now-ui-icons ui-1_email-85"></i>
+                                    <i class="now-ui-icons ui-1_email-85"></i>
                                   {% elif field.name == "password" %}
-                                  <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                                    <i class="now-ui-icons ui-1_lock-circle-open"></i>
                                   {% endif %}
                                 </span>
                                 {{ field }}
@@ -62,26 +49,28 @@
                             {% if redirect_field_value %}
                             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                             {% endif %}
-                            <span color="black"><a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a></span>
+                            <span color="black"><a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Glömt lösenord?" %}</a></span>
                         </div>
-                    </div>
-                    <div class="modal-footer text-center">
-                        <input type="submit" name="submit_login" class="btn btn-neutral btn-round btn-lg btn-block" value="Log in">
-                    </div>
-                </form>
-             </div>
+                        <div class="footer text-center">
+                            <input type="submit" class="btn btn-primary btn-round btn-lg btn-block" value="{% trans 'Logga in' %}">
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+</body>
+{% endblock body %}
+{% block extra_head %}
 <script type="text/javascript">
-function initialize_modal() {
-    $(window).on('load',function(){
-        $('#loginModal').modal('show');
-    });
-    $("#id_login").addClass("form-control");
-    $("#id_password").addClass("form-control");
+function initialize_form() {
+    {% for field in form %}
+        $("#id_{{field.name}}").addClass('form-control');
+    {% endfor %}
+    {% for error_field, error_message in form.errors.items %}
+        $("#id_{{error_field.name}}").addClass('form-control-danger');
+    {% endfor %}
 }
-window.onload = initialize_modal;
+window.onload = initialize_form;
 </script>
-<!--  End Modal -->
-{% endblock login-modal %}
+{% endblock extra_head %}
