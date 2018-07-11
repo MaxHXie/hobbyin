@@ -1,0 +1,382 @@
+<html lang="en"><head>
+    <meta charset="utf-8">
+    <link rel="apple-touch-icon" sizes="76x76" href="/static/external_page/assets/img/apple-icon.png">
+    <link rel="icon" type="image/png" href="/static/external_page/assets/img/favicon.png">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>HobbIn</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no" name="viewport">
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css">
+    <!-- CSS Files -->
+    <link href="/static/external_page/assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/external_page/assets/css/now-ui-kit.css?v=1.1.0" rel="stylesheet">
+    <link href="/static/external_page/assets/css/my_styles.css?v=1.1.0" rel="stylesheet">
+    <!-- CSS Just for demo purpose, don't include it in your project -->
+    <link href="/static/external_page/assets/css/demo.css%22%20rel%3D%22stylesheet">
+    
+
+    
+<script>
+function scroll_alt() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("search-hobby");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("search-list");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
+<style>
+* {
+  box-sizing: border-box;
+}
+
+#search-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+#search-list li a {
+  border: 1px solid #ddd;
+  border-radius:4px 4px 4px 4px;
+  margin-top: -1px; /* Prevent double borders */
+  background-color: #f6f6f6;
+  padding: 3px;
+  text-decoration: none;
+  color: black;
+  display: block;
+}
+
+#search-list li a:hover:not(.header) {
+  background-color: #e0e0e0;
+}
+</style>
+
+</head>
+
+
+
+<body class="landing-page sidebar-collapse">
+    
+
+
+    <!-- Navbar -->
+    
+
+<nav class="navbar navbar-expand-lg bg-primary fixed-top " color-on-scroll="400">
+    <div class="container">
+        <div class="navbar-translate">
+            <a class="navbar-brand" href="/" rel="tooltip" data-placement="bottom" data-original-title="" title="">
+                <span style="font-size:1.5em;"><strong>HobbIn</strong></span>
+            </a>
+            <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+            </button>
+        </div>
+        <div class="collapse navbar-collapse justify-content-end" id="navigation" data-nav-image="/static/external_page/assets/img/blurred-image-1.jpg">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#our-offerings"><span style="font-size:1.3em;"><strong>Våra erbjudanden</strong></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about-us"><span style="font-size:1.3em;"><strong>Om oss</strong></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#work-with-us"><span style="font-size:1.3em;"><strong>Jobba med oss</strong></span></a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://twitter.com/" target="_blank" data-original-title="Följ oss på Twitter">
+                        <i class="fa fa-twitter"></i>
+                        <p class="d-lg-none d-xl-none">Twitter</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.facebook.com/" target="_blank" data-original-title="Gilla oss på Facebook">
+                        <i class="fa fa-facebook-square"></i>
+                        <p class="d-lg-none d-xl-none">Facebook</p>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" rel="tooltip" title="" data-placement="bottom" href="https://www.instagram.com/" target="_blank" data-original-title="Följ oss på Instagram">
+                        <i class="fa fa-instagram"></i>
+                        <p class="d-lg-none d-xl-none">Instagram</p>
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+    <!-- End Navbar -->
+
+    <div class="wrapper">
+        <div class="page-header page-header-medium">
+            <div class="page-header-image" data-parallax="true" style="background-image: url('/static/external_page/assets/img/bg6.jpg');"></div>
+            <div class="container">
+                <div class="content-center">
+                    <div class="row">
+                        <div class="card card-login" data-background-color="orange">
+                            <form class="form" method="" action="/instructors/all/">
+                                <div class="header text-center justify-content-center">
+                                    <h4 class="title title-up"><label for="search-hobby">Professionella lärare, förverkliga din hobbydröm</label></h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group form-group-no-border">
+                                        <span class="input-group-addon">
+                                            <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                        </span>
+                                        <input class="form-control" id="search-hobby" onkeyup="scroll_alt()" placeholder="Sök här eller scrolla ned för mer..." type="text">
+                                    </div>
+                                    <ul id="search-list">
+                                      <li><a href="/instructors/piano/">Piano</a></li>
+                                      <li><a href="/instructors/tennis/">Tennis</a></li>
+                                      <li><a href="/instructors/flygning/">Flygning</a></li>
+                                      <li><a href="/instructors/malning/">Målning</a></li>
+                                      <li><a href="/instructors/schack/">Schack</a></li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start our offerings section -->
+        <div class="section section-tabs" id="our-offerings">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='/instructors/tennis/'">
+                        <!-- Tabs with Background on Card -->
+                        <div class="card">
+                            <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                <li class="nav-item">
+                                    <a class="nav-link"><strong>TENNIS</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>12 Instruktörer lediga</a>
+                                </li>
+                            </ul>
+                            <div class="card-body" style="height:250px; background-image: url('/static/external_page/assets/img/tennis.png');">
+                            </div>
+                        </div>
+                        <!-- End Tabs on plain Card -->
+                    </div>
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='/instructors/flygning/'">
+                        <!-- Tabs with Background on Card -->
+                        <div class="card">
+                            <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                <li class="nav-item">
+                                    <a class="nav-link"><strong>FLYGNING</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>3 Instruktörer lediga</a>
+                                </li>
+                            </ul>
+                            <div class="card-body" style="height:250px; background-image: url('/static/external_page/assets/img/flying_small.png');">
+                            </div>
+                        </div>
+                        <!-- End Tabs on plain Card -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='/instructors/piano/'">
+                        <!-- Tabs with Background on Card -->
+                        <div class="card">
+                            <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                <li class="nav-item">
+                                    <a class="nav-link"><strong>PIANO</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>43 Instruktörer lediga</a>
+                                </li>
+                            </ul>
+                            <div class="card-body" style="height:250px; background-image: url('/static/external_page/assets/img/piano2.png');">
+                            </div>
+                        </div>
+                        <!-- End Tabs on plain Card -->
+                    </div>
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='/instructors/malning/'">
+                        <!-- Tabs with Background on Card -->
+                        <div class="card">
+                            <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                <li class="nav-item">
+                                    <a class="nav-link"><strong>MÅLNING</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>19 Instruktörer lediga</a>
+                                </li>
+                            </ul>
+                            <div class="card-body" style="height:250px; background-image: url('/static/external_page/assets/img/painting.png');">
+                            </div>
+                        </div>
+                        <!-- End Tabs on plain Card -->
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
+                        <!-- Tabs with Background on Card -->
+                        <div class="card" style="cursor:pointer;" onclick="window.location='/instructors/schack/'">
+                            <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                <li class="nav-item">
+                                    <a class="nav-link"><strong>SCHACK</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>8 Instruktörer lediga</a>
+                                </li>
+                            </ul>
+                            <div class="card-body" style="height:250px; background-image: url('/static/external_page/assets/img/chess.png');">
+                            </div>
+                        </div>
+                        <!-- End Tabs on plain Card -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End our offerings section -->
+
+        <!-- Start about us section-->
+        <div class="section section-about-us" id="about-us">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto text-center">
+                        <h2 class="title">Lorem Ipsum</h2>
+                        <h5 class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h5>
+                    </div>
+                </div>
+                <div class="separator separator-primary"></div>
+                <div class="section-story-overview">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-container image-left" style="background-image: url('/static/external_page/assets/img/flying.png')">
+                                <!-- First image on the left side -->
+                                <p class="blockquote blockquote-primary">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                    <br>
+                                    <br>
+                                    <small>-Lorem Ipsum</small>
+                                </p>
+                            </div>
+                            <!-- Second image on the left side of the article -->
+                            <div class="image-container" style="background-image: url('/static/external_page/assets/img/painter.jpg')"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <!-- First image on the right side, above the article -->
+                            <div class="image-container image-right" style="background-image: url('/static/external_page/assets/img/tennis_players.jpg')"></div>
+                            <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                            <p>
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                            <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End about us section-->
+
+        <!-- Start work with us section -->
+        <div class="section section-contact-us text-center" id="work-with-us">
+            <div class="container">
+                <h2 class="title">Vill du arbeta med oss?</h2>
+                <p class="description">Kontakta oss här, så hör vi av oss så snart vi kan</p>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <div class="input-group input-lg">
+                            <span class="input-group-addon">
+                                <i class="now-ui-icons users_circle-08"></i>
+                            </span>
+                            <input class="form-control" placeholder="Fullständigt namn" type="text">
+                        </div>
+                        <div class="input-group input-lg">
+                            <span class="input-group-addon">
+                                <i class="now-ui-icons ui-1_email-85"></i>
+                            </span>
+                            <input class="form-control" placeholder="Email" type="text">
+                        </div>
+                        <div class="textarea-container">
+                            <textarea class="form-control" name="name" rows="4" cols="80" placeholder="Skriv något kort om dig själv, dina erfarenheter och vad du vill lära ut."></textarea>
+                        </div>
+                        <div class="send-button">
+                            <a href="#pablo" class="btn btn-primary btn-round btn-block btn-lg">Skicka in</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End work with us section -->
+        
+
+<footer class="footer footer-default">
+    <div class="container">
+        <nav>
+            <ul>
+                <li>
+                    <a href="/accounts/login/">
+                        <strong>Logga in som instruktör här</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#our-offerings">Våra erbjudanden</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about-us">Om oss</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#work-with-us">Jobba med oss</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            All rights reserved ©
+            <script>
+                document.write(new Date().getFullYear())
+            </script>2018,
+            <a href="/">Hobbin</a>.
+        </div>
+    </div>
+</footer>
+
+    </div>
+
+
+
+
+
+<script src="/static/external_page/assets/js/core/jquery.3.2.1.min.js" type="text/javascript"></script>
+<script src="/static/external_page/assets/js/core/popper.min.js" type="text/javascript"></script>
+<script src="/static/external_page/assets/js/core/bootstrap.min.js" type="text/javascript"></script>
+<script src="/static/external_page/assets/js/plugins/moment.min.js"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="/static/external_page/assets/js/plugins/bootstrap-switch.js"></script>
+<!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
+<script src="/static/external_page/assets/js/plugins/bootstrap-tagsinput.js"></script>
+<!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
+<script src="/static/external_page/assets/js/plugins/bootstrap-selectpicker.js" type="text/javascript"></script>
+<!--  Google Maps Plugin    -->
+<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
+<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
+<script src="/static/external_page/assets/js/plugins/jasny-bootstrap.min.js"></script>
+<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
+<script src="/static/external_page/assets/js/plugins/nouislider.min.js" type="text/javascript' %}"></script>
+<!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
+<script src="/static/external_page/assets/js/plugins/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
+<script src="/static/external_page/assets/js/now-ui-kit.js?v=1.1.0" type="text/javascript"></script>
+
+
+
+</body><!--   Core JS Files   --></html>

@@ -23,3 +23,7 @@ and (max-device-width : 480px){
     and (max-device-width : 480px){
         .mobile-content-center-margin {margin-top:160px}
 }
+
+.row-instructor{
+    margin-bottom:25px;
+}

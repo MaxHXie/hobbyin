@@ -1,0 +1,200 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+<script>
+function scroll_alt() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("search-hobby");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("search-list");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
+<style>
+* {
+    box-sizing: border-box;
+}
+
+#search-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+#search-list li a {
+    border: 1px solid #ddd;
+    border-radius:4px 4px 4px 4px;
+    margin-top: -1px; /* Prevent double borders */
+    background-color: #f6f6f6;
+    padding: 3px;
+    text-decoration: none;
+    color: black;
+    display: block;
+}
+
+#search-list li a:hover:not(.header) {
+    background-color: #e0e0e0;
+}
+</style>
+{% endblock extra_head %}
+
+{% block body %}
+<body class="landing-page sidebar-collapse">
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="" %}
+    <!-- End Navbar -->
+
+    <div class="wrapper">
+        <div class="page-header page-header-medium">
+            <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg6.jpg' %}');"></div>
+            <div class="container">
+                <div class="content-center">
+                    <div class="row">
+                        <div class="card card-login" data-background-color="orange">
+                            <form class="form" method="" action="{% url 'instructors' 'all' %}">
+                                <div class="header text-center justify-content-center">
+                                    <h4 class="title title-up"><label for="search-hobby">Professionella lärare, förverkliga din hobbydröm</label></h4>
+                                </div>
+                                <div class="card-body">
+                                    <div class="input-group form-group-no-border">
+                                        <span class="input-group-addon">
+                                            <i class="now-ui-icons ui-1_zoom-bold"></i>
+                                        </span>
+                                        <input type="text" class="form-control" id="search-hobby" onkeyup="scroll_alt()" placeholder="Sök här eller scrolla ned för mer...">
+                                    </div>
+                                    {% if hobbies != None %}
+                                        <ul id="search-list">
+                                        {% for hobby in hobbies %}
+                                            <li><a href="{% url 'instructors' hobby.hobby_name %}">{{ hobby.hobby_name|title }}</a></li>
+                                        {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start our offerings section -->
+        <div class="section section-tabs" id="our-offerings">
+            <div class="container">
+                <div class="row">
+                {% for hobby in hobbies %}
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='{% url 'instructors' hobby.hobby_name %}'">
+                        <!-- Tabs with Background on Card -->
+                        <div class="card">
+                            <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                <li class="nav-item">
+                                    <a class="nav-link"><strong>{{ hobby.hobby_name|upper }}</strong></a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>{{ hobby.instructor_set.count }} Instruktörer lediga</a>
+                                </li>
+                            </ul>
+                            <div class="card-body" style="height:250px; background-image: url('{% static 'external_page/assets/img/hobby/'|add:hobby.hobby_name|add:'_small_banner.jpg' %}');">
+                            </div>
+                        </div>
+                        <!-- End Tabs on plain Card -->
+                    </div>
+                {% if forloop.counter|divisibleby:2 %}
+                </div>
+                <div class="row">
+                {% endif %}
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+        <!-- End our offerings section -->
+
+        <!-- Start about us section-->
+        <div class="section section-about-us" id="about-us">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-8 ml-auto mr-auto text-center">
+                        <h2 class="title">Lorem Ipsum</h2>
+                        <h5 class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h5>
+                    </div>
+                </div>
+                <div class="separator separator-primary"></div>
+                <div class="section-story-overview">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="image-container image-left" style="background-image: url('{% static 'external_page/assets/img/hobby/flying.jpg' %}')">
+                                <!-- First image on the left side -->
+                                <p class="blockquote blockquote-primary">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                    <br>
+                                    <br>
+                                    <small>-Lorem Ipsum</small>
+                                </p>
+                            </div>
+                            <!-- Second image on the left side of the article -->
+                            <div class="image-container" style="background-image: url('{% static 'external_page/assets/img/hobby/painter.jpg' %}')"></div>
+                        </div>
+                        <div class="col-md-5">
+                            <!-- First image on the right side, above the article -->
+                            <div class="image-container image-right" style="background-image: url('{% static 'external_page/assets/img/hobby/tennis_players.jpg' %}')"></div>
+                            <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                            <p>
+                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            </p>
+                            <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End about us section-->
+
+        <!-- Start work with us section -->
+        <div class="section section-contact-us text-center" id="work-with-us">
+            <div class="container">
+                <h2 class="title">{% trans 'Vill du arbeta med oss?' %}</h2>
+                <p class="description">{% trans 'Kontakta oss här, så hör vi av oss så snart vi kan' %}</p>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <div class="input-group input-lg">
+                            <span class="input-group-addon">
+                                <i class="now-ui-icons users_circle-08"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Fullständigt namn">
+                        </div>
+                        <div class="input-group input-lg">
+                            <span class="input-group-addon">
+                                <i class="now-ui-icons ui-1_email-85"></i>
+                            </span>
+                            <input type="text" class="form-control" placeholder="Email">
+                        </div>
+                        <div class="textarea-container">
+                            <textarea class="form-control" name="name" rows="4" cols="80" placeholder="Skriv något kort om dig själv, dina erfarenheter och vad du vill lära ut."></textarea>
+                        </div>
+                        <div class="send-button">
+                            <a href="#pablo" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Skicka in' %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- End work with us section -->
+        {% include "html_parts/footer.html" %}
+    </div>
+</body>
+{% endblock body %}

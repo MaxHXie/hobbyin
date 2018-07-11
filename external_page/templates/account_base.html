@@ -10,36 +10,7 @@
 
 {% block body %}
 <body class="signup-page">
-    {% if messages %}
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }}" style="margin-bottom:0;" role="alert">
-                <div class="container" name="message_banner">
-                    <div class="alert-icon">
-                        <i class="now-ui-icons ui-2_like"></i>
-                    </div>
-                    <strong>
-                        {% if message.tags == "success" %}
-                            {% trans "Well done!" %}
-                        {% elif message.tags == "info" %}
-                            {% trans "Heads up!" %}
-                        {% elif message.tags == "warning" %}
-                            {% trans "Warning!" %}
-                        {% elif message.tags == "error" %}
-                            {% trans "Oh snap!" %}
-                        {% else %}
-                            {% trans "Message" %}
-                        {% endif %}
-                    </strong>
-                    {{ message }}
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">
-                            <i class="now-ui-icons ui-1_simple-remove"></i>
-                        </span>
-                    </button>
-                </div>
-            </div>
-        {% endfor %}
-    {% endif %}
+    {% include "html_parts/message_banner.html" %}
 
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg bg-white navbar-absolute navbar-transparent">
@@ -251,27 +222,3 @@
     {% endblock footer %}
 </body>
 {% endblock body %}
-<!--   Core JS Files   -->
-<script src="{% static 'external_page/assets/js/core/jquery.3.2.1.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'external_page/assets/js/core/popper.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'external_page/assets/js/core/bootstrap.min.js' %}" type="text/javascript"></script>
-<script src="{% static 'external_page/assets/js/plugins/moment.min.js' %}"></script>
-<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
-<script src="{% static 'external_page/assets/js/plugins/bootstrap-switch.js' %}"></script>
-<!--	Plugin for Tags, full documentation here: https://github.com/bootstrap-tagsinput/bootstrap-tagsinputs  -->
-<script src="{% static 'external_page/assets/js/plugins/bootstrap-tagsinput.js' %}"></script>
-<!--	Plugin for Select, full documentation here: http://silviomoreto.github.io/bootstrap-select -->
-<script src="{% static 'external_page/assets/js/plugins/bootstrap-selectpicker.js' %}" type="text/javascript"></script>
-<!--  Google Maps Plugin    -->
-<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=YOUR_KEY_HERE"></script>
-<!--	Plugin for Fileupload, full documentation here: http://www.jasny.net/bootstrap/javascript/#fileinput -->
-<script src="{% static 'external_page/assets/js/plugins/jasny-bootstrap.min.js' %}"></script>
-<!--  Plugin for the Sliders, full documentation here: http://refreshless.com/nouislider/ -->
-<script src="{% static 'external_page/assets/js/plugins/nouislider.min.js' %}" type="text/javascript' %}"></script>
-<!--  Plugin for the DatePicker, full documentation here: https://github.com/uxsolutions/bootstrap-datepicker -->
-<script src="{% static 'external_page/assets/js/plugins/bootstrap-datetimepicker.min.js' %}" type="text/javascript"></script>
-<!-- Control Center for Now Ui Kit: parallax effects, scripts for the example pages etc -->
-<script src="{% static 'external_page/assets/js/now-ui-kit.js' %}?v=1.1.0" type="text/javascript"></script>
-{% block extra_javascript %}{% endblock extra_javascript %}
-
-</html>

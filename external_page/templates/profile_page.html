@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<body class="profile-page sidebar-collapse">
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="navbar-transparent" %}
+    <!-- End Navbar -->
+
+    <div class="wrapper">
+        <div class="page-header page-header-small" filter-color="orange">
+            <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');">
+            </div>
+            <div class="container">
+                <div class="content-center">
+                    <div class="photo-container">
+                        {% with instructor.id|slugify as instructor_id %}
+                        <img src="{% static 'external_page/assets/img/profile_pics/'|add:instructor_id|add:'.jpg' %}" onerror="this.src='{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}'">
+                        {% endwith %}
+                    </div>
+                    <h3 class="title">{{ instructor.first_name }} {{ instructor.last_name }}</h3>
+                    <p class="category">Pianist</p>
+                    <div class="content">
+                        <div class="social-description">
+                            <h2>26</h2>
+                            <p>Elever</p>
+                        </div>
+                        <div class="social-description">
+                            <h2>12</h2>
+                            <p>Omdömen</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section">
+            <div class="container">
+                <div class="button-container">
+                    <a href="#button" class="btn btn-primary btn-round btn-lg">Boka tid</a>
+                </div>
+                {% if instructor.description %}
+                <h3 class="title">Om mig</h3>
+                <h5 class="description">{{ instructor.description }}</h5>
+                {% endif %}
+                <div class="row">
+
+                </div>
+            </div>
+        </div>
+
+        {% include "html_parts/footer.html" %}
+    </div>
+</body>
+{% endblock body %}

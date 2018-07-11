@@ -1,0 +1,31 @@
+{% load static %}
+{% load i18n %}
+<footer class="footer footer-default">
+    <div class="container">
+        <nav>
+            <ul>
+                <li>
+                    <a href="{% url 'account_login' %}">
+                        <strong>{% trans 'Logga in som instruktör här' %}</strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#our-offerings">Våra erbjudanden</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#about-us">Om oss</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#work-with-us">Jobba med oss</a>
+                </li>
+            </ul>
+        </nav>
+        <div class="copyright">
+            All rights reserved &copy;
+            <script>
+                document.write(new Date().getFullYear())
+            </script>,
+            <a href="{% url 'index' %}">Hobbin</a>.
+        </div>
+    </div>
+</footer>

@@ -1,0 +1,31 @@
+{% load i18n %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}" style="margin-bottom:0;" role="alert">
+            <div class="container" name="message_banner">
+                <div class="alert-icon">
+                    <i class="now-ui-icons ui-2_like"></i>
+                </div>
+                <strong>
+                    {% if message.tags == "success" %}
+                        {% trans "Well done!" %}
+                    {% elif message.tags == "info" %}
+                        {% trans "Heads up!" %}
+                    {% elif message.tags == "warning" %}
+                        {% trans "Warning!" %}
+                    {% elif message.tags == "error" %}
+                        {% trans "Oh snap!" %}
+                    {% else %}
+                        {% trans "Message" %}
+                    {% endif %}
+                </strong>
+                {{ message }}
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </span>
+                </button>
+            </div>
+        </div>
+    {% endfor %}
+{% endif %}
