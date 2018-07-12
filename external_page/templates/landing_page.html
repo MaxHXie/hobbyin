@@ -170,26 +170,11 @@ function scroll_alt() {
         <div class="section section-contact-us text-center" id="work-with-us">
             <div class="container">
                 <h2 class="title">{% trans 'Vill du arbeta med oss?' %}</h2>
-                <p class="description">{% trans 'Kontakta oss här, så hör vi av oss så snart vi kan' %}</p>
+                <p class="description">{% trans 'Registrera dig och kom igång. Vi lovar att det går blixtsnabbt!' %}</p>
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
-                        <div class="input-group input-lg">
-                            <span class="input-group-addon">
-                                <i class="now-ui-icons users_circle-08"></i>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Fullständigt namn">
-                        </div>
-                        <div class="input-group input-lg">
-                            <span class="input-group-addon">
-                                <i class="now-ui-icons ui-1_email-85"></i>
-                            </span>
-                            <input type="text" class="form-control" placeholder="Email">
-                        </div>
-                        <div class="textarea-container">
-                            <textarea class="form-control" name="name" rows="4" cols="80" placeholder="Skriv något kort om dig själv, dina erfarenheter och vad du vill lära ut."></textarea>
-                        </div>
                         <div class="send-button">
-                            <a href="#pablo" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Skicka in' %}</a>
+                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig som instruktör' %}</a>
                         </div>
                     </div>
                 </div>

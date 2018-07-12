@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<body class="landing-page sidebar-collapse">
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
+    <div class="wrapper">
+        <div class="section section-contact-us text-center">
+            <div class="container">
+                <h2 class="title">Want to work with us?</h2>
+                <p class="description">Your project is very important to us.</p>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <form id="edit_profile_form" action="" method="POST">
+                        {% csrf_token %}
+                        {% for field in form %}
+                        <div class="input-group input-lg">
+                            <span class="input-group-addon">
+                                <i class="now-ui-icons users_circle-08"></i>
+                            </span>
+                            {{ field }}
+                        </div>
+                        {% endfor %}
+                        <div class="send-button">
+                            <a href="javascript:$('#edit_profile_form').submit();" class="btn btn-primary btn-round btn-block btn-lg">Ändra profil</a>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+{% endblock body %}
