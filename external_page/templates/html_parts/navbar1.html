@@ -21,7 +21,11 @@
                     <a class="nav-link" href="#about-us"><span style="font-size:1.3em;"><strong>Om oss</strong></span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#work-with-us"><span style="font-size:1.3em;"><strong>Jobba med oss</strong></span></a>
+                    {% if user.is_authenticated %}
+                    <a class="nav-link" href="{% url 'my_profile' %}"><span style="font-size:1.3em;"><strong>Din profil</strong></span></a>
+                    {% else %}
+                    <a class="nav-link" href="{% url 'account_signup' %}"><span style="font-size:1.3em;"><strong>Registrera dig som intruktör</strong></span></a>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" rel="tooltip" title="{% trans 'Följ oss på Twitter' %}" data-placement="bottom" href="https://twitter.com/" target="_blank">

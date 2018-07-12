@@ -53,10 +53,10 @@ function scroll_alt() {
 
 {% block body %}
 <body class="landing-page sidebar-collapse">
-    {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="" %}
     <!-- End Navbar -->
+    {% include "html_parts/message_banner.html" %}
 
     <div class="wrapper">
         <div class="page-header page-header-medium">
@@ -163,6 +163,8 @@ function scroll_alt() {
             </div>
         </div>
         <!-- End about us section-->
+        {% block signup_form %}
+        {% endblock signup_form %}
 
         <!-- Start work with us section -->
         <div class="section section-contact-us text-center" id="work-with-us">

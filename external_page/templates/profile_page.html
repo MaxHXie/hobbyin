@@ -16,18 +16,27 @@
     <!-- End Navbar -->
 
     <div class="wrapper">
+        {% if instructor %}
         <div class="page-header page-header-small" filter-color="orange">
             <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');">
             </div>
             <div class="container">
                 <div class="content-center">
                     <div class="photo-container">
-                        {% with instructor.id|slugify as instructor_id %}
-                        <img src="{% static 'external_page/assets/img/profile_pics/'|add:instructor_id|add:'.jpg' %}" onerror="this.src='{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}'">
+                        {% with user.id|slugify as id %}
+                        <img src="{% static 'external_page/assets/img/profile_pics/'|add:id|add:'.jpg' %}" onerror="this.src='{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}'">
                         {% endwith %}
                     </div>
                     <h3 class="title">{{ instructor.first_name }} {{ instructor.last_name }}</h3>
-                    <p class="category">Pianist</p>
+                    <p class="category">
+                        {% if hobby %}
+                            {{ hobby }}
+                        {% elif hobby_list %}
+                            {% for hobby in hobby_list %}
+                                <a href="{% url 'profile_with_user_hobby' user.id hobby %}">{{ hobby }}</a> |
+                            {% endfor %}
+                        {% endif %}
+                    </p>
                     <div class="content">
                         <div class="social-description">
                             <h2>26</h2>
@@ -55,7 +64,20 @@
                 </div>
             </div>
         </div>
-
+        {% elif error_message %}
+        <div class="page-header page-header-small" filter-color="orange">
+            <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');">
+            </div>
+            <div class="container">
+                <div class="content-center">
+                    <div class="photo-container">
+                        <img src="{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}">
+                    </div>
+                    <h3 class="title">{{ error_message }}</h3>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         {% include "html_parts/footer.html" %}
     </div>
 </body>

@@ -1,20 +1,27 @@
 {% load i18n %}
 {% if messages %}
+<div class="section section-notifications" id="notifications">
     {% for message in messages %}
+        {% if message.tags == 'error' %}
+        {% with "danger" as danger_tag %}
+        <div class="alert alert-{{ danger_tag }}" style="margin-bottom:0;" role="alert">
+        {% endwith %}
+        {% else %}
         <div class="alert alert-{{ message.tags }}" style="margin-bottom:0;" role="alert">
+        {% endif %}
             <div class="container" name="message_banner">
                 <div class="alert-icon">
                     <i class="now-ui-icons ui-2_like"></i>
                 </div>
                 <strong>
                     {% if message.tags == "success" %}
-                        {% trans "Well done!" %}
+                        {% trans "Bra gjort!" %}
                     {% elif message.tags == "info" %}
-                        {% trans "Heads up!" %}
+                        {% trans "Notifikation!" %}
                     {% elif message.tags == "warning" %}
-                        {% trans "Warning!" %}
+                        {% trans "Varning!" %}
                     {% elif message.tags == "error" %}
-                        {% trans "Oh snap!" %}
+                        {% trans "Där gick något snett!" %}
                     {% else %}
                         {% trans "Message" %}
                     {% endif %}
@@ -28,4 +35,5 @@
             </div>
         </div>
     {% endfor %}
+</div>
 {% endif %}
