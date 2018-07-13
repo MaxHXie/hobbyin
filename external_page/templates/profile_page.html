@@ -10,10 +10,10 @@
 
 {% block body %}
 <body class="profile-page sidebar-collapse">
-    {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="navbar-transparent" %}
     <!-- End Navbar -->
+    {% include "html_parts/message_banner.html" %}
 
     <div class="wrapper">
         {% if instructor %}

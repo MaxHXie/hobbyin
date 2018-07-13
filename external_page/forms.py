@@ -1,19 +1,28 @@
-from external_page.models import Instructor
+from external_page.models import Instructor, Hobby
 from django.forms import ModelForm
-from django.forms import TextInput, Select, Textarea, RadioSelect, CheckboxInput, NumberInput
+from django.db import models
+from django.utils.safestring import mark_safe
+from django import forms
+from django.forms import TextInput, Select, Textarea, RadioSelect, CheckboxInput, NumberInput, CheckboxSelectMultiple
+
+class CheckboxSelectMultiple(CheckboxSelectMultiple):
+    def render(self, *args, **kwargs):
+        output = super(CheckboxSelectMultiple, self).render(*args, **kwargs)
+        output = output.replace(u'<li>', u'')
+        output = output.replace(u'</li>', u'')
+        return mark_safe(output.replace(u'<ul id="id_hobbies">', u''))
 
 class InstructorForm(ModelForm):
     class Meta:
         model = Instructor
-        fields = ['first_name', 'last_name', 'hobbies', 'city', 'zip_code', 'description', 'gender', 'work_in_student_home', 'work_in_instructor_home', 'maximum_students']
+        fields = ['first_name', 'last_name', 'city', 'zip_code', 'work_in_student_home', 'work_in_instructor_home', 'hobbies', 'maximum_students', 'description']
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Förnamn'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Efternamn'}),
-            'hobbies': Select(attrs={'class': 'form-control', 'placeholder': 'Jag vill instruera i: '}),
+            'hobbies': CheckboxSelectMultiple(),
             'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stad'}),
-            'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postkod'}),
-            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Kort biografi'}),
-            'gender': RadioSelect(attrs={'class': 'form-control', 'placeholder': 'Kön'}),
+            'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postnummer'}),
+            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Kort biografi om dig själv', 'rows':20}),
             'work_in_student_home': CheckboxInput(),
             'work_in_instructor_home': CheckboxInput(),
             'maximum_students': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Antal hobbyister jag kan ta upp till'}),

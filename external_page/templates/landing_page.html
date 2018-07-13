@@ -3,26 +3,6 @@
 {% load i18n %}
 
 {% block extra_css %}
-{% endblock extra_css %}
-
-{% block extra_head %}
-<script>
-function scroll_alt() {
-    var input, filter, ul, li, a, i;
-    input = document.getElementById("search-hobby");
-    filter = input.value.toUpperCase();
-    ul = document.getElementById("search-list");
-    li = ul.getElementsByTagName("li");
-    for (i = 0; i < li.length; i++) {
-        a = li[i].getElementsByTagName("a")[0];
-        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
-            li[i].style.display = "";
-        } else {
-            li[i].style.display = "none";
-        }
-    }
-}
-</script>
 <style>
 * {
     box-sizing: border-box;
@@ -49,6 +29,26 @@ function scroll_alt() {
     background-color: #e0e0e0;
 }
 </style>
+{% endblock extra_css %}
+
+{% block extra_head %}
+<script>
+function scroll_alt() {
+    var input, filter, ul, li, a, i;
+    input = document.getElementById("search-hobby");
+    filter = input.value.toUpperCase();
+    ul = document.getElementById("search-list");
+    li = ul.getElementsByTagName("li");
+    for (i = 0; i < li.length; i++) {
+        a = li[i].getElementsByTagName("a")[0];
+        if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            li[i].style.display = "";
+        } else {
+            li[i].style.display = "none";
+        }
+    }
+}
+</script>
 {% endblock extra_head %}
 
 {% block body %}
@@ -167,6 +167,21 @@ function scroll_alt() {
         {% endblock signup_form %}
 
         <!-- Start work with us section -->
+        {% if user.is_authenticated %}
+        <div class="section section-contact-us text-center" id="work-with-us">
+            <div class="container">
+                <h2 class="title">{% trans 'Du är just nu inloggad som' %}</h2>
+                <h3>{{ user.instructor.first_name }} {{ user.instructor.last_name }}</h3>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <div class="send-button">
+                            <a href="{% url 'my_profile' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Till din profil' %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
         <div class="section section-contact-us text-center" id="work-with-us">
             <div class="container">
                 <h2 class="title">{% trans 'Vill du arbeta med oss?' %}</h2>
@@ -180,6 +195,7 @@ function scroll_alt() {
                 </div>
             </div>
         </div>
+        {% endif %}
         <!-- End work with us section -->
         {% include "html_parts/footer.html" %}
     </div>

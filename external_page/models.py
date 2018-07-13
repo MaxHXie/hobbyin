@@ -16,17 +16,18 @@ class Instructor(models.Model):
     )
     first_name = models.CharField(max_length=64, null=True, blank=False)
     last_name = models.CharField(max_length=64, null=True, blank=False)
-    hobbies = models.ManyToManyField(Hobby, null=True, blank=False)
+    hobbies = models.ManyToManyField(Hobby, blank=False)
     email = models.EmailField(max_length=256, blank=True, null=True, unique=True)
     city = models.CharField(max_length=128, null=True, blank=False)
     zip_code = models.CharField(max_length=10, null=True, blank=False)
     description = models.TextField(max_length=2048, null=True, blank=True)
     gender = models.CharField(max_length=1,
                            choices=(
+                                    ('N', 'No answer'),
                                     ('M', 'Male'),
                                     ('F', 'Female'),
                                     ('O', 'Other')
-                           ), null=True
+                           ), null=True, blank=True, default="N"
                            )
     work_in_student_home = models.BooleanField(default=False)
     work_in_instructor_home = models.BooleanField(default=True)

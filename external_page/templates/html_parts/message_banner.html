@@ -1,39 +1,37 @@
 {% load i18n %}
 {% if messages %}
-<div class="section section-notifications" id="notifications">
-    {% for message in messages %}
-        {% if message.tags == 'error' %}
-        {% with "danger" as danger_tag %}
-        <div class="alert alert-{{ danger_tag }}" style="margin-bottom:0;" role="alert">
-        {% endwith %}
-        {% else %}
-        <div class="alert alert-{{ message.tags }}" style="margin-bottom:0;" role="alert">
-        {% endif %}
-            <div class="container" name="message_banner">
-                <div class="alert-icon">
-                    <i class="now-ui-icons ui-2_like"></i>
-                </div>
-                <strong>
-                    {% if message.tags == "success" %}
-                        {% trans "Bra gjort!" %}
-                    {% elif message.tags == "info" %}
-                        {% trans "Notifikation!" %}
-                    {% elif message.tags == "warning" %}
-                        {% trans "Varning!" %}
-                    {% elif message.tags == "error" %}
-                        {% trans "Där gick något snett!" %}
-                    {% else %}
-                        {% trans "Message" %}
-                    {% endif %}
-                </strong>
-                {{ message }}
-                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                    <span aria-hidden="true">
-                        <i class="now-ui-icons ui-1_simple-remove"></i>
-                    </span>
-                </button>
-            </div>
+{% for message in messages %}
+    {% if message.tags == 'error' %}
+    {% with "danger" as danger_tag %}
+    <div class="alert alert-{{ danger_tag }} fixed-bottom" style="margin-bottom:0;" role="alert">
+    {% endwith %}
+    {% else %}
+    <div class="alert alert-{{ message.tags }} fixed-bottom" style="margin-bottom:0;" role="alert">
+    {% endif %}
+        <div class="container" name="message_banner">
+            {% if message.tags == "success" %}
+                <div class="alert-icon"><i class="now-ui-icons ui-2_like"></i></div>
+                <strong>{% trans "Bra gjort!" %}</strong>
+            {% elif message.tags == "info" %}
+                <div class="alert-icon"><i class="now-ui-icons business_bulb-63"></i></div>
+                <strong>{% trans "Notifikation!" %}</strong>
+            {% elif message.tags == "warning" %}
+                <div class="alert-icon"><i class="now-ui-icons ui-1_bell-53"></i></div>
+                <strong>{% trans "Varning!" %}</strong>
+            {% elif message.tags == "error" %}
+                <div class="alert-icon"><i class="now-ui-icons objects_support-17"></i></div>
+                <strong>{% trans "Attans!" %}</strong>
+            {% else %}
+                <div class="alert-icon"><i class="now-ui-icons travel_info"></i></div>
+                <strong>{% trans "Message" %}</strong>
+                {% endif %}
+            {{ message }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">
+                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                </span>
+            </button>
         </div>
-    {% endfor %}
-</div>
+    </div>
+{% endfor %}
 {% endif %}

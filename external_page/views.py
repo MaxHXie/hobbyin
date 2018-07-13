@@ -23,6 +23,7 @@ def index(request):
     hobbies = Hobby.objects.all()
     if len(hobbies) == 0:
         hobbies = None
+
     return render(request, 'landing_page.html', context={'hobbies': hobbies})
 
 
