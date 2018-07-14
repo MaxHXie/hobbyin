@@ -25,7 +25,7 @@ SECRET_KEY = 'kfxwht576@(2b@lk3c_4e380uswc!=p-ov--7356y%$=r2ch)1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['maxxie.pythonanywhere.com', 'localhost']
+ALLOWED_HOSTS = ['www.hobbyin.se', 'localhost']
 
 
 # Application definition

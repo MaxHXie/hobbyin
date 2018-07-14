@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect
-from external_page.models import Hobby, Instructor
+from external_page.models import Hobby, Instructor, Message
 from django.contrib import messages
 from django.contrib.auth.models import User
-from .forms import InstructorForm
+from .forms import InstructorForm, ContactInstructorForm
+from django.contrib.auth import logout as logout_function
 
 def first_time_login_and_create_instructor(request):
     current_user = request.user
@@ -23,8 +24,25 @@ def index(request):
     hobbies = Hobby.objects.all()
     if len(hobbies) == 0:
         hobbies = None
-
     return render(request, 'landing_page.html', context={'hobbies': hobbies})
+
+
+
+def terms_of_use(request):
+    return render(request, 'other_templates/terms_of_use.html')
+
+
+
+def logout(request):
+    logout_function(request)
+    messages.info(request, 'Du har blivit utloggad')
+    return render(request, 'landing_page.html')
+
+
+
+def settings(request):
+    pass
+
 
 
 
@@ -45,13 +63,15 @@ def profile_with_user(request, user_id):
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
-        error_message = 'Den här profilen existerar inte längre'
-        return render('profile_page.html', context={'error_message': error_message})
+        error_message = "Existerar inte"
+        messages.error(request, 'Den här profilen existerar inte längre')
+        return render(request, 'profile_page.html', context={'error_message': error_message})
 
     try:
         instructor = Instructor.objects.get(user=user)
     except Instructor.DoesNotExist:
-        error_message = 'Den här instruktören existerar inte'
+        error_message = "Existerar inte"
+        messages.error(request, 'Den här profilen existerar inte längre')
         return render(request, 'profile_page.html', context={'error_message': error_message})
 
     hobby_list = Hobby.objects.filter(instructor=instructor)
@@ -59,7 +79,7 @@ def profile_with_user(request, user_id):
     if len(hobby_list) == 1:
         return profile_with_user_hobby(request, user_id, hobby_list[0])
 
-    return render(request, 'profile_page.html', context={'hobby_list': hobby_list, 'instructor':instructor, 'user': user})
+    return render(request, 'profile_page.html', context={'hobby_list': hobby_list, 'instructor':instructor, 'this_user': user})
 
 
 
@@ -67,13 +87,15 @@ def profile_with_user_hobby(request, user_id, hobby):
     try:
         user = User.objects.get(pk=user_id)
     except User.DoesNotExist:
-        error_message = 'Den här profilen existerar inte längre'
+        error_message = "Existerar inte"
+        messages.error(request, 'Den här profilen existerar inte längre')
         return render('profile_page.html', context={'error_message': error_message})
 
     try:
         instructor = Instructor.objects.get(user=user)
     except Instructor.DoesNotExist:
-        error_message = 'Den här instruktören existerar inte'
+        error_message = "Existerar inte"
+        messages.error(request, 'Den här profilen existerar inte längre')
         return render(request, 'profile_page.html', context={'error_message': error_message})
 
     try:
@@ -85,9 +107,25 @@ def profile_with_user_hobby(request, user_id, hobby):
     if hobby not in hobby_list:
         return profile_with_user(request, user_id)
 
-    return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor':instructor, 'user': user})
+    #Contact the teacher
+    if request.method != "POST":
+        form = ContactInstructorForm()
+        return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor':instructor, 'this_user': user, 'form': form})
 
+    else:
+        instructor_message = Message.objects.create(to_user=user)
+        instructor_message.save()
+        form = ContactInstructorForm(request.POST, instance=instructor_message)
+        if form.is_valid():
+            form.save()
+            form = ContactInstructorForm()
+            messages.success(request, 'Ditt meddelande har skickats iväg.')
 
+        else:
+            instructor_message.delete()
+            messages.error(request, 'Ditt meddelande kunde inte skickas iväg.')
+
+        return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor':instructor, 'this_user': user, 'form': form})
 
 def my_profile(request):
     ## User is redirected here upon LOGIN
@@ -116,7 +154,7 @@ def edit_profile(request):
             if form.is_valid():
                form.save()
                messages.success(request, 'Din profil är ändrad.')
-               return render(request, 'edit_profile_page.html', context={'form': form})
+               return my_profile(request)
         else:
             form = InstructorForm(None, instance=instructor)
             return render(request, 'edit_profile_page.html', context={'form': form})

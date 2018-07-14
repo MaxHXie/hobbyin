@@ -5,9 +5,15 @@
         <nav>
             <ul>
                 <li>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'my_profile' %}">
+                        <strong>Din profil</strong>
+                    </a>
+                    {% else %}
                     <a href="{% url 'account_login' %}">
                         <strong>{% trans 'Registrera och logga in som instruktör här' %}</strong>
                     </a>
+                    {% endif %}
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#our-offerings">Våra erbjudanden</a>
@@ -25,7 +31,7 @@
             <script>
                 document.write(new Date().getFullYear())
             </script>,
-            <a href="{% url 'index' %}">Hobbin</a>.
+            <a href="{% url 'index' %}">HobbyIn</a>.
         </div>
     </div>
 </footer>

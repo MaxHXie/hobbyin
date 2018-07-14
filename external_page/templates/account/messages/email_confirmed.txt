@@ -1,2 +1,2 @@
 {% load i18n %}
-{% blocktrans %}You have confirmed {{email}}.{% endblocktrans %}
+{% blocktrans %} Din email adress är nu verifierad: {{email}}.{% endblocktrans %}

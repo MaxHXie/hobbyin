@@ -1,4 +1,4 @@
-from external_page.models import Instructor, Hobby
+from external_page.models import Instructor, Hobby, Message
 from django.forms import ModelForm
 from django.db import models
 from django.utils.safestring import mark_safe
@@ -26,4 +26,15 @@ class InstructorForm(ModelForm):
             'work_in_student_home': CheckboxInput(),
             'work_in_instructor_home': CheckboxInput(),
             'maximum_students': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Antal hobbyister jag kan ta upp till'}),
+        }
+
+class ContactInstructorForm(ModelForm):
+    class Meta:
+        model = Message
+        fields = ['first_name', 'email', 'telephone', 'message']
+        widgets = {
+            'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Förnamn'}),
+            'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email adress'}),
+            'telephone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Telefon-nummer'}),
+            'message': Textarea(attrs={'class': 'form-control', 'rows':4, 'cols':80, 'placeholder':'Skriv in ditt meddelande här'}),
         }

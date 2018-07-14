@@ -23,7 +23,7 @@
             <div class="container">
                 <div class="content-center">
                     <div class="photo-container">
-                        {% with user.id|slugify as id %}
+                        {% with this_user.id|slugify as id %}
                         <img src="{% static 'external_page/assets/img/profile_pics/'|add:id|add:'.jpg' %}" onerror="this.src='{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}'">
                         {% endwith %}
                     </div>
@@ -39,10 +39,6 @@
                     </p>
                     <div class="content">
                         <div class="social-description">
-                            <h2>26</h2>
-                            <p>Elever</p>
-                        </div>
-                        <div class="social-description">
                             <h2>12</h2>
                             <p>Omdömen</p>
                         </div>
@@ -50,18 +46,71 @@
                 </div>
             </div>
         </div>
+        {% if hobby and this_user != user %}
+        <div class="section section-contact-us text-center">
+            <div class="container">
+                {% if this_user != user %}
+                    {% if instructor.description %}
+                        <div class="button-container">
+                                <a href="#about-me" class="btn btn-primary btn-round btn-lg">Läs mer om {{ instructor.first_name }}</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+                <h2 class="title">Kontakta {{ instructor.first_name }}</h2>
+                <p class="description">Du är ett steg ifrån att lära dig en ny färdighet för livet.</p>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <form id="edit_profile_form" action="" method="POST">
+                            {% csrf_token %}
+                            {% for field in form %}
+                                {% if field.name == 'first_name' %}
+                                <div class="input-group input-lg">
+                                    <span class="input-group-addon">
+                                        <i class="now-ui-icons users_circle-08"></i>
+                                    </span>
+                                    {{ field }}
+                                </div>
+                                {% elif field.name == 'email' %}
+                                <div class="input-group input-lg">
+                                    <span class="input-group-addon">
+                                        <i class="now-ui-icons ui-1_email-85"></i>
+                                    </span>
+                                    {{ field }}
+                                </div>
+                                <strong>eller...</strong>
+                                {% elif field.name == 'telephone' %}
+                                <div class="input-group input-lg">
+                                    <span class="input-group-addon">
+                                        <i class="now-ui-icons tech_mobile"></i>
+                                    </span>
+                                    {{ field }}
+                                </div>
+                                {% elif field.name == 'message' %}
+                                <div class="textarea-container">
+                                    {{ field }}
+                                </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="send-button">
+                                <a href="javascript:$('#edit_profile_form').submit();" class="btn btn-primary btn-round btn-block btn-lg">Skicka meddelande</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         <div class="section">
             <div class="container">
+                {% if this_user == user %}
                 <div class="button-container">
-                    <a href="#button" class="btn btn-primary btn-round btn-lg">Boka tid</a>
+                        <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-round btn-lg">Ändra profil</a>
                 </div>
+                {% endif %}
                 {% if instructor.description %}
-                <h3 class="title">Om mig</h3>
+                <h3 class="title" id="about-me">Om mig</h3>
                 <h5 class="description">{{ instructor.description }}</h5>
                 {% endif %}
-                <div class="row">
-
-                </div>
             </div>
         </div>
         {% elif error_message %}

@@ -42,10 +42,8 @@
                                 <label class="form-check-label">
                                     <input type="checkbox" name="terms" id="terms" required style="-ms-transform: scale(2); -moz-transform: scale(2); -webkit-transform: scale(2); -o-transform: scale(2); padding: 10px; margin:15px;">
                                     <span class="form-check-sign"></span>
-                                    {% blocktrans %}
-                                    <span style="color:black">Jag godkänner </span>
-                                    <a style="color:#F96332;" href="#">villkoren.</a>
-                                    {% endblocktrans %}
+                                    <span style="color:black">{% trans 'Jag godkänner' %}</span>
+                                    <a style="color:#F96332;" href="{% url 'terms_of_use' %}" target="_blank">{% trans 'användarvillkoren' %}</a>.
                                 </label>
                             </div>
                             {% if redirect_field_value %}

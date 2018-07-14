@@ -17,8 +17,8 @@ class Instructor(models.Model):
     first_name = models.CharField(max_length=64, null=True, blank=False)
     last_name = models.CharField(max_length=64, null=True, blank=False)
     hobbies = models.ManyToManyField(Hobby, blank=False)
-    email = models.EmailField(max_length=256, blank=True, null=True, unique=True)
-    city = models.CharField(max_length=128, null=True, blank=False)
+    email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
+    city = models.CharField(max_length=64, null=True, blank=False)
     zip_code = models.CharField(max_length=10, null=True, blank=False)
     description = models.TextField(max_length=2048, null=True, blank=True)
     gender = models.CharField(max_length=1,
@@ -40,6 +40,19 @@ class Instructor(models.Model):
             string = "name_error"
         return string
 
-class Grade(models.Model):
-    pass
-    # Connect (instructor-hobby) to user grade of that (instructor-hobby) combination
+class Message(models.Model):
+    to_user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    first_name = models.CharField(max_length=64, null=False)
+    email = models.EmailField(max_length=128, null=False)
+    telephone = models.CharField(max_length=32, null=False)
+    message = models.CharField(max_length=2048, null=False)
+
+    def __str__(self):
+        try:
+            string = self.first_name + " to " + self.to_user.email
+        except:
+            string = "message_name_error"
+        return string
