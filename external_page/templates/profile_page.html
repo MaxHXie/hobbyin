@@ -24,7 +24,11 @@
                 <div class="content-center">
                     <div class="photo-container">
                         {% with this_user.id|slugify as id %}
-                        <img src="{% static 'external_page/assets/img/profile_pics/'|add:id|add:'.jpg' %}" onerror="this.src='{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}'">
+                            {% if instructor.profile_picture %}
+                                <img src="{{ instructor.profile_picture.url }}">
+                            {% else %}
+                                <img src="{% static 'external_page/assets/img/placeholder.png'%}">
+                            {% endif %}
                         {% endwith %}
                     </div>
                     <h3 class="title">{{ instructor.first_name }} {{ instructor.last_name }}</h3>
@@ -39,7 +43,7 @@
                     </p>
                     <div class="content">
                         <div class="social-description">
-                            <h2>12</h2>
+                            <h2>0</h2>
                             <p>Omdömen</p>
                         </div>
                     </div>
@@ -120,7 +124,7 @@
             <div class="container">
                 <div class="content-center">
                     <div class="photo-container">
-                        <img src="{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}">
+                        <img src="{% static 'external_page/assets/img/placeholder.png' %}">
                     </div>
                     <h3 class="title">{{ error_message }}</h3>
                 </div>

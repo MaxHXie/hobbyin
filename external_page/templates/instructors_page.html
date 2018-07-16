@@ -37,7 +37,11 @@
                         <div class="card card-signup col-md-4" data-background-color="orange" style="cursor: pointer;" onclick="window.location='{% url 'profile_with_user_hobby' instructor.user.id hobby %}'">
                             <div class="team-player">
                                 {% with instructor.user.id|slugify as user_id %}
-                                <img src="{% static 'external_page/assets/img/profile_pics/'|add:user_id|add:'.jpg' %}" onerror="this.src='{% static 'external_page/assets/img/profile_pics/placeholder.jpg' %}'" class="rounded-circle img-fluid img-raised">
+                                    {% if instructor.profile_picture %}
+                                        <img src="{{ instructor.profile_picture.url }}"class="rounded-circle img-fluid img-raised">
+                                    {% else %}
+                                        <img src="{% static 'external_page/assets/img/placeholder.png'%}" class="rounded-circle img-fluid img-raised">
+                                    {% endif %}
                                 {% endwith %}
                                 <h4 class="title">{{ instructor.first_name }} {{instructor.last_name}}</h4>
                                 <h5> Jag är öppen för att: </h5>

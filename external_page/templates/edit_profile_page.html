@@ -26,7 +26,9 @@
                             {% if input_type == 'text' or input_type == 'number' %}
                                 <div id="inputs">
                                     {% if field.name == 'maximum_students' %}
-                                        <h4> Antal personer jag kan ta upp till: </h4>
+                                        <h4> Antal personer jag kan ta upp till per lektion: </h4>
+                                    {% elif field.name == 'price' %}
+                                        <h4> Pris: </h4>
                                     {% endif %}
 
                                     {% if field.errors %}
@@ -91,7 +93,7 @@
                                                     {% elif field.name == 'work_in_instructor_home' %}
                                                         <label for="{{ field.auto_id }}">
                                                             {{ alternative }}
-                                                        Jag kan hålla lära ut mitt hem
+                                                        Jag kan lära ut mitt hem
                                                         </label>
 
                                                     {% else %}
@@ -103,6 +105,16 @@
                                         </ul>
                                     </div>
                                 </div>
+                            {% elif input_type == "file" %}
+                                {% if field.name == "profile_picture" %}
+                                    <div class="textarea-container">
+                                        <h4> Ladda upp en profilbild </h4>
+                                        {% if field.errors %}
+                                            <span style="color:red;">{{ field.errors|first }}</span>
+                                        {% endif %}
+                                            {{ field }}
+                                    </div>
+                                {% endif %}
 
                             {% else %}
                                 {% if field.errors %}

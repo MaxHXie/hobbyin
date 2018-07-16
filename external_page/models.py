@@ -32,6 +32,14 @@ class Instructor(models.Model):
     work_in_student_home = models.BooleanField(default=False)
     work_in_instructor_home = models.BooleanField(default=True)
     maximum_students = models.PositiveIntegerField(default=1, blank=False)
+    price = models.PositiveIntegerField(default=300, blank=False)
+    price_model = models.CharField(max_length=1,
+                           choices=(
+                                    ('H', 'Per timme'),
+                                    ('T', 'Per tillfälle'),
+                           ), null=True, blank=False, default="H"
+                           )
+    profile_picture = models.ImageField(upload_to="profile_picture", blank=True)
 
     def __str__(self):
         try:
