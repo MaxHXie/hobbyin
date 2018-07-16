@@ -43,7 +43,7 @@
                                         <img src="{% static 'external_page/assets/img/placeholder.png'%}" class="rounded-circle img-fluid img-raised">
                                     {% endif %}
                                 {% endwith %}
-                                <h4 class="title">{{ instructor.first_name }} {{instructor.last_name}}</h4>
+                                <h4 class="title">{{ instructor.first_name|title }} {{ instructor.last_name|title }}</h4>
                                 <h5> Jag är öppen för att: </h5>
                                 <ul>
                                 {% if instructor.work_in_instructor_home == True %}

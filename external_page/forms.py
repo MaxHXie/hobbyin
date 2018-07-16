@@ -68,9 +68,20 @@ class InstructorForm(ModelForm):
     def clean(self):
         cleaned_data=super(InstructorForm, self).clean()
 
+        first_name = cleaned_data.get('first_name')
+        if first_name:
+            print(first_name)
+            if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', first_name):
+                raise forms.ValidationError({'first_name':[_("Du har använt ogiltiga tecken i det här fältet")]}, code="invalid_first_name")
+
+        last_name = cleaned_data.get('last_name')
+        if last_name:
+            if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', last_name):
+                raise forms.ValidationError({'last_name':[_("Du har använt ogiltiga tecken i det här fältet")]}, code="invalid_last_name")
+
         zip_code = cleaned_data.get('zip_code')
         if not re.match(r'^\d{3}(?:[-\s]\d{2})?(?:\d{2})?$', zip_code):
-            raise forms.ValidationError({'zip_code':[_("Du måste ange ett giltigt postnummer!")]}, code="invalid")
+            raise forms.ValidationError({'zip_code':[_("Du måste ange ett giltigt postnummer")]}, code="invalid_zip_code")
 
         work_in_student_home = cleaned_data.get('work_in_student_home')
         work_in_instructor_home = cleaned_data.get('work_in_instructor_home')
@@ -122,3 +133,18 @@ class ContactInstructorForm(ModelForm):
             'telephone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Telefon-nummer'}),
             'message': Textarea(attrs={'class': 'form-control', 'rows':4, 'cols':80, 'placeholder':'Skriv in ditt meddelande här'}),
         }
+
+        error_messages = {
+            'first_name': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+        }
+
+    def clean(self):
+        cleaned_data=super(ContactInstructorForm, self).clean()
+
+        first_name
+        zip_code = cleaned_data.get('zip_code')
+        if not re.match(r'^\d{3}(?:[-\s]\d{2})?(?:\d{2})?$', zip_code):
+            raise forms.ValidationError({'zip_code':[_("Du måste ange ett giltigt postnummer!")]}, code="invalid")

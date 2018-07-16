@@ -31,7 +31,7 @@
                             {% endif %}
                         {% endwith %}
                     </div>
-                    <h3 class="title">{{ instructor.first_name }} {{ instructor.last_name }}</h3>
+                    <h3 class="title">{{ instructor.first_name|title }} {{ instructor.last_name|title }}</h3>
                     <p class="category">
                         {% if hobby %}
                             {{ hobby }}

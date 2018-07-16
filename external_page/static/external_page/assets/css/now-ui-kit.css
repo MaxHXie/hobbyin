@@ -5969,23 +5969,23 @@ body {
 }
 
 .alert.alert-success {
-    background-color: rgba(24, 206, 15, 0.8);
+    background-color: rgba(24, 206, 15);
 }
 
 .alert.alert-danger {
-    background-color: rgba(255, 54, 54, 0.8);
+    background-color: rgba(255, 54, 54);
 }
 
 .alert.alert-warning {
-    background-color: rgba(255, 178, 54, 0.8);
+    background-color: rgba(255, 178, 54);
 }
 
 .alert.alert-info {
-    background-color: rgba(44, 168, 255, 0.8);
+    background-color: rgba(44, 168, 255);
 }
 
 .alert.alert-primary {
-    background-color: rgba(249, 99, 50, 0.8);
+    background-color: rgba(249, 99, 50);
 }
 
 .alert .alert-icon {
