@@ -45,7 +45,6 @@ def settings(request):
 
 
 
-
 def instructors(request, hobby_name):
     if hobby_name == "malning":
         hobby_name = "målning"
@@ -154,7 +153,11 @@ def edit_profile(request):
             if form.is_valid():
                form.save()
                messages.success(request, 'Din profil är ändrad.')
+               request.method = "GET"
                return my_profile(request)
+            else:
+                messages.error(request, 'Din profil ändrades inte. Dubbelkolla gärna att allting är rätt.')
+                return render(request, 'edit_profile_page.html', context={'form': form})
         else:
             form = InstructorForm(None, instance=instructor)
             return render(request, 'edit_profile_page.html', context={'form': form})

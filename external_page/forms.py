@@ -4,6 +4,8 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django import forms
 from django.forms import TextInput, Select, Textarea, RadioSelect, CheckboxInput, NumberInput, CheckboxSelectMultiple
+from django.utils.translation import gettext as _
+import re
 
 class CheckboxSelectMultiple(CheckboxSelectMultiple):
     def render(self, *args, **kwargs):
@@ -20,13 +22,58 @@ class InstructorForm(ModelForm):
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Förnamn'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Efternamn'}),
             'hobbies': CheckboxSelectMultiple(),
-            'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stad'}),
-            'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postnummer'}),
-            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Kort biografi om dig själv', 'rows':20}),
+            'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stad: Stockholm'}),
+            'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postnummer: 123 45'}),
+            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Kort biografi om dig själv: Hej jag heter...', 'rows':20}),
             'work_in_student_home': CheckboxInput(),
             'work_in_instructor_home': CheckboxInput(),
-            'maximum_students': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Antal hobbyister jag kan ta upp till'}),
+            'maximum_students': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Antal personer jag klan lära ut till per tillfälle'}),
         }
+        error_messages = {
+            'first_name': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+            'last_name': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+            'hobbies': {
+                'required': _('Du måste välja en hobby!'),
+            },
+            'city': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+            'zip_code': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+            'description': {
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+            'work_in_student_home': {
+            },
+            'work_in_instructor_home': {
+            },
+            'maximum_students': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+        }
+
+    def clean(self):
+        cleaned_data=super(InstructorForm, self).clean()
+        
+        zip_code = cleaned_data.get('zip_code')
+        if not re.match(r'^\d{3}(?:[-\s]\d{2})?(?:\d{2})?$', zip_code):
+            raise forms.ValidationError({'zip_code':[_("Du måste ange ett giltigt postnummer!")]}, code="invalid")
+
+        work_in_student_home = cleaned_data.get('work_in_student_home')
+        work_in_instructor_home = cleaned_data.get('work_in_instructor_home')
+        if work_in_instructor_home == False and work_in_student_home == False:
+            raise forms.ValidationError({'work_in_student_home':[_("Du måste välja hur du vill lära ut.")]}, code="choose_one")
+
 
 class ContactInstructorForm(ModelForm):
     class Meta:

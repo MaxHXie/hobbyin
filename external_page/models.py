@@ -19,7 +19,7 @@ class Instructor(models.Model):
     hobbies = models.ManyToManyField(Hobby, blank=False)
     email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
     city = models.CharField(max_length=64, null=True, blank=False)
-    zip_code = models.CharField(max_length=10, null=True, blank=False)
+    zip_code = models.CharField(max_length=6, null=True, blank=False)
     description = models.TextField(max_length=2048, null=True, blank=True)
     gender = models.CharField(max_length=1,
                            choices=(
@@ -31,7 +31,7 @@ class Instructor(models.Model):
                            )
     work_in_student_home = models.BooleanField(default=False)
     work_in_instructor_home = models.BooleanField(default=True)
-    maximum_students = models.PositiveIntegerField(default=2)
+    maximum_students = models.PositiveIntegerField(default=1, blank=False)
 
     def __str__(self):
         try:

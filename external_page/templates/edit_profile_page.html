@@ -23,53 +23,75 @@
                         {% csrf_token %}
                         {% for field in form %}
                             {% with field.field.widget.input_type as input_type %}
-
                             {% if input_type == 'text' or input_type == 'number' %}
                                 <div id="inputs">
                                     {% if field.name == 'maximum_students' %}
-                                        <h4 style="clear:both; float:left;"> Antal personer jag kan ta upp till: </h4>
+                                        <h4> Antal personer jag kan ta upp till: </h4>
                                     {% endif %}
 
-                                    <div class="input-group input-lg">
-                                        <span class="input-group-addon">
-                                            {% if field.name == 'first_name' %}
-                                                <i class="now-ui-icons users_circle-08"></i>
-                                            {% elif field.name == 'last_name' %}
-                                                <i class="now-ui-icons users_circle-08"></i>
-                                            {% elif field.name == 'city' %}
-                                                <i class="now-ui-icons location_world"></i>
-                                            {% elif field.name == 'zip_code' %}
-                                                <i class="now-ui-icons location_pin"></i>
-                                            {% elif field.name == 'maximum_students' %}
-                                                <i class="now-ui-icons users_single-02"></i>
-                                            {% endif %}
-                                        </span>
-                                        {{ field }}
-                                    </div>
+                                    {% if field.errors %}
+                                        <span style="color:red; float:center;">{{ field.errors|first }}</span>
+                                        <div class="form-group has-danger">
+                                            <script type="text/javascript">
+                                                $(function(){
+                                                    $('#{{field.auto_id}}').addClass('form-control-danger');
+                                                    $('#{{field.auto_id}}').attr('placeholder', '{{ field.errors|first }}');
+                                                });
+                                            </script>
+                                            {{ field }}
+                                        </div>
+                                    {% else %}
+                                        <div class="input-group input-lg">
+                                            <span class="input-group-addon">
+                                                {% if field.name == 'first_name' %}
+                                                    <i class="now-ui-icons users_circle-08"></i>
+                                                {% elif field.name == 'last_name' %}
+                                                    <i class="now-ui-icons users_circle-08"></i>
+                                                {% elif field.name == 'city' %}
+                                                    <i class="now-ui-icons location_world"></i>
+                                                {% elif field.name == 'zip_code' %}
+                                                    <i class="now-ui-icons location_pin"></i>
+                                                {% elif field.name == 'maximum_students' %}
+                                                    <i class="now-ui-icons users_single-02"></i>
+                                                {% endif %}
+                                            </span>
+                                            {{ field }}
+                                        </div>
+                                    {% endif %}
                                 </div>
                             {% elif input_type == 'select' %}
+                                {% if field.errors %}
+                                    <span style="color:red">{{ field.errors|first }}</span>
+                                {% endif %}
                                 {{ field }}
 
                             {% elif input_type == 'checkbox' or input_type == 'radio' %}
                                 {% if field.name == 'hobbies' %}
-                                    <h4 style="clear:both; float:left;"> Mina hobbies: </h4>
+                                    <h4> Mina hobbies: </h4>
+                                    {% if field.errors %}
+                                        <span style="color:red;">{{ field.errors|first }}</span>
+                                    {% endif %}
+                                {% else %}
+                                    {% if field.errors %}
+                                        <span style="color:red;">{{ field.errors|first }}</span>
+                                    {% endif %}
                                 {% endif %}
                                 <div id="checkRadios">
                                     <div class="col-sm-12 col-lg-12">
                                         <ul style="list-style:none; margin: 0px; margin-left:30px; padding: 0px;">
                                             {% for alternative in field %}
                                             <div class="checkbox">
-                                                <li style="float:left; clear:both;">
+                                                <li>
                                                     {% if field.name == 'work_in_student_home' %}
                                                         <label for="{{ field.auto_id }}">
                                                             {{ alternative }}
-                                                        Jag kan hålla lektioner andras hem
+                                                        Jag kan lära ut andras hem
                                                         </label>
 
                                                     {% elif field.name == 'work_in_instructor_home' %}
                                                         <label for="{{ field.auto_id }}">
                                                             {{ alternative }}
-                                                        Jag kan hålla lektioner mitt hem
+                                                        Jag kan hålla lära ut mitt hem
                                                         </label>
 
                                                     {% else %}
@@ -83,9 +105,12 @@
                                 </div>
 
                             {% else %}
-                            <div class="textarea-container">
-                                {{ field }}
-                            </div>
+                                {% if field.errors %}
+                                    <span style="color:red;">{{ field.errors|first }}</span>
+                                {% endif %}
+                                <div class="textarea-container">
+                                    {{ field }}
+                                </div>
                             {% endif %}
                             {% endwith %}
                         {% endfor %}
