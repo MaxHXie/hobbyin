@@ -69,7 +69,7 @@
 
                             {% elif input_type == 'checkbox' or input_type == 'radio' %}
                                 {% if field.name == 'hobbies' %}
-                                    <h4> Mina hobbies: </h4>
+                                    <h4> Jag vill instruera: </h4>
                                     {% if field.errors %}
                                         <span style="color:red;">{{ field.errors|first }}</span>
                                     {% endif %}
@@ -135,5 +135,10 @@
             </div>
         </div>
     </div>
+<script>
+$(function(){
+    $("label[for='id_hobbies_0']").hide()
+});
+</script>
 </body>
 {% endblock body %}

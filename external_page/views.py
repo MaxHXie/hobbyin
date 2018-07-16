@@ -5,14 +5,17 @@ from django.contrib.auth.models import User
 from .forms import InstructorForm, ContactInstructorForm
 from django.contrib.auth import logout as logout_function
 
-def first_time_login_and_create_instructor(request):
+def check_user_valid_profile(request):
     current_user = request.user
     try:
         instructor = Instructor.objects.get(user=current_user)
-        return False
+        if instructor.valid_profile:
+            return True
+        else:
+            return False
     except Instructor.DoesNotExist:
         create_instructor(current_user)
-        return True
+        return False
 
 def create_instructor(current_user):
     instructor = Instructor.objects.create(user=current_user)
@@ -21,6 +24,10 @@ def create_instructor(current_user):
 
 # Create your views here.
 def index(request):
+    if request.user.is_authenticated and not check_user_valid_profile(request):
+        messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
+        return edit_profile(request)
+
     hobbies = Hobby.objects.all()
     if len(hobbies) == 0:
         hobbies = None
@@ -129,7 +136,8 @@ def profile_with_user_hobby(request, user_id, hobby):
 def my_profile(request):
     ## User is redirected here upon LOGIN
     if request.user.is_authenticated:
-        if first_time_login_and_create_instructor(request):
+        if not check_user_valid_profile(request):
+            messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
             return edit_profile(request)
         else:
             return profile_with_user(request, request.user.id)
@@ -152,6 +160,8 @@ def edit_profile(request):
             form = InstructorForm(request.POST, instance=instructor)
             if form.is_valid():
                form.save()
+               instructor.valid_profile = True
+               instructor.save()
                messages.success(request, 'Din profil är ändrad.')
                request.method = "GET"
                return my_profile(request)

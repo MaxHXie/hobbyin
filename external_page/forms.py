@@ -22,7 +22,7 @@ class InstructorForm(ModelForm):
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Förnamn'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Efternamn'}),
-            'hobbies': CheckboxSelectMultiple(),
+            'hobbies': RadioSelect(),
             'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stad: Stockholm'}),
             'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postnummer: 123 45'}),
             'work_in_student_home': CheckboxInput(),
@@ -78,34 +78,38 @@ class InstructorForm(ModelForm):
             raise forms.ValidationError({'work_in_student_home':[_("Du måste välja hur du vill lära ut.")]}, code="choose_one")
 
     def clean_profile_picture(self):
-        profile_picture = self.cleaned_data['profile_picture']
-
         try:
-            w, h = get_image_dimensions(profile_picture)
+            profile_picture = self.cleaned_data['profile_picture']
 
-            #validate dimensions
-            max_width = 1000
-            max_height = 1000
-            if w > max_width or h > max_height:
-                raise forms.ValidationError(_('Din profilbild får inte vara större än %s pixlar på höjden eller %s på bredden') % (max_width, max_height))
+            try:
+                w, h = get_image_dimensions(profile_picture)
 
-            #validate content type
-            main, sub = profile_picture.content_type.split('/')
-            if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):
-                raise forms.ValidationError(_('Du måste ladda upp en .jpg eller .png fil.'))
+                #validate dimensions
+                max_width = 1000
+                max_height = 1000
+                if w > max_width or h > max_height:
+                    raise forms.ValidationError(_('Din profilbild får inte vara större än %s pixlar på höjden eller %s på bredden') % (max_width, max_height))
 
-            #validate file size
-            if len(profile_picture) > (1000 * 1024):
-                raise forms.ValidationError(_('profile_picture file size may not exceed 1 Megabyte.'))
+                #validate content type
+                main, sub = profile_picture.content_type.split('/')
+                if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):
+                    raise forms.ValidationError(_('Du måste ladda upp en .jpg eller .png fil.'))
 
-        except AttributeError:
-            """
-            Handles case when we are updating the user profile
-            and do not supply a new profile_picture
-            """
+                #validate file size
+                if len(profile_picture) > (1000 * 1024):
+                    raise forms.ValidationError(_('profile_picture file size may not exceed 1 Megabyte.'))
+
+            except AttributeError:
+                """
+                Handles case when we are updating the user profile
+                and do not supply a new profile_picture
+                """
+                pass
+
+            return profile_picture
+
+        except:
             pass
-
-        return profile_picture
 
 
 class ContactInstructorForm(ModelForm):

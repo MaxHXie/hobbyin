@@ -16,7 +16,7 @@ class Instructor(models.Model):
     )
     first_name = models.CharField(max_length=64, null=True, blank=False)
     last_name = models.CharField(max_length=64, null=True, blank=False)
-    hobbies = models.ManyToManyField(Hobby, blank=False)
+    hobbies = models.ForeignKey(Hobby, on_delete=models.CASCADE, blank=False, null=True)
     email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
     city = models.CharField(max_length=64, null=True, blank=False)
     zip_code = models.CharField(max_length=6, null=True, blank=False)
@@ -39,7 +39,8 @@ class Instructor(models.Model):
                                     ('T', 'Per tillfälle'),
                            ), null=True, blank=False, default="H"
                            )
-    profile_picture = models.ImageField(upload_to="profile_picture", blank=True)
+    profile_picture = models.ImageField(upload_to="profile_picture", blank=True, null=True)
+    valid_profile = models.BooleanField(default=False)
 
     def __str__(self):
         try:
