@@ -6,28 +6,30 @@
 <!-- User activation modal -->
 <div class="modal fade" id="signup_closed_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="background-color:#2CA8FF;">
             <div class="modal-header justify-content-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <i class="now-ui-icons ui-1_simple-remove"></i>
                 </button>
-                <h4 class="title title-up">{% trans "Registrering stängd" %}</h4>
+                <div class="header header-primary text-center">
+                    <h4 class="card-title">{% trans 'Registrering stängd' %}</h4>
+                </div>
             </div>
             <div class="modal-body">
-                <div class="card-content">
-                    <p>{% trans "We are sorry, but the sign up is currently closed." %}</p>
+                <div class="card-content text-center">
+                    <p>{% trans "Vi beklagar omständigheten, det går för tillfället inte att registrera sig." %}</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Stäng</button>
+                <button type="button" class="btn btn-neutral btn-round btn-lg btn-block" data-dismiss="modal" style="color:#2CA8FF;">Stäng</button>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-    $(window).on('load',function(){
-        $('#signup_closed_modal').modal('show');
-    });
+$(function(){
+    $('#signup_closed_modal').modal('show');
+});
 </script>
 <!--  End Modal -->
 {% endblock signup_closed_modal %}

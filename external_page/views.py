@@ -48,7 +48,10 @@ def logout(request):
 
 
 def settings(request):
-    pass
+    if request.user.is_authenticated:
+        return render(request, 'settings_page.html', {'this_user': request.user})
+    else:
+        return index(request)
 
 
 

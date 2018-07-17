@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<body class="landing-page sidebar-collapse">
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
+    <div class="wrapper">
+        <div class="section section-contact-us text-center">
+            <div class="container">
+                <h2 class="title">Kontoinställningar</h2>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <h4><a href="{% url 'account_change_password' %}">Byt lösenord här</a></h4>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+$(function(){
+    $("label[for='id_hobbies_0']").hide()
+});
+</script>
+{% block password_change_modal %}{% endblock password_change_modal %}
+</body>
+{% endblock body %}
+
+
+Vad ska man kunna göra?
+
+Man ska kunna byta lösenord
+Man ska kunna ta bort sitt konto (men först ska man skriva in sitt lösenord)

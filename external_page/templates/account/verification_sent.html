@@ -6,29 +6,29 @@
 <!-- User activation modal -->
 <div class="modal fade" id="verification_sent_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
+        <div class="modal-content" style="background-color:#2CA8FF;">
             <div class="modal-header justify-content-center">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
                     <i class="now-ui-icons ui-1_simple-remove"></i>
                 </button>
-                <h4 class="title title-up">{% trans 'Verifiera din email'  %}</h4>
+                <div class="header header-primary text-center">
+                    <h4 class="card-title">{% trans 'Verifiera din email' %}</h4>
+                </div>
             </div>
             <div class="modal-body">
-                <div class="card-content">
-                    <h1>{% trans "Verify Your E-mail Address" %}</h1>
-
-                    <p>{% blocktrans %}We have sent an e-mail to you for verification. Follow the link provided to finalize the signup process. Please contact us if you do not receive it within a few minutes.{% endblocktrans %}</p>
+                <div class="card-content text-center">
+                    <p>{% blocktrans %}Vi har skickat ett email som du ska följa för att verifiera ditt konto. Följ länken som följer med i emailet. Kontakta oss om inte du får det inom ett par minuter.{% endblocktrans %}</p>
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-neutral btn-round btn-lg btn-block" data-dismiss="modal" style="color:#2CA8FF;">Stäng</button>
             </div>
         </div>
     </div>
 </div>
 <script type="text/javascript">
-$(window).on('load',function(){
-$('#verification_sent_modall').modal('show');
+$(function(){
+    $('#verification_sent_modall').modal('show');
 });
 </script>
 <!--  End Modal -->

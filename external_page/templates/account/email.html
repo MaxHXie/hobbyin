@@ -1,5 +1,5 @@
-{% extends "landing_page.html" %}
-
+<meta http-equiv="refresh" content="0; url={{ request.get_host }}" />
+<!--
 {% load i18n %}
 
 {% block head_title %}{% trans "Account" %}{% endblock %}
@@ -58,7 +58,7 @@
 
 {% block extra_body %}
 <script type="text/javascript">
-(function() {
+$(function() {
   var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
   var actions = document.getElementsByName('action_remove');
   if (actions.length) {
@@ -68,6 +68,7 @@
       }
     });
   }
-})();
+});
 </script>
 {% endblock %}
+-->

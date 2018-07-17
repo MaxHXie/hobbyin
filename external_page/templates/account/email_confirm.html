@@ -3,26 +3,44 @@
 {% load i18n %}
 {% load account %}
 
-{% block head_title %}{% trans "Hobbyin - Verifiera din email adress" %}{% endblock %}
-
-
-{% block content %}
-<h1>{% trans "Välkommen ombord till Hobbyin!" %}</h1>
-{% if confirmation %}
-
-
-<h3>Verifiera din email adress här: </h3>
-<form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
-{% csrf_token %}
-    <button type="submit">{% trans 'Verifiera email' %}</button>
-</form>
-
-{% else %}
-
-{% url 'account_email' as email_url %}
-
-<p>{% blocktrans %}Din länk för att verifiera email adressen är antingen ogiltig eller har antingen gått ut.
-    <a href="{{ email_url }}"> Klicka här för att få en ny länk.</a> {% endblocktrans %}</p>
-
-{% endif %}
-{% endblock %}
+{% block email_confirm_modal %}
+<!-- User activation modal -->
+<div class="modal fade" id="email_confirm_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background-color:#2CA8FF;">
+            <div class="modal-header justify-content-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                </button>
+                <<div class="header header-primary text-center">
+                    <h4 class="card-title">{% trans 'Välkommen ombord till Hobbyin!' %}</h4>
+                </div>
+            </div>
+            <div class="modal-body">
+                <div class="card-content text-center">
+                    {% if confirmation %}
+                        <h3>Verifiera din email adress här: </h3>
+                        <form method="post" action="{% url 'account_confirm_email' confirmation.key %}">
+                        {% csrf_token %}
+                            <input type="submit" class="btn btn-neutral btn-round btn-lg btn-block" value="{% trans 'Verifiera email' %}">
+                        </form>
+                    {% else %}
+                        {% url 'account_email' as email_url %}
+                        <p>{% blocktrans %}Din länk för att verifiera email adressen är antingen ogiltig eller har antingen gått ut.
+                            <a href="{{ email_url }}"> Klicka här för att få en ny länk.</a> {% endblocktrans %}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-neutral btn-round btn-lg btn-block" data-dismiss="modal" style="color:#2CA8FF;">Stäng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function(){
+        $('#email_confirm_modal').modal('show');
+    });
+</script>
+<!--  End Modal -->
+{% endblock email_confirm_modal %}
