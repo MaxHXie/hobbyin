@@ -2,31 +2,9 @@
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Sign Out" %}{% endblock %}
-
-{% block content %}
-<h1>{% trans "Sign Out" %}</h1>
-
-<p>{% trans 'Are you sure you want to sign out?' %}</p>
-
-<form method="post" action="{% url 'account_logout' %}">
-  {% csrf_token %}
-  {% if redirect_field_value %}
-  <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-  {% endif %}
-  <button type="submit">{% trans 'Sign Out' %}</button>
-</form>
-
-{% endblock %}
-
-
-{% extends "landing_page.html" %}
-
-{% load i18n %}
-
-{% block password_set_modal %}
+{% block logout_modal %}
 <!-- User activation modal -->
-<div class="modal fade" id="password_set_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="logout_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
@@ -57,8 +35,8 @@
 </div>
 <script type="text/javascript">
     $(window).on('load',function(){
-        $('#password_set_modal').modal('show');
+        $('#logout_modal').modal('show');
     });
 </script>
 <!--  End Modal -->
-{% endblock password_set_modal %}
+{% endblock logout_modal %}
