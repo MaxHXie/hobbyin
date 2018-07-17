@@ -1,11 +1,33 @@
-{% extends "account/account_base.html" %}
+{% extends "landing_page.html" %}
 
 {% load i18n %}
 
-{% block head_title %}{% trans "Account Inactive" %}{% endblock %}
-
-{% block content %}
-<h1>{% trans "Konto inaktivt" %}</h1>
-
-<p>{% trans "Det här kontot är inaktivt" %}</p>
-{% endblock %}
+{% block account_inactive_modal %}
+<!-- User activation modal -->
+<div class="modal fade" id="account_inactive_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                    <i class="now-ui-icons ui-1_simple-remove"></i>
+                </button>
+                <h4 class="title title-up">{% trans "Konto inaktivt" %}</h4>
+            </div>
+            <div class="modal-body">
+                <div class="card-content">
+                    <p>{% trans "Det här kontot är inaktivt." %}</p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Stäng</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    $(window).on('load',function(){
+        $('#account_inactive_modal').modal('show');
+    });
+</script>
+<!--  End Modal -->
+{% endblock account_inactive_modal %}

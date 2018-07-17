@@ -204,6 +204,21 @@ function search_key_press(e) {
         </div>
         {% endif %}
         <!-- End work with us section -->
+
+        <!-- Start modals -->
+        {% block user_activation_modal %}{% endblock user_activation_modal %}
+        {% block verification_sent_modal %}{% endblock verification_sent_modal %}
+        {% block signup_closed_modal %}{% endblock signup_closed_modal %}
+        {% block password_set_modal %}{% endblock password_set_modal %}
+        {% block password_reset_modal %}{% endblock password_reset_modal %}
+        {% block password_reset_from_key_modal %}{% endblock password_reset_from_key_modal %}
+        {% block password_reset_from_key_done_modal %}{% endblock password_reset_from_key_done_modal %}
+        {% block password_reset_done_modal %}{% endblock password_reset_done_modal %}
+        {% block password_change_modal %}{% endblock password_change_modal %}
+        {% block logout_modal %}{% endblock logout_modal %}
+        {% block account_inactive_modal %}{% account_inactive_modal %}
+        <!-- End modals -->
+
         {% include "html_parts/footer.html" %}
     </div>
 </body>

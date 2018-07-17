@@ -1,4 +1,4 @@
-{% extends "account/account_base.html" %}
+{% extends "landing_page.html" %}
 
 {% load i18n %}
 
@@ -6,7 +6,7 @@
 
 {% block user_activation_modal %}
 <!-- User activation modal -->
-<div class="modal fade" id="userActivationModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="user_activation_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header justify-content-center">
@@ -16,11 +16,13 @@
                 <h4 class="title title-up"></h4>
             </div>
             <div class="modal-body">
-                <p>{% blocktrans %} This account doesn't seem to be activated. {% endblocktrans %}</p>
-                <p>{% blocktrans %}We have sent an e-mail to you for
-                    verification. Please click on the link inside this e-mail. Please
-                    contact us if you do not receive it within a few minutes.{% endblocktrans %}.</p>
-                <p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}</p>
+                <div class="card-content">
+                    <p>{% blocktrans %} This account doesn't seem to be activated. {% endblocktrans %}</p>
+                    <p>{% blocktrans %}We have sent an e-mail to you for
+                        verification. Please click on the link inside this e-mail. Please
+                        contact us if you do not receive it within a few minutes.{% endblocktrans %}.</p>
+                    <p>{% blocktrans %}<strong>Note:</strong> you can still <a href="{{ email_url }}">change your e-mail address</a>.{% endblocktrans %}</p>
+                </div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
@@ -30,7 +32,7 @@
 </div>
 <script type="text/javascript">
     $(window).on('load',function(){
-        $('#userActivationModal').modal('show');
+        $('#user_activation_modal').modal('show');
     });
 </script>
 <!--  End Modal -->
