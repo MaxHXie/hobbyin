@@ -17,7 +17,11 @@
             </div>
             <div class="modal-body">
                 <div class="card-content text-center">
-                    <p>{% blocktrans %}Vi har skickat ett email som du ska följa för att verifiera ditt konto. Följ länken som följer med i emailet. Kontakta oss om inte du får det inom ett par minuter.{% endblocktrans %}</p>
+                    <p>{% blocktrans %}
+                        Vi har skickat ett email som du ska följa för att verifiera ditt konto. <br />
+                        Följ länken som följer med i emailet. <br />
+                        Kontakta oss om inte du får det inom ett par minuter.
+                        {% endblocktrans %}</p>
                 </div>
             </div>
             <div class="modal-footer">
@@ -28,7 +32,7 @@
 </div>
 <script type="text/javascript">
 $(function(){
-    $('#verification_sent_modall').modal('show');
+    $('#verification_sent_modal').modal('show');
 });
 </script>
 <!--  End Modal -->

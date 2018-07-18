@@ -16,17 +16,17 @@
     <div class="wrapper">
         <div class="section section-contact-us text-center">
             <div class="container">
-                <h2 class="title">Uppdatera dina uppgifter</h2>
+                <h2 class="title">Uppdatera din profil</h2>
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
-                        <form id="edit_profile_form" action="" method="POST">
+                        <form id="edit_profile_form" action="" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for field in form %}
                             {% with field.field.widget.input_type as input_type %}
                             {% if input_type == 'text' or input_type == 'number' %}
                                 <div id="inputs">
                                     {% if field.name == 'maximum_students' %}
-                                        <h4> Antal personer jag kan ta upp till per lektion: </h4>
+                                        <h4> Antal personer jag kan ta upp till per tillfälle: </h4>
                                     {% elif field.name == 'price' %}
                                         <h4> Pris: </h4>
                                     {% endif %}
@@ -50,6 +50,8 @@
                                                 {% elif field.name == 'last_name' %}
                                                     <i class="now-ui-icons users_circle-08"></i>
                                                 {% elif field.name == 'city' %}
+                                                    <i class="now-ui-icons location_world"></i>
+                                                {% elif field.name == 'city_district' %}
                                                     <i class="now-ui-icons location_world"></i>
                                                 {% elif field.name == 'zip_code' %}
                                                     <i class="now-ui-icons location_pin"></i>

@@ -18,13 +18,14 @@ class CheckboxSelectMultiple(CheckboxSelectMultiple):
 class InstructorForm(ModelForm):
     class Meta:
         model = Instructor
-        fields = ['profile_picture', 'first_name', 'last_name', 'city', 'zip_code', 'work_in_student_home', 'work_in_instructor_home', 'hobbies', 'maximum_students', 'price', 'price_model', 'description']
+        fields = ['profile_picture', 'first_name', 'last_name', 'city', 'city_district', 'zip_code', 'work_in_student_home', 'work_in_instructor_home', 'hobbies', 'maximum_students', 'price', 'price_model', 'description']
         widgets = {
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Förnamn'}),
             'last_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Efternamn'}),
             'hobbies': RadioSelect(),
-            'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stad: Stockholm'}),
-            'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postnummer: 123 45'}),
+            'city': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stad... ex. Stockholm, Göteborg...'}),
+            'city_district': TextInput(attrs={'class': 'form-control', 'placeholder': 'Stadsdel: ex. Farsta, Gamla Stan...'}),
+            'zip_code': TextInput(attrs={'class': 'form-control', 'placeholder': 'Postnummer: ex. 123 45...'}),
             'work_in_student_home': CheckboxInput(),
             'work_in_instructor_home': CheckboxInput(),
             'maximum_students': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Antal personer jag klan lära ut till per tillfälle'}),
@@ -45,6 +46,10 @@ class InstructorForm(ModelForm):
                 'required': _('Du måste välja en hobby!'),
             },
             'city': {
+                'required': _('Du måste fylla i det här fältet!'),
+                'max_length': _('Texten du skrev in här var för långt!'),
+            },
+            'city_district': {
                 'required': _('Du måste fylla i det här fältet!'),
                 'max_length': _('Texten du skrev in här var för långt!'),
             },
@@ -96,19 +101,19 @@ class InstructorForm(ModelForm):
                 w, h = get_image_dimensions(profile_picture)
 
                 #validate dimensions
-                max_width = 1000
-                max_height = 1000
+                max_width = 1080
+                max_height = 1080
                 if w > max_width or h > max_height:
-                    raise forms.ValidationError(_('Din profilbild får inte vara större än %s pixlar på höjden eller %s på bredden') % (max_width, max_height))
+                    raise forms.ValidationError({'profile_picture': [_('Din profilbild får inte vara större än pixlar på höjden eller %s på bredden') % (max_width, max_height)]})
 
                 #validate content type
                 main, sub = profile_picture.content_type.split('/')
                 if not (main == 'image' and sub in ['jpeg', 'jpg', 'png']):
-                    raise forms.ValidationError(_('Du måste ladda upp en .jpg eller .png fil.'))
+                    raise forms.ValidationError({'profile_picture': [_('Du måste ladda upp en .jpg eller .png fil.')]})
 
                 #validate file size
-                if len(profile_picture) > (1000 * 1024):
-                    raise forms.ValidationError(_('profile_picture file size may not exceed 1 Megabyte.'))
+                if len(profile_picture) > (1500 * 1024):
+                    raise forms.ValidationError({'profile_picture': [_('profile_picture file size may not exceed 1.5 Megabytes.')]})
 
             except AttributeError:
                 """

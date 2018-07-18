@@ -19,6 +19,7 @@ class Instructor(models.Model):
     hobbies = models.ForeignKey(Hobby, on_delete=models.CASCADE, blank=False, null=True)
     email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
     city = models.CharField(max_length=64, null=True, blank=False)
+    city_district = models.CharField(max_length=64, null=True, blank=False)
     zip_code = models.CharField(max_length=6, null=True, blank=False)
     description = models.TextField(max_length=2048, null=True, blank=True)
     gender = models.CharField(max_length=1,
@@ -35,8 +36,10 @@ class Instructor(models.Model):
     price = models.PositiveIntegerField(default=300, blank=False)
     price_model = models.CharField(max_length=1,
                            choices=(
-                                    ('H', 'Per timme'),
-                                    ('T', 'Per tillfälle'),
+                                    ('H', 'per timme'),
+                                    ('X', 'per timme och per person'),
+                                    ('T', 'per tillfälle'),
+                                    ('Y', 'per tillfälle och per person'),
                            ), null=True, blank=False, default="H"
                            )
     profile_picture = models.ImageField(upload_to="profile_picture", blank=True, null=True)

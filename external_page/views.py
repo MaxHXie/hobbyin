@@ -43,7 +43,7 @@ def terms_of_use(request):
 def logout(request):
     logout_function(request)
     messages.info(request, 'Du har blivit utloggad')
-    return render(request, 'landing_page.html')
+    return index(request)
 
 
 
@@ -160,7 +160,7 @@ def edit_profile(request):
             instructor = create_instructor(current_user)
 
         if request.method == "POST":
-            form = InstructorForm(request.POST, instance=instructor)
+            form = InstructorForm(request.POST, request.FILES, instance=instructor)
             if form.is_valid():
                form.save()
                instructor.valid_profile = True

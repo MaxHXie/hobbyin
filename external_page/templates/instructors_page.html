@@ -43,22 +43,20 @@
                                         <img src="{% static 'external_page/assets/img/placeholder.png'%}" class="rounded-circle img-fluid img-raised">
                                     {% endif %}
                                 {% endwith %}
-                                <h4 class="title">{{ instructor.first_name|title }} {{ instructor.last_name|title }}</h4>
-                                <h5> Jag är öppen för att: </h5>
-                                <ul>
+                                <h5 class="title">{{ instructor.first_name|title }} {{ instructor.last_name|title }}</h5>
+                                <p>{{ instructor.city|title }}, {{ instructor.city_district|title }}</p>
+                                {% if instructor.price > 0 %}
+                                    <p>{{ instructor.price }} kr {{ instructor.get_price_model_display }}</p>
+                                {% endif %}
+                                {% if instructor.maximum_students > 0 %}
+                                    <p>Tar upp till {{ instructor.maximum_students }} personer/tillfälle</p>
+                                {% endif %}
                                 {% if instructor.work_in_instructor_home == True %}
-                                    <li>Hålla lektioner i mitt hem</li>
+                                    <p>Jag kan hålla lektioner i mitt  hem</p>
                                 {% endif %}
                                 {% if instructor.work_in_student_home == True %}
-                                    <li>Hålla lektioner i andras hem</li>
+                                    <p>Jag kan hålla lektioner i andras hem</p>
                                 {% endif %}
-                                </ul>
-                                <h5>Jag kan ta upp till {{ instructor.maximum_students }} personer</h5>
-                                <i class="now-ui-icons emoticons_satisfied"></i>
-                                <i class="now-ui-icons emoticons_satisfied"></i>
-                                <i class="now-ui-icons emoticons_satisfied"></i>
-                                <i class="now-ui-icons emoticons_satisfied"></i>
-                                <i class="now-ui-icons emoticons_satisfied"></i>
                             </div>
                         </div>
                             {% if forloop.counter|divisibleby:3 %}
