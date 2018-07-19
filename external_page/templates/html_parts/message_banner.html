@@ -1,12 +1,16 @@
 {% load i18n %}
 {% if messages %}
 {% for message in messages %}
-    {% if message.tags == 'error' %}
-    {% with "danger" as danger_tag %}
-    <div class="alert alert-{{ danger_tag }} fixed-bottom" style="margin-bottom:0;" role="alert">
-    {% endwith %}
+    {% if message.tags == 'success' %}
+        <div class="alert alert-success fixed-bottom" style="margin-bottom:0; background-color: rgba(24, 206, 15, 1.0);" role="alert">
+    {% elif message.tags == 'info' %}
+        <div class="alert alert-info fixed-bottom" style="margin-bottom:0; background-color: rgba(44, 168, 255, 1.0);" role="alert">
+    {% elif message.tags == 'warning' %}
+        <div class="alert alert-warning fixed-bottom" style="margin-bottom:0; background-color: rgba(255, 178, 54, 1.0);" role="alert">
+    {% elif message.tags == 'error' %}
+        <div class="alert alert-danger fixed-bottom" style="margin-bottom:0; background-color: rgba(255, 54, 54, 1.0);" role="alert">
     {% else %}
-    <div class="alert alert-{{ message.tags }} fixed-bottom" style="margin-bottom:0;" role="alert">
+        <div class="alert alert-{{ message.tags }} fixed-bottom" style="margin-bottom:0;" role="alert">
     {% endif %}
         <div class="container" name="message_banner">
             {% if message.tags == "success" %}

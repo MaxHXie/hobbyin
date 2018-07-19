@@ -1,6 +1,9 @@
+from django.conf import settings
 from django.shortcuts import render, redirect
-from external_page.models import Hobby, Instructor, Message
+from external_page.models import Hobby, Instructor, InstructorMessage
 from django.contrib import messages
+from django.core.mail import send_mail
+from smtplib import SMTPException
 from django.contrib.auth.models import User
 from .forms import InstructorForm, ContactInstructorForm
 from django.contrib.auth import logout as logout_function
@@ -21,6 +24,31 @@ def create_instructor(current_user):
     instructor = Instructor.objects.create(user=current_user)
     instructor.save()
     return instructor
+
+def compose_message(message_object):
+    if message_object.email == None:
+        email = ""
+    else:
+        email = "Email: " + message_object.email + " \n"
+
+    if message_object.telephone == None:
+        telephone = ""
+    else:
+        telephone = "Telefon: " + message_object.telephone + "\n"
+
+    subject =   "[Hobbyin] Du har fått en kundförfrågan!"
+    message =   ["[KUNDINFORMATION]" + " \n\n",
+                "Namn: " + message_object.first_name + " \n",
+                email,
+                telephone,
+                " \n\n",
+                "[MEDDELANDE]" + " \n\n",
+                message_object.message + " \n\n",
+                "Med vänlig hälsning" + " \n\n",
+                message_object.first_name]
+
+    message = "".join(message)
+    return subject, message
 
 # Create your views here.
 def index(request):
@@ -74,21 +102,21 @@ def profile_with_user(request, user_id):
     except User.DoesNotExist:
         error_message = "Existerar inte"
         messages.error(request, 'Den här profilen existerar inte längre')
-        return render(request, 'profile_page.html', context={'error_message': error_message})
+        return render(request, 'profile_page.html', context={'error_message': error_message, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
     try:
         instructor = Instructor.objects.get(user=user)
     except Instructor.DoesNotExist:
         error_message = "Existerar inte"
         messages.error(request, 'Den här profilen existerar inte längre')
-        return render(request, 'profile_page.html', context={'error_message': error_message})
+        return render(request, 'profile_page.html', context={'error_message': error_message, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
     hobby_list = Hobby.objects.filter(instructor=instructor)
 
     if len(hobby_list) == 1:
         return profile_with_user_hobby(request, user_id, hobby_list[0])
 
-    return render(request, 'profile_page.html', context={'hobby_list': hobby_list, 'instructor':instructor, 'this_user': user})
+    return render(request, 'profile_page.html', context={'hobby_list': hobby_list, 'instructor':instructor, 'this_user': user, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
 
 
@@ -98,14 +126,14 @@ def profile_with_user_hobby(request, user_id, hobby):
     except User.DoesNotExist:
         error_message = "Existerar inte"
         messages.error(request, 'Den här profilen existerar inte längre')
-        return render('profile_page.html', context={'error_message': error_message})
+        return render(request, 'profile_page.html', context={'error_message': error_message, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
     try:
         instructor = Instructor.objects.get(user=user)
     except Instructor.DoesNotExist:
         error_message = "Existerar inte"
         messages.error(request, 'Den här profilen existerar inte längre')
-        return render(request, 'profile_page.html', context={'error_message': error_message})
+        return render(request, 'profile_page.html', context={'error_message': error_message, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
     try:
         hobby = Hobby.objects.get(hobby_name=hobby)
@@ -119,22 +147,28 @@ def profile_with_user_hobby(request, user_id, hobby):
     #Contact the teacher
     if request.method != "POST":
         form = ContactInstructorForm()
-        return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor':instructor, 'this_user': user, 'form': form})
+        return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor': instructor, 'this_user': user, 'form': form, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
     else:
-        instructor_message = Message.objects.create(to_user=user)
-        instructor_message.save()
-        form = ContactInstructorForm(request.POST, instance=instructor_message)
+        message_object = InstructorMessage.objects.create(to_user=user)
+        form = ContactInstructorForm(request.POST, instance=message_object)
         if form.is_valid():
             form.save()
-            form = ContactInstructorForm()
-            messages.success(request, 'Ditt meddelande har skickats iväg.')
-
+            try:
+                subject, message = compose_message(message_object)
+                from_email = message_object.email
+                to_list = [user.instructor.email]
+                send_mail(subject, message, from_email, to_list, fail_silently=False)
+                message_object.message_sent = True
+                message_object.save()
+                messages.success(request, 'Ditt meddelande har skickats!')
+            except SMTPException:
+                messages.error(request, 'Vi lyckades inte skicka ditt meddelande, vänta ett par minuter och försök igen.')
         else:
-            instructor_message.delete()
-            messages.error(request, 'Ditt meddelande kunde inte skickas iväg.')
+            messages.error(request, 'Ditt meddelande skickades inte iväg, dubbelkolla så att allting är rätt.')
+        return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor':instructor, 'this_user': user, 'form': form, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
-        return render(request, 'profile_page.html', context={'hobby': hobby, 'instructor':instructor, 'this_user': user, 'form': form})
+
 
 def my_profile(request):
     ## User is redirected here upon LOGIN

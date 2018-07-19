@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from djangospam.akismet import moderator as akismet
 
 # Create your models here.
 
@@ -52,15 +53,16 @@ class Instructor(models.Model):
             string = "name_error"
         return string
 
-class Message(models.Model):
+class InstructorMessage(models.Model):
     to_user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
     )
-    first_name = models.CharField(max_length=64, null=False)
-    email = models.EmailField(max_length=128, null=False)
-    telephone = models.CharField(max_length=32, null=False)
-    message = models.CharField(max_length=2048, null=False)
+    first_name = models.CharField(max_length=64, null=True, blank=False)
+    email = models.CharField(max_length=128, blank=True, null=True)
+    telephone = models.CharField(max_length=32, blank=True, null=True)
+    message = models.CharField(max_length=2048, null=True, blank=False)
+    message_sent = models.BooleanField(default=False)
 
     def __str__(self):
         try:
@@ -68,3 +70,14 @@ class Message(models.Model):
         except:
             string = "message_name_error"
         return string
+
+
+try:
+    akismet.register(Instructor)
+except akismet.AlreadyModerated:
+    pass
+
+try:
+    akismet.register(InstructorMessage)
+except akismet.AlreadyModerated:
+    pass

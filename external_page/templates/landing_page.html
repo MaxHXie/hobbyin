@@ -72,6 +72,7 @@ function search_key_press(e) {
                 <div class="content-center">
                     <div class="row">
                         <div class="card card-login" data-background-color="orange">
+                            {% include 'djangospam/form.html' %}
                             <form class="form" method="" action="{% url 'instructors' 'all' %}">
                                 <div class="header text-center justify-content-center">
                                     <h4 class="title title-up"><label for="search-hobby">Professionella lärare, förverkliga din hobbydröm</label></h4>

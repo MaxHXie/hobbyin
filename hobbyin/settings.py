@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'crispy_forms',
+    'django_comments',
+    'djangospam',
 ]
 SITE_ID = 1
 
@@ -126,8 +128,8 @@ LOGIN_REDIRECT_URL = 'http://localhost:8000/profile'
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'frankenfather@gmail.com'
-EMAIL_HOST_PASSWORD = 'nktmnpqjdhyhdbza'
+EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'hobbyin.se@gmail.com'
+EMAIL_HOST_PASSWORD = 'ttrdipoikttbflxz'
 
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
@@ -145,6 +147,11 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.0/howto/static-files/
+
+AKISMET_BLOG = 'http://localhost:8000'
+AKISMET_KEY = 'f9f5c8cde057'
+AKISMET_USERAGENT = 'hobbyin'
+AKISMET_USERAGENT_VERSION = '0.1'
 
 STATIC_URL = '/static/'
 

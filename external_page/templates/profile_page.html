@@ -64,39 +64,57 @@
                 <p class="description">Du är ett steg ifrån att lära dig en ny färdighet.</p>
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
-                        <form id="edit_profile_form" action="" method="POST">
+                        {% include 'djangospam/form.html' %}
+                        <form id="send_instructor_message" action="" method="POST">
                             {% csrf_token %}
                             {% for field in form %}
-                                {% if field.name == 'first_name' %}
-                                <div class="input-group input-lg">
-                                    <span class="input-group-addon">
-                                        <i class="now-ui-icons users_circle-08"></i>
-                                    </span>
-                                    {{ field }}
-                                </div>
-                                {% elif field.name == 'email' %}
-                                <div class="input-group input-lg">
-                                    <span class="input-group-addon">
-                                        <i class="now-ui-icons ui-1_email-85"></i>
-                                    </span>
-                                    {{ field }}
-                                </div>
-                                <strong>eller...</strong>
-                                {% elif field.name == 'telephone' %}
-                                <div class="input-group input-lg">
-                                    <span class="input-group-addon">
-                                        <i class="now-ui-icons tech_mobile"></i>
-                                    </span>
-                                    {{ field }}
-                                </div>
-                                {% elif field.name == 'message' %}
-                                <div class="textarea-container">
-                                    {{ field }}
-                                </div>
+                                {% if field.errors %}
+                                    <span style="color:red; float:center;">{{ field.errors|first }}</span>
+                                    <div class="form-group has-danger">
+                                        <script type="text/javascript">
+                                            $(function(){
+                                                $('#{{field.auto_id}}').addClass('form-control-danger');
+                                                $('#{{field.auto_id}}').attr('placeholder', '{{ field.errors|first }}');
+                                            });
+                                        </script>
+                                        {{ field }}
+                                    </div>
+
+                                {% else %}
+
+                                    {% if field.name == 'first_name' %}
+                                    <div class="input-group input-lg">
+                                        <span class="input-group-addon">
+                                            <i class="now-ui-icons users_circle-08"></i>
+                                        </span>
+                                        {{ field }}
+                                    </div>
+                                    {% elif field.name == 'email' %}
+                                    <div class="input-group input-lg">
+                                        <span class="input-group-addon">
+                                            <i class="now-ui-icons ui-1_email-85"></i>
+                                        </span>
+                                        {{ field }}
+                                    </div>
+                                    <strong>eller...</strong>
+                                    {% elif field.name == 'telephone' %}
+                                    <div class="input-group input-lg">
+                                        <span class="input-group-addon">
+                                            <i class="now-ui-icons tech_mobile"></i>
+                                        </span>
+                                        {{ field }}
+                                    </div>
+                                    {% elif field.name == 'message' %}
+                                    <div class="textarea-container">
+                                        {{ field }}
+                                    </div>
+                                    {% endif %}
+
                                 {% endif %}
+
                             {% endfor %}
                             <div class="send-button">
-                                <a href="javascript:$('#edit_profile_form').submit();" class="btn btn-primary btn-round btn-block btn-lg">Skicka meddelande</a>
+                                <a href="javascript:$('#send_instructor_message').submit();" class="btn btn-primary btn-round btn-block btn-lg">Skicka meddelande</a>
                             </div>
                         </form>
                     </div>
@@ -112,7 +130,7 @@
                 </div>
                 {% endif %}
                 {% if instructor.description %}
-                <h3 class="title" id="about-me">Om mig</h3>
+                <h3 class="title" id="about-me">Om {{ instructor.first_name }}</h3>
                 <h5 class="description">{{ instructor.description }}</h5>
                 {% endif %}
             </div>
