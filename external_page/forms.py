@@ -32,30 +32,30 @@ class InstructorForm(ModelForm):
             'maximum_students': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Antal personer jag klan lära ut till per tillfälle'}),
             'price': NumberInput(attrs={'class': 'form-control', 'placeholder': 'Pris per timme'}),
             'price_model': RadioSelect(),
-            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Kort biografi om dig själv: Hej jag heter...', 'rows':20}),
+            'description': Textarea(attrs={'class': 'form-control', 'placeholder': 'Kort biografi om dig själv: Hej...', 'rows':20}),
         }
         error_messages = {
             'first_name': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i ditt förnamn'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
             'last_name': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i ditt efternamn'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
             'hobbies': {
                 'required': _('Du måste välja en hobby'),
             },
             'city': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i din stad'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
             'city_district': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i din kommun/stadsdel'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
             'zip_code': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i ditt postnummer'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
             'description': {
@@ -66,27 +66,45 @@ class InstructorForm(ModelForm):
             'work_in_instructor_home': {
             },
             'maximum_students': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i hur många hobbyister du kan ta per gång'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
         }
 
     def clean_first_name(self):
         first_name = self.cleaned_data['first_name']
-        if first_name:
-            if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', first_name):
-                raise forms.ValidationError(("Du har använt ogiltiga tecken i det här fältet"), code="invalid_first_name")
+        if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', first_name):
+            raise forms.ValidationError(("Du har använt ogiltiga tecken i det här fältet"), code="invalid_first_name")
+        else:
+            return first_name
 
     def clean_last_name(self):
         last_name = self.cleaned_data['last_name']
-        if last_name:
-            if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', last_name):
-                raise forms.ValidationError(("Du har använt ogiltiga tecken i det här fältet"), code="invalid_last_name")
+        if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', last_name):
+            raise forms.ValidationError(("Du har använt ogiltiga tecken i det här fältet"), code="invalid_last_name")
+        else:
+            return last_name
+
+    def clean_city(self):
+        city = self.cleaned_data['city']
+        if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', city):
+            raise forms.ValidationError(("Du har använt ogiltiga tecken i det här fältet"), code="invalid_city")
+        else:
+            return city
+
+    def clean_city_district(self):
+        city_district = self.cleaned_data['city_district']
+        if not re.match(r'^[a-zA-ZåäöÅÄÖØ ]*$', city_district):
+            raise forms.ValidationError(("Du har använt ogiltiga tecken i det här fältet"), code="invalid_city_district")
+        else:
+            return city_district
 
     def clean_zip_code(self):
         zip_code = self.cleaned_data['zip_code']
         if not re.match(r'^\d{3}(?:[-\s]\d{2})?(?:\d{2})?$', zip_code):
             raise forms.ValidationError(_("Du måste ange ett giltigt postnummer"), code="invalid_zip_code")
+        else:
+            return zip_code
 
     def clean_profile_picture(self):
         try:
@@ -146,19 +164,18 @@ class ContactInstructorForm(ModelForm):
             'first_name': TextInput(attrs={'class': 'form-control', 'placeholder': 'Förnamn'}),
             'email': TextInput(attrs={'class': 'form-control', 'placeholder': 'Email adress'}),
             'telephone': TextInput(attrs={'class': 'form-control', 'placeholder': 'Telefonnummer'}),
-            'message': Textarea(attrs={'class': 'form-control', 'rows':4, 'cols':80, 'placeholder':'Skriv in ditt meddelande här'}),
+            'message': Textarea(attrs={'class': 'form-control', 'rows':4, 'cols':80, 'placeholder':'[FRIVILLIGT FÄLT] Övrig information...'}),
         }
 
         error_messages = {
             'first_name': {
-                'required': _('Du måste fylla i det här fältet'),
+                'required': _('Du måste fylla i ditt förnamn'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
             'email':{
                 'max_length': _('Din email du skrev in här är för långt'),
             },
             'message': {
-                'required': _('Du måste fylla i det här fältet'),
                 'max_length': _('Texten du skrev in här var för långt'),
             },
         }

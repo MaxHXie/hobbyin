@@ -1,6 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from djangospam.akismet import moderator as akismet
+from datetime import datetime
 
 # Create your models here.
 
@@ -61,8 +62,9 @@ class InstructorMessage(models.Model):
     first_name = models.CharField(max_length=64, null=True, blank=False)
     email = models.CharField(max_length=128, blank=True, null=True)
     telephone = models.CharField(max_length=32, blank=True, null=True)
-    message = models.CharField(max_length=2048, null=True, blank=False)
+    message = models.CharField(max_length=2048, null=True, blank=True)
     message_sent = models.BooleanField(default=False)
+    time_now = models.DateTimeField(default=datetime.now, blank=True)
 
     def __str__(self):
         try:
@@ -71,9 +73,43 @@ class InstructorMessage(models.Model):
             string = "message_name_error"
         return string
 
+class Customer(models.Model):
+    user = models.OneToOneField(
+        User,
+        on_delete=models.CASCADE,
+    )
+    first_name = models.CharField(max_length=64, null=True, blank=False)
+    last_name = models.CharField(max_length=64, null=True, blank=False)
+    email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
+    city = models.CharField(max_length=64, null=True, blank=False)
+    city_district = models.CharField(max_length=64, null=True, blank=False)
+    zip_code = models.CharField(max_length=6, null=True, blank=False)
+    gender = models.CharField(max_length=1,
+                           choices=(
+                                    ('N', 'No answer'),
+                                    ('M', 'Male'),
+                                    ('F', 'Female'),
+                                    ('O', 'Other')
+                           ), null=True, blank=True, default="N"
+                           )
+    profile_picture = models.ImageField(upload_to="profile_picture", blank=True, null=True)
+
+    def __str__(self):
+        try:
+            string = self.first_name + " " + self.last_name
+        except:
+            string = "name_error"
+        return string
+
+
 
 try:
     akismet.register(Instructor)
+except akismet.AlreadyModerated:
+    pass
+
+try:
+    akismet.register(Customer)
 except akismet.AlreadyModerated:
     pass
 

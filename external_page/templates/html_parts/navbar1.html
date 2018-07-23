@@ -6,27 +6,46 @@
             <a class="navbar-brand" href="{% url 'index' %}" rel="tooltip" data-placement="bottom">
                 <span style="font-size:1.5em;"><strong>HobbyIn</strong></span>
             </a>
+            <button class="navbar-toggler navbar-toggler" type="button" data-toggle="collapse" data-target="#navigation" aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-bar bar1"></span>
+                <span class="navbar-toggler-bar bar2"></span>
+                <span class="navbar-toggler-bar bar3"></span>
+            </button>
         </div>
         <div class="collapse navbar-collapse justify-content-end" id="navigation" data-nav-image="{% static 'external_page/assets/img/blurred-image-1.jpg' %}">
             <ul style="margin-right:16px;" class="navbar-nav">
                 {% if user.is_authenticated %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'index' %}"><span style="font-size:1.3em;"><strong>Hem</strong></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'my_profile' %}"><span style="font-size:1.3em;"><strong>Min profil</strong></span></a>
-                </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'index' %}"><span style="font-size:1.3em;"><strong>Hem</strong></span></a>
+                    </li>
+                    {% if user.instructor %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'my_profile' %}"><span style="font-size:1.3em;"><strong>Min profil</strong></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'my_events' %}"><span style="font-size:1.3em;"><strong>Mina evenemang</strong></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'create_event' %}"><span style="font-size:1.3em;"><strong>{% trans 'Skapa evenemang' %}</strong></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Se alla Prova-på evenemang</strong></span></a>
+                        </li>
+                    {% elif user.customer %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Se alla Prova-på evenemang</strong></span></a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ HTTP_HOST }}/#our-offerings"><span style="font-size:1.3em;"><strong>Hitta instruktör till en Hobby</strong></span></a>
+                        </li>
+                    {% endif %}
                 {% else %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ HTTP_HOST }}/#our-offerings"><span style="font-size:1.3em;"><strong>Våra hobbies</strong></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ HTTP_HOST }}/#about-us"><span style="font-size:1.3em;"><strong>Om oss</strong></span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'account_signup' %}"><span style="font-size:1.3em;"><strong>Registrera dig som intruktör</strong></span></a>
-                </li>
-
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Se alla Prova-på evenemang</strong></span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ HTTP_HOST }}/#our-offerings"><span style="font-size:1.3em;"><strong>Välj en hobby och hitta instruktör</strong></span></a>
+                    </li>
                 {% endif %}
                 <!--
                 <li class="nav-item">
@@ -49,26 +68,37 @@
                 </li>
                 -->
             </ul>
-        </div>
-        <div class="dropdown button-dropdown">
-            <a href="#pablo" class="dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
-                <span class="button-bar"></span>
-                <span class="button-bar"></span>
-                <span class="button-bar"></span>
-            </a>
-        {% if user.is_authenticated %}
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'account_reset_password' %}">Byta lösenord</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'settings' %}">Kontoinställningar</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="{% url 'logout' %}">Logga ut</a>
+            <div class="dropdown button-dropdown" style="margin-right:45px;">
+                <a href="#pablo" class="dropdown-toggle" id="navbarDropdown" data-toggle="dropdown">
+                    <span class="button-bar"></span>
+                    <span class="button-bar"></span>
+                    <span class="button-bar"></span>
+                </a>
+            {% if user.is_authenticated %}
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    {% if user.instructor %}
+                    <a class="dropdown-item" href="{% url 'my_events' %}">Mina evenemang</a>
+                    <a class="dropdown-item" href="{% url 'create_event' %}">Skapa evenemang</a>
+                    <div class="dropdown-divider"></div>
+                    {% endif %}
+                    <a class="dropdown-item" href="{% url 'settings' %}">Kontoinställningar</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'logout' %}">Logga ut</a>
+                </div>
+            {% else %}
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="{% url 'account_login' %}">Logga in som intruktör</a>
+                    <a class="dropdown-item" href="{% url 'account_signup' %}">Registrera dig som intruktör</a>
+                    <!--
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'account_login' %}">Logga in som hobbyist</a>
+                    <a class="dropdown-item" href="{% url 'account_login' %}">Registrera dig som hobbyist</a>
+                    -->
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{% url 'account_reset_password' %}">Bortglömt lösenord</a>
+                </div>
+            {% endif %}
             </div>
-        {% else %}
-            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="{% url 'account_login' %}">Logga in som intruktör</a>
-            </div>
-        {% endif %}
         </div>
     </div>
 </nav>

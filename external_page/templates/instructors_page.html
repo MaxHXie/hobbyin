@@ -19,6 +19,11 @@
         <!-- Start our offerings section -->
         <div class="section section-team text-center">
             <div class="container">
+                {% if hobby_events %}
+                    <a href="{% url 'all_events' %}?search_hobby_event={{ hobby.hobby_name }}" class="btn btn-primary btn-round btn-lg" style="color:white; background-color:#2CA8FF;"><strong>Se alla evenemang för {{ hobby.hobby_name }} ({{ hobby_events|length }})</strong></a>
+                {% else %}
+                    <a href="{% url 'all_events' %}?search_hobby_event={{ hobby.hobby_name }}" class="btn btn-primary btn-round btn-lg" style="color:white; background-color:rgb(130, 130, 130);" disabled>{% trans 'Det finns inga aktiva evenemang för' %} {{ hobby.hobby_name }}</a>
+                {% endif %}
                 <h2 class="title">
                 {% if hobby != None %}
                     {% if instructors|length != 0 %}
@@ -34,7 +39,7 @@
                 <div class="team">
                     <div class="row row-instructor">
                         {% for instructor in instructors %}
-                        <div class="card card-signup col-md-4" data-background-color="orange" style="cursor: pointer;" onclick="window.location='{% url 'profile_with_user_hobby' instructor.user.id hobby %}'">
+                        <div class="card card-signup col-md-4" data-background-color="orange" style="cursor: pointer; margin-bottom:25px;" onclick="window.location='{% url 'profile_with_user_hobby' instructor.user.id hobby %}'">
                             <div class="team-player">
                                 {% with instructor.user.id|slugify as user_id %}
                                     {% if instructor.profile_picture %}
@@ -52,7 +57,7 @@
                                     <p>Tar upp till {{ instructor.maximum_students }} personer/tillfälle</p>
                                 {% endif %}
                                 {% if instructor.work_in_instructor_home == True %}
-                                    <p>Jag kan hålla lektioner i mitt  hem</p>
+                                    <p>Jag kan hålla lektioner i mitt hem</p>
                                 {% endif %}
                                 {% if instructor.work_in_student_home == True %}
                                     <p>Jag kan hålla lektioner i andras hem</p>
@@ -90,11 +95,11 @@
         <div class="section section-contact-us text-center" id="work-with-us">
             <div class="container">
                 <h2 class="title">{% trans 'Vill du arbeta med oss?' %}</h2>
-                <p class="description">{% trans 'Registrera dig och kom igång. Vi lovar att det går blixtsnabbt!' %}</p>
+                <p class="description"><strong>{% trans 'Registrera dig och kom igång. Vi lovar att det går blixtsnabbt!' %}</strong></p>
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
                         <div class="send-button">
-                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig som instruktör' %}</a>
+                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig' %}</a>
                         </div>
                     </div>
                 </div>

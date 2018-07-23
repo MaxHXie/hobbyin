@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<body class="landing-page sidebar-collapse">
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
+    <div class="wrapper">
+
+        <div class="section section-tabs" id="our-offerings">
+            <div class="container">
+                <h2 class="title text-center">Mina evenemang</h2>
+                {% if event_list|length != 0 %}
+                    <div class="row">
+                    {% for event in event_list %}
+                            <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='{% url 'single_event' event.id %}'">
+                                <!-- Tabs with Background on Card -->
+                                <div class="card">
+                                    <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
+                                        <li class="nav-item">
+                                            {% if event.is_active == False %}
+                                                <a class="nav-link"><strong>[EJ LÄNGRE AKTIV]</strong> {{ event.event_name|upper }}</a>
+                                            {% elif event.is_accepted == False %}
+                                                <a class="nav-link"><strong>[EJ PUBLICERAD]</strong> {{ event.event_name|upper }}</a>
+                                            {% elif event.is_hidden == True %}
+                                                <a class="nav-link"><strong>[LÅST AV DIG]</strong> {{ event.event_name|upper }}</a>
+                                            {% elif event.has_happened %}
+                                                <a class="nav-link"><strong>[HAR PASSERAT]</strong> {{ event.event_name|upper }}</a>
+                                            {% else %}
+                                                <a class="nav-link"><strong>{{ event.event_name|upper }}</strong></a>
+                                            {% endif %}
+                                        </li>
+                                        <li class="nav-item">
+                                            <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>{{ event.hobbyeventsignup_set.all|length }}</a>
+                                        </li>
+                                    </ul>
+                                    {% if event.is_active == True and event.is_accepted == True and event.is_hidden == False and event.has_happened == False %}
+                                        <div class="card-body" style="max-height:500px; background-color:rgba({{ event.event_color_red }},{{ event.event_color_green }},{{ event.event_color_blue }}, 1.0);">
+                                    {% else %}
+                                        <div class="card-body" style="max-height:500px; background-color:rgba(200,200,200,1.0);">
+                                    {% endif %}
+                                        <div><strong>Tid:</strong>&emsp;&emsp;&nbsp;{{ event.datetime|date:'d M H:i, Y' }}</div>
+                                        <div><strong>Plats:</strong>&emsp;{{ event.address }}, {{ event.city_district }}, {{ event.city }}
+                                        {% if location_name %}
+                                            ({{ event.location_name }})
+                                        {% endif %}
+                                        </div>
+                                        <div><strong>Pris:</strong>&emsp;&nbsp;&nbsp;&nbsp;{% if event.price > 0 %}{{ event.price }} kr{% else %}Gratis{% endif %}</div>
+                                        {% if event.description %}
+                                            <hr>
+                                            <div class="text-center">{{ event.description }}</div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <!-- End Tabs on plain Card -->
+                            </div>
+                            {% if forloop.counter|divisibleby:2 %}
+                                </div>
+                                <div class="row">
+                            {% endif %}
+                    {% endfor %}
+                    </div>
+                {% else %}
+                    <h3 class="text-center">Du har inte skapat några evenemang</h3>
+                {% endif %}
+            </div>
+        </div>
+        {% include "html_parts/footer.html" %}
+    </div>
+    <script>
+        $(function(){
+        $("label[for='id_hobbies_0']").hide()
+        });
+    </script>
+</body>
+{% endblock body %}

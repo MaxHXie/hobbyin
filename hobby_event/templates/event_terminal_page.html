@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<body class="landing-page sidebar-collapse">
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
+    <div class="wrapper">
+        <div class="section section-contact-us text-center section-javascript" id="javascriptComponents">
+            <div class="container">
+                <h2 class="title">Dubbelkolla så att allting är rätt</h2>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <table border="0" style="width:100%;">
+                            <tr><td align="left">Evenemangsnamn:    </td><td align="right">{{ this_event.event_name }}</td></tr>
+                            <tr><td align="left">Datum och tid:    </td><td align="right">{{ this_event.datetime }}</td></tr>
+                            <tr><td align="left">Stad:    </td><td align="right">{{ this_event.city }}</td></tr>
+                            <tr><td align="left">Stadsdel/Kommun:    </td><td align="right">{{ this_event.city_district }}</td></tr>
+                            <tr><td align="left">Adress:    </td><td align="right">{{ this_event.address }}</td></tr>
+                            <tr><td align="left">Platsnamn:    </td><td align="right">{{ this_event.location_name }}</td></tr>
+                            <tr><td align="left">Pris:    </td><td align="right">{% if this_event.price > 0 %}{{ this_event.price }}{% else %}Gratis{% endif %}</td></tr>
+                            <tr><td align="left">Beskrivning:    </td><td align="right">{{ this_event.description }}</td></tr>
+                        </table>
+                        <form method="POST" action="{% url 'create_event_terminal' this_event.id %}" id="accept_event">
+                            {% csrf_token %}
+                            <a href="javascript:$('#accept_event').submit();" class="btn btn-primary btn-round btn-block btn-lg">Publicera evenemang</a>
+                        </form>
+                        <a href="{% url 'edit_event' this_event.id %}" class="btn btn-primary btn-round btn-block btn-lg" style="background-color:#2CA8FF;">Gå tillbaka</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% include "html_parts/footer.html" %}
+    </div>
+<script>
+$(function(){
+    $("label[for='id_hobbies_0']").hide()
+});
+</script>
+</body>
+{% endblock body %}

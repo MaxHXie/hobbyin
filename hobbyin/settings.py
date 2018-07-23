@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'external_page',
+    'hobby_event',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
@@ -79,7 +80,6 @@ TEMPLATES = [
 ]
 
 WSGI_APPLICATION = 'hobbyin.wsgi.application'
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -131,12 +131,16 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'hobbyin.se@gmail.com'
 EMAIL_HOST_PASSWORD = 'ttrdipoikttbflxz'
 
+GOOGLE_ANALYTICS = {
+    'google_analytics_id': 'UA-122697450-1',
+}
+
 # Internationalization
 # https://docs.djangoproject.com/en/2.0/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Stockholm'
 
 USE_I18N = True
 

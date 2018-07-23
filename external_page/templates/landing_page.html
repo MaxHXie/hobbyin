@@ -74,8 +74,9 @@ function search_key_press(e) {
                         <div class="card card-login" data-background-color="orange">
                             {% include 'djangospam/form.html' %}
                             <form class="form" method="" action="{% url 'instructors' 'all' %}">
+                                {% csrf_token %}
                                 <div class="header text-center justify-content-center">
-                                    <h4 class="title title-up"><label for="search-hobby">Professionella lärare, förverkliga din hobbydröm</label></h4>
+                                    <h4 class="title title-up"><label for="search-hobby">Sök och kom igång med en hobby!</label></h4>
                                 </div>
                                 <div class="card-body">
                                     <div class="input-group form-group-no-border">
@@ -87,7 +88,7 @@ function search_key_press(e) {
                                     {% if hobbies != None %}
                                         <ul id="search-list">
                                         {% for hobby in hobbies %}
-                                            <li><a href="{% url 'instructors' hobby.hobby_name %}">{{ hobby.hobby_name|title }}</a></li>
+                                            <li><a href="{% url 'instructors' hobby.hobby_name %}" style="color:#3f3f3f">{{ hobby.hobby_name|title }}</a></li>
                                         {% endfor %}
                                         </ul>
                                     {% endif %}
@@ -135,8 +136,13 @@ function search_key_press(e) {
             <div class="container">
                 <div class="row">
                     <div class="col-md-8 ml-auto mr-auto text-center">
-                        <h2 class="title">Lorem Ipsum</h2>
-                        <h5 class="description">Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. </h5>
+                        <h2 class="title">Dags att ta dig an en ny utmaning?</h2>
+                        <h5 class="description"><strong>Har du tagit dig såhär långt är du öppen för att utveckla dig själv och möjligtvis lära dig en färdighet för livet, eller så kanske du är nyfiken och vill testa på den där hobbyn som du alltid velat testa?</strong></h5>
+                        <h2 class="title">Hobbyin gör det enkelt för dig!</h2>
+                        <h5 class=description><strong><a href="{{ HTTP_HOST }}/#our-offerings">Välj en hobby</a> du är intresserad av så hjälper vi dig komma i kontakt med en instruktör nära dig på ett kick. Det är bara att köra. Ingenting är bindande!</strong></h5>
+                        <strong>ELLER</strong>
+                        <h5 class="description"><strong><a href="{% url 'all_events' %}">Välj ett "Prova-på" evenemang</a>, anmäl intresse, och dyk upp! Svårare är det inte.</strong></h5>
+                        <p>
                     </div>
                 </div>
                 <div class="separator separator-primary"></div>
@@ -145,10 +151,10 @@ function search_key_press(e) {
                         <div class="col-md-6">
                             <div class="image-container image-left" style="background-image: url('{% static 'external_page/assets/img/hobby/flying.jpg' %}')">
                                 <!-- First image on the left side -->
-                                <p class="blockquote blockquote-primary">"Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Sunt in culpa qui officia deserunt mollit anim id est laborum."
+                                <p class="blockquote blockquote-primary">"Hobbys hjälper oss att hålla sinnet öppet och pröva nya saker, vilket gör oss mer kreativa samtidigt som det stärker självförtroendet."
                                     <br>
                                     <br>
-                                    <small>-Lorem Ipsum</small>
+                                    <small>-Einar Wiman, skribent på MOTIVATION</small>
                                 </p>
                             </div>
                             <!-- Second image on the left side of the article -->
@@ -157,13 +163,18 @@ function search_key_press(e) {
                         <div class="col-md-5">
                             <!-- First image on the right side, above the article -->
                             <div class="image-container image-right" style="background-image: url('{% static 'external_page/assets/img/hobby/tennis_players.jpg' %}')"></div>
-                            <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</h3>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                            <h3>Fördelar med att ha en hobby</h3>
+                            <p>"Hobbys hjälper oss att hålla sinnet öppet och pröva nya saker, vilket gör oss mer kreativa samtidigt som det stärker självförtroendet. Men vad som är mer relevant är att hobbys verkligen får oss att må bra. Att ägna sig åt en hobby är ett utmärkt sätt att 'rensa hjärnan' när man är trött och bitvis känner sig stressad. Även rent socialt kan en ny hobby öppna upp nya möjligheter. Om du väljer rätt aktivitet så kan du i bästa fall få ett helt nytt nätverk av vänner och bekanta, vilket är nyttigt både yrkesmässigt och privat."
                             </p>
-                            <p>
-                                Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-                            </p>
-                            <p>Consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident.
+                            <p>Här är litet axplock av framgångsrika människor och deras hobbys: <br />
+                                <strong>- Bill Gates </strong>– Spelar bridge och tennis <br />
+                                <strong>- George W. Bush </strong>– Målar tavlor <br />
+                                <strong>- Meryl Streep </strong>- Stickar <br />
+                                <strong>- Tom Hanks </strong>– Samlar på gamla skrivmaskiner <br />
+                                <strong>- Richard Branson </strong>– Spelar schack <br />
+                                <strong>- Steve Wozniak </strong>– Spelar segway-polo <br />
+                                <strong>- Warren Buffet </strong>– Spelar ukulele <br />
+                                <strong>- Angelina Jolie </strong>– Samlar på knivar <br />
                             </p>
                         </div>
                     </div>
@@ -193,11 +204,11 @@ function search_key_press(e) {
         <div class="section section-contact-us text-center" id="work-with-us">
             <div class="container">
                 <h2 class="title">{% trans 'Vill du arbeta med oss?' %}</h2>
-                <p class="description">{% trans 'Registrera dig och kom igång. Vi lovar att det går blixtsnabbt!' %}</p>
+                <p class="description"><strong>{% trans 'Registrera dig och kom igång. Vi lovar att det går blixtsnabbt!' %}</strong></p>
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
                         <div class="send-button">
-                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig som instruktör' %}</a>
+                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig' %}</a>
                         </div>
                     </div>
                 </div>

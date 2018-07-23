@@ -1877,13 +1877,15 @@ select.selectpicker {
 }
 
 .bootstrap-tagsinput.form-control input::-moz-placeholder {
-    color: #555;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
 }
 
 .bootstrap-tagsinput.form-control input:-ms-input-placeholder,
 .bootstrap-tagsinput.form-control input::-webkit-input-placeholder {
-    color: #555;
+    color: #6f6f6f;
+    font-weight: bold;
 }
 
 .bootstrap-tagsinput .tag {
@@ -3466,6 +3468,7 @@ fieldset[disabled] .navbar .navbar-nav>a.btn.active {
 .btn-primary {
     background-color: #f96332;
     color: #FFFFFF;
+    font-weight: bold;
 }
 
 .btn-primary:hover,
@@ -4138,25 +4141,29 @@ fieldset[disabled] .btn-link.active {
 }
 
 .form-control::-moz-placeholder {
-    color: #999;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .form-control:-moz-placeholder {
-    color: #999;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .form-control::-webkit-input-placeholder {
-    color: #999;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .form-control:-ms-input-placeholder {
-    color: #999;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -4165,7 +4172,8 @@ fieldset[disabled] .btn-link.active {
     background-color: transparent;
     border: 1px solid #E3E3E3;
     border-radius: 30px;
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
     line-height: normal;
     font-size: 0.8571em;
     -webkit-transition: color 0.3s ease-in-out, border-color 0.3s ease-in-out, background-color 0.3s ease-in-out;
@@ -4186,7 +4194,8 @@ fieldset[disabled] .btn-link.active {
     -webkit-box-shadow: none;
     box-shadow: none;
     outline: 0 !important;
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 .form-control:focus+.input-group-addon,
@@ -4476,20 +4485,18 @@ fieldset[disabled] .form-control {
 
 textarea.form-control {
     max-width: 100%;
-    max-height: 80px;
-    padding: 10px 10px 0 0;
+    max-height: 160px;
+    padding: 6px 6px 10px 10px;
     resize: none;
-    border: none;
-    border-bottom: 1px solid #E3E3E3;
-    border-radius: 0;
+    border: 1px solid #E3E3E3;
+    border-radius:10px;
     line-height: 2;
 }
 
 textarea.form-control:focus,
 textarea.form-control:active {
-    border-left: none;
-    border-top: none;
-    border-right: none;
+    border: 1px solid #f96332;
+    border-radius:10px;
 }
 
 .has-success.form-group .form-control,
@@ -4578,7 +4585,7 @@ textarea.form-control:active {
 
 .form-check.disabled .form-check-label,
 .form-check.disabled .form-check-label {
-    color: #9A9A9A;
+    color: #606060;
     opacity: .5;
     cursor: not-allowed;
 }
@@ -4643,12 +4650,12 @@ textarea.form-control:active {
 }
 
 .form-check-radio input[type="radio"]:disabled+.form-check-sign {
-    color: #9A9A9A;
+    color: #606060;
 }
 
 .form-check-radio input[type="radio"]:disabled+.form-check-sign::before,
 .form-check-radio input[type="radio"]:disabled+.form-check-sign::after {
-    color: #9A9A9A;
+    color: #606060;
 }
 
 .progress-container {
@@ -4835,7 +4842,8 @@ textarea.form-control:active {
     text-align: center;
     height: 30px;
     line-height: 30px;
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
     cursor: pointer;
     font-size: 14px;
     text-transform: uppercase;
@@ -4844,7 +4852,8 @@ textarea.form-control:active {
 
 .pagination .page-item .page-link:hover,
 .pagination .page-item .page-link:focus {
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
     background-color: rgba(222, 222, 222, 0.3);
     border: none;
 }
@@ -5046,7 +5055,8 @@ p {
 }
 
 .title.title-up a {
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
     text-decoration: none;
 }
 
@@ -5057,14 +5067,14 @@ p {
 .description,
 .card-description,
 .footer-big p {
-    color: #9A9A9A;
+    color: #606060;
     font-weight: 300;
 }
 
 .category {
     text-transform: capitalize;
     font-weight: 700;
-    color: #9A9A9A;
+    color: #606060;
 }
 
 .text-primary {
@@ -5133,8 +5143,9 @@ p {
 }
 
 body {
-    color: #2c2c2c;
+    color: #4f4f4f;
     font-size: 14px;
+    font-weight: bold;
     font-family: "Montserrat", "Helvetica Neue", Arial, sans-serif;
     overflow-x: hidden;
     -moz-osx-font-smoothing: grayscale;
@@ -5255,7 +5266,7 @@ body {
 .nav-pills .nav-item .nav-link.active,
 .nav-pills .nav-item .nav-link.active:focus,
 .nav-pills .nav-item .nav-link.active:hover {
-    background-color: #9A9A9A;
+    background-color: #606060;
     color: #FFFFFF;
     box-shadow: 0px 5px 35px 0px rgba(0, 0, 0, 0.3);
 }
@@ -6856,7 +6867,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .table-shopping .td-name small {
-    color: #9A9A9A;
+    color: #606060;
     font-size: 0.75em;
     font-weight: 300;
 }
@@ -6981,7 +6992,8 @@ Created using IcoMoon - icomoon.io
 .info .info-title {
     margin: 25px 0 15px;
     padding: 0 15px;
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 .info p {
@@ -7254,33 +7266,39 @@ Created using IcoMoon - icomoon.io
 
 .modal.modal-default .modal-content {
     background-color: #FFFFFF;
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 .modal.modal-default .modal-header .close {
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 .modal.modal-default .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-default .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-default .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-default .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -7383,25 +7401,29 @@ Created using IcoMoon - icomoon.io
 }
 
 .modal.modal-primary .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-primary .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-primary .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-primary .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -7504,25 +7526,29 @@ Created using IcoMoon - icomoon.io
 }
 
 .modal.modal-danger .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-danger .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-danger .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-danger .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -7625,25 +7651,29 @@ Created using IcoMoon - icomoon.io
 }
 
 .modal.modal-warning .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-warning .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-warning .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-warning .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -7746,25 +7776,29 @@ Created using IcoMoon - icomoon.io
 }
 
 .modal.modal-success .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-success .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-success .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-success .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -7867,25 +7901,29 @@ Created using IcoMoon - icomoon.io
 }
 
 .modal.modal-info .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-info .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-info .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .modal.modal-info .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -8030,7 +8068,7 @@ Created using IcoMoon - icomoon.io
 }
 
 .card .author span {
-    color: #9A9A9A;
+    color: #606060;
 }
 
 .card .info {
@@ -8492,7 +8530,8 @@ Created using IcoMoon - icomoon.io
 }
 
 .card-pricing ul li b {
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 .card-pricing ul li i {
@@ -9240,25 +9279,29 @@ Created using IcoMoon - icomoon.io
 }
 
 .login-page .card-login.card-plain .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .login-page .card-login.card-plain .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .login-page .card-login.card-plain .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 .login-page .card-login.card-plain .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -9522,13 +9565,14 @@ Created using IcoMoon - icomoon.io
 }
 
 .section-image .card:not(.card-plain) .info-title {
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 .section-image .card:not(.card-plain) .info p,
 .section-image .card:not(.card-plain) .info .icon,
 .section-image .card:not(.card-plain) .description {
-    color: #9A9A9A;
+    color: #606060;
 }
 
 .section-image .footer {
@@ -9864,7 +9908,8 @@ Created using IcoMoon - icomoon.io
 }
 
 [data-background-color="black"] {
-    background-color: #2c2c2c;
+    background-color: #4f4f4f;
+    font-weight: bold;
 }
 
 [data-background-color]:not([data-background-color="gray"]) {
@@ -9884,7 +9929,7 @@ Created using IcoMoon - icomoon.io
 [data-background-color]:not([data-background-color="gray"]) .card:not(.card-plain) .card-description,
 [data-background-color]:not([data-background-color="gray"]) .card:not(.card-plain) .category,
 [data-background-color]:not([data-background-color="gray"]) .card:not(.card-plain) .category {
-    color: #9A9A9A;
+    color: #606060;
 }
 
 [data-background-color]:not([data-background-color="gray"]) .card:not(.card-plain) .card-title,
@@ -9988,25 +10033,29 @@ Created using IcoMoon - icomoon.io
 }
 
 [data-background-color]:not([data-background-color="gray"]) .form-control::-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 [data-background-color]:not([data-background-color="gray"]) .form-control:-moz-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 [data-background-color]:not([data-background-color="gray"]) .form-control::-webkit-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
 
 [data-background-color]:not([data-background-color="gray"]) .form-control:-ms-input-placeholder {
-    color: #707070;
+    color: #6f6f6f;
+    font-weight: bold;
     opacity: 1;
     filter: alpha(opacity=100);
 }
@@ -10102,7 +10151,8 @@ Created using IcoMoon - icomoon.io
 [data-background-color]:not([data-background-color="gray"]) .subscribe-line .form-control {
     background-color: transparent;
     border: 1px solid #E3E3E3;
-    color: #2c2c2c;
+    color: #4f4f4f;
+    font-weight: bold;
 }
 
 [data-background-color]:not([data-background-color="gray"]) .subscribe-line .form-control:last-child {
@@ -10763,7 +10813,8 @@ Created using IcoMoon - icomoon.io
 
 .social-line-black,
 .subscribe-line-black {
-    background-color: #2c2c2c;
+    background-color: #4f4f4f;
+    font-weight: bold;
 }
 
 .social-line-black [class*="col-"],

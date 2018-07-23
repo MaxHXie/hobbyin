@@ -17,7 +17,6 @@
                         </div>
                     </div>
                 </div>
-                {% include 'djangospam/form.html' %}
                 <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}" onsubmit="checkForm(this);">
                     {% csrf_token %}
                     <div class="modal-body">
@@ -43,14 +42,14 @@
                                 <label class="form-check-label">
                                     <input type="checkbox" name="terms" id="terms" required style="-ms-transform: scale(2); -moz-transform: scale(2); -webkit-transform: scale(2); -o-transform: scale(2); padding: 10px; margin:15px;">
                                     <span class="form-check-sign"></span>
-                                    <span style="color:black">{% trans 'Jag godkänner' %}</span>
-                                    <a style="color:#F96332;" href="{% url 'terms_of_use' %}" target="_blank">{% trans 'användarvillkoren' %}</a>.
+                                    <span style="color:black; font-size:0.80em;">{% trans 'Jag godkänner' %}
+                                    <a style="color:#F96332;" href="{% url 'terms_of_use' %}" target="_blank">{% trans 'användarvillkoren' %}</a></span>
                                 </label>
                             </div>
                             {% if redirect_field_value %}
                             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                             {% endif %}
-                            <span style="color:black;">{% blocktrans %}Har du redan ett konto? <a style="color:#F96332;" href="{{ login_url }}">Logga in här.</a>{% endblocktrans %}</span>
+                            <span style="color:black; font-size:0.80em;">{% blocktrans %}Har du redan ett konto? <a style="color:#F96332;" href="{{ login_url }}">Logga in här</a>{% endblocktrans %}</span>
                         </div>
                         <div class="modal-footer text-center">
                             <input type="submit" name="submit_login" class="btn btn-neutral btn-round btn-lg btn-block" value="Registrera" style="color:#2CA8FF;">

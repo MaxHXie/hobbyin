@@ -1,0 +1,257 @@
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block body %}
+<body class="profile-page sidebar-collapse">
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="navbar-transparent" %}
+    <!-- End Navbar -->
+    {% include "html_parts/message_banner.html" %}
+
+    <div class="wrapper">
+        {% if this_event %}
+            <div class="page-header page-header-small" filter-color="orange">
+                {% if this_event.is_hidden == False and this_event.is_active == True and this_event.is_accepted == True and this_event.has_happened == False %}
+                    <div class="page-header" data-parallax="true" style="background-color:rgba({{ this_event.event_color_red }}, {{ this_event.event_color_green }}, {{ this_event.event_color_blue }}, 1.0);"></div>
+                {% else %}
+                    <div class="page-header" data-parallax="true" style="background-color:rgba(200, 200, 200, 1.0);"></div>
+                {% endif %}
+                <div class="container">
+                    <div class="content-center">
+                        <h5 class="title">
+                            {% if this_event.is_active == False %}
+                                <strong>[EJ LÄNGRE AKTIV]</strong>
+                            {% elif this_event.is_accepted == False %}
+                                <strong>[NEDTAGEN AV ADMIN]</strong>
+                            {% elif this_event.is_hidden == True %}
+                                <strong>[LÅST AV SKAPARE]</strong>
+                            {% elif this_event.has_happened == True %}
+                                <strong>[HAR PASSERAT]</strong>
+                            {% endif %}
+                        </h5>
+                        <h3 class="title">{{ this_event.event_name|title }}</h3>
+                        <p class="category" style="margin-top:10px;">
+                            {{ this_event.datetime|date:'d M H:i' }} | {{ this_event.address }} | {{ this_event.city_district }}/{{ this_event.city }}
+                            {% if this_event.location_name %}
+                                {{ this_event.location_name }}
+                            {% endif %}
+
+                        </p>
+                        <div class="content">
+                            {% if this_event.price > 0 %}
+                            <div class="social-description">
+                                <h2>{{ this_event.price }} kr</h2>
+                            </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% if this_user != this_event.event_host.user %}
+                <div class="section section-contact-us text-center">
+                    <div class="container">
+                        <div class="button-container">
+                            <a href="#about-event" class="btn btn-primary btn-round btn-lg">Skriv upp dig på deltagarlistant</a>
+                        </div>
+                        {% if this_event.description %}
+                            <h3 class="title" id="about-event">Beskrivning</h3>
+                            <h5 class="description">{{ this_event.description }}</h5>
+                        {% endif %}
+                        <h2 class="title">Skriv upp dig på deltagarlistan!</h2>
+                        <p class="description">Du är ett steg ifrån att lära dig en ny färdighet.</p>
+                        <div class="row">
+                            <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                                {% include 'djangospam/form.html' %}
+                                <form id="hobby_event_interest" action="{% url 'single_event' this_event.id %}" method="POST">
+                                    {% csrf_token %}
+                                    {% for field in form %}
+                                        {% if field.errors %}
+                                            <span style="color:red; float:center;">{{ field.errors|first }}</span>
+                                            <div class="form-group has-danger">
+                                                <script type="text/javascript">
+                                                    $(function(){
+                                                        $('#{{field.auto_id}}').addClass('form-control-danger');
+                                                        $('#{{field.auto_id}}').attr('placeholder', '{{ field.errors|first }}');
+                                                    });
+                                                </script>
+                                                {{ field }}
+                                            </div>
+
+                                        {% else %}
+
+                                            {% if field.name == 'first_name' %}
+                                            <div class="input-group input-lg">
+                                                <span class="input-group-addon">
+                                                    <i class="now-ui-icons users_circle-08"></i>
+                                                </span>
+                                                {{ field }}
+                                            </div>
+                                            {% elif field.name == 'last_name' %}
+                                            <div class="input-group input-lg">
+                                                <span class="input-group-addon">
+                                                    <i class="now-ui-icons users_circle-08"></i>
+                                                </span>
+                                                {{ field }}
+                                            </div>
+                                            {% elif field.name == 'email' %}
+                                            <div class="input-group input-lg">
+                                                <span class="input-group-addon">
+                                                    <i class="now-ui-icons ui-1_email-85"></i>
+                                                </span>
+                                                {{ field }}
+                                            </div>
+                                            <strong>eller...</strong>
+                                            {% elif field.name == 'telephone' %}
+                                            <div class="input-group input-lg">
+                                                <span class="input-group-addon">
+                                                    <i class="now-ui-icons tech_mobile"></i>
+                                                </span>
+                                                {{ field }}
+                                            </div>
+                                            {% elif field.name == 'message' %}
+                                            <div class="textarea-container">
+                                                {{ field }}
+                                            </div>
+                                            {% endif %}
+
+                                        {% endif %}
+
+                                    {% endfor %}
+                                    <div class="send-button">
+                                        <a href="javascript:$('#hobby_event_interest').submit();" class="btn btn-primary btn-round btn-block btn-lg">Skicka in!</a>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+            <div class="section">
+                <div class="container">
+                    {% if this_user == this_event.event_host.user %}
+                        <div class="button-container">
+                            <a href="{% url 'event_participators' this_event.id %}" class="btn btn-primary btn-round btn-lg">Se lista på anmälda</a>
+                            {% if this_event.is_hidden == False %}
+                                <a class="btn btn-primary btn-round btn-lg" onclick="show_hide_event_modal();" style="color:white; background-color:rgb(175,0,0);">Göm & lås evenemanget</a>
+                            {% else %}
+                                <a class="btn btn-primary btn-round btn-lg" onclick="show_show_event_modal();" style="color:white; background-color:rgb(0,175,0);">Lås upp evenemanget</a>
+                            {% endif %}
+                            <a href="{% url 'edit_event' this_event.id %}" class="btn btn-primary btn-round btn-lg">Ändra evenemanget</a>
+                        </div>
+                        {% if this_event.description %}
+                            <h3 class="title" id="about-event">Beskrivning</h3>
+                            <h5 class="description">{{ this_event.description }}</h5>
+                        {% endif %}
+                    {% endif %}
+                    <h3 class="title" id="about-event">Annordnare</h3>
+                    <div class="content-center">
+                        <div class="photo-container">
+                            {% if this_event.event_host.profile_picture %}
+                                <img src="{{ this_event.event_host.profile_picture.url }}">
+                            {% else %}
+                                <img src="{% static 'external_page/assets/img/placeholder.png'%}">
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div>.</div>
+                    <h5 class="text-center"><a href="{% url 'profile_with_user' this_event.event_host.user.id %}">{{ this_event.event_host.first_name }} {{ this_event.event_host.last_name }}</h5>
+                </div>
+            </div>
+        {% elif error_message %}
+        <div class="page-header page-header-small" filter-color="orange">
+            <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');">
+            </div>
+            <div class="container">
+                <div class="content-center">
+                    <div class="photo-container">
+                        <img src="{% static 'external_page/assets/img/placeholder.png' %}">
+                    </div>
+                    <h3 class="title">{{ error_message }}</h3>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+        {% include "html_parts/footer.html" %}
+    </div>
+
+    <!-- START show_hide_event_modal -->
+    <div class="modal fade modal-primary" id="hide_event_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#2CA8FF;">
+                <div class="modal-header justify-content-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                    <div class="header header-primary text-center">
+                        <h4 class="card-title">{% trans 'Göm % lås evenemanget' %}</h4>
+                    </div>
+                </div>
+                <form method="POST" action="{% url 'hide_show_event' this_event.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action_type" value="hide">
+                    <div class="modal-body">
+                        <div class="card-content">
+                            Är du säker på att du vill gömma och låsa in detta evenemang?
+                            Ingen information går förlorat om du gömmer och låser in evenemanget nu.
+                            Allting går att återställa och evenemanget kan låsas upp på efterhand.
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <input type="submit" name="submit_login" class="btn btn-neutral btn-round btn-lg btn-block" value="{% trans 'Göm & lås evenemanget' %}" style="color:#2CA8FF;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END show_hide_event_modal -->
+
+    <!-- START show_show_event_modal -->
+    <div class="modal fade modal-primary" id="show_event_modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color:#2CA8FF;">
+                <div class="modal-header justify-content-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                    <div class="header header-primary text-center">
+                        <h4 class="card-title">{% trans 'Lås upp evenemanget' %}</h4>
+                    </div>
+                </div>
+                <form method="POST" action="{% url 'hide_show_event' this_event.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="action_type" value="show">
+                    <div class="modal-body">
+                        <div class="card-content">
+                        Lås upp evenemanget och gör det synligt för allämnheten.
+                        </div>
+                    </div>
+                    <div class="modal-footer text-center">
+                        <input type="submit" name="submit_login" class="btn btn-neutral btn-round btn-lg btn-block" value="{% trans 'Lås upp evenemanget' %}" style="color:#2CA8FF;">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- END show_show_event_modal -->
+
+    <script type="text/javascript">
+    function show_hide_event_modal(){
+        $('#hide_event_modal').modal('show');
+    }
+    function show_show_event_modal(){
+        $('#show_event_modal').modal('show');
+    }
+    </script>
+    <!--  End Modal -->
+
+
+</body>
+{% endblock body %}

@@ -14,9 +14,15 @@
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
     <div class="wrapper">
-        <div class="section section-contact-us text-center">
+        <div class="section section-contact-us text-center section-javascript" id="javascriptComponents">
             <div class="container">
-                <h2 class="title">Uppdatera din profil</h2>
+                <h2 class="title">
+                    {% if type == 'create' %}
+                        Skapa ett nytt evenemang
+                    {% else %}
+                        Ändra evenemang
+                    {% endif %}
+                </h2>
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
                         {% include 'djangospam/form.html' %}
@@ -25,13 +31,23 @@
                         {% for field in form %}
                             {% with field.field.widget.input_type as input_type %}
                             {% if input_type == 'text' or input_type == 'number' %}
-                                <div id="inputs">
-                                    {% if field.name == 'maximum_students' %}
-                                        <h4> Antal personer jag kan ta upp till per tillfälle: </h4>
-                                    {% elif field.name == 'price' %}
-                                        <h4> Pris: </h4>
-                                    {% endif %}
 
+                                <div id="inputs">
+                                    {% if field.name == 'event_name' %}
+                                        <div><strong>Namnet på evenemanget</strong></div>
+                                    {% elif field.name == 'datetime' %}
+                                        <div><strong>Datum och tid (yyyy-mm-dd hh:mm)</strong></div>
+                                    {% elif field.name == 'city' %}
+                                        <div><strong>Stad</strong></div>
+                                    {% elif field.name == 'city_district' %}
+                                        <div><strong>Kommun</strong></div>
+                                    {% elif field.name == 'address' %}
+                                        <div><strong>Adress</strong></div>
+                                    {% elif field.name == 'location_name' %}
+                                        <div><strong>Namn på platsen (Om det finns något)</strong></div>
+                                    {% elif field.name == 'price' %}
+                                        <div><strong>Pris (Sätt 0 om det är gratis)</strong></div>
+                                    {% endif %}
                                     {% if field.errors %}
                                         <span style="color:red; float:center;">{{ field.errors|first }}</span>
                                         <div class="form-group has-danger">
@@ -46,24 +62,27 @@
                                     {% else %}
                                         <div class="input-group input-lg">
                                             <span class="input-group-addon">
-                                                {% if field.name == 'first_name' %}
-                                                    <i class="now-ui-icons users_circle-08"></i>
-                                                {% elif field.name == 'last_name' %}
-                                                    <i class="now-ui-icons users_circle-08"></i>
+                                                {% if field.name == 'event_name' %}
+                                                    <i class="now-ui-icons ui-1_send"></i>
+                                                {% elif field.name == 'datetime' %}
+                                                    <i class="now-ui-icons ui-1_calendar-60"></i>
                                                 {% elif field.name == 'city' %}
                                                     <i class="now-ui-icons location_world"></i>
                                                 {% elif field.name == 'city_district' %}
-                                                    <i class="now-ui-icons location_world"></i>
-                                                {% elif field.name == 'zip_code' %}
+                                                    <i class="now-ui-icons location_compass-05"></i>
+                                                {% elif field.name == 'address' %}
                                                     <i class="now-ui-icons location_pin"></i>
-                                                {% elif field.name == 'maximum_students' %}
-                                                    <i class="now-ui-icons users_single-02"></i>
+                                                {% elif field.name == 'location_name' %}
+                                                    <i class="now-ui-icons shopping_shop"></i>
+                                                {% elif field.name == 'price' %}
+                                                    <i class="now-ui-icons business_money-coins"></i>
                                                 {% endif %}
                                             </span>
                                             {{ field }}
                                         </div>
                                     {% endif %}
                                 </div>
+
                             {% elif input_type == 'select' %}
                                 {% if field.errors %}
                                     <span style="color:red">{{ field.errors|first }}</span>
@@ -71,15 +90,8 @@
                                 {{ field }}
 
                             {% elif input_type == 'checkbox' or input_type == 'radio' %}
-                                {% if field.name == 'hobbies' %}
-                                    <h4> Jag vill instruera: </h4>
-                                    {% if field.errors %}
-                                        <span style="color:red;">{{ field.errors|first }}</span>
-                                    {% endif %}
-                                {% else %}
-                                    {% if field.errors %}
-                                        <span style="color:red;">{{ field.errors|first }}</span>
-                                    {% endif %}
+                                {% if field.errors %}
+                                    <span style="color:red;">{{ field.errors|first }}</span>
                                 {% endif %}
                                 <div id="checkRadios">
                                     <div class="col-sm-12 col-lg-12">
@@ -87,21 +99,9 @@
                                             {% for alternative in field %}
                                             <div class="checkbox">
                                                 <li>
-                                                    {% if field.name == 'work_in_student_home' %}
-                                                        <label for="{{ field.auto_id }}">
-                                                            {{ alternative }}
-                                                        Jag kan lära ut andras hem
-                                                        </label>
-
-                                                    {% elif field.name == 'work_in_instructor_home' %}
-                                                        <label for="{{ field.auto_id }}">
-                                                            {{ alternative }}
-                                                        Jag kan lära ut mitt hem
-                                                        </label>
-
-                                                    {% else %}
+                                                    <label for="{{ field.auto_id }}">
                                                         {{ alternative }}
-                                                    {% endif %}
+                                                    </label>
                                                 </li>
                                             </div>
                                             {% endfor %}
@@ -130,7 +130,13 @@
                             {% endwith %}
                         {% endfor %}
                         <div class="send-button">
-                            <a href="javascript:$('#edit_profile_form').submit();" class="btn btn-primary btn-round btn-block btn-lg">Ändra profil</a>
+                            <a href="javascript:$('#edit_profile_form').submit();" class="btn btn-primary btn-round btn-block btn-lg">
+                                {% if type == 'create' %}
+                                    Skapa evenemang
+                                {% else %}
+                                    Ändra evenemang
+                                {% endif %}
+                            </a>
                         </div>
                         </form>
                     </div>

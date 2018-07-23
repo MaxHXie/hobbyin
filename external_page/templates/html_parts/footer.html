@@ -4,26 +4,48 @@
     <div class="container">
         <nav>
             <ul>
-                <li>
-                    {% if user.is_authenticated %}
-                    <a href="{% url 'my_profile' %}">
-                        <strong>Din profil</strong>
-                    </a>
-                    {% else %}
-                    <a href="{% url 'account_login' %}">
-                        <strong>{% trans 'Registrera och logga in som instruktör här' %}</strong>
-                    </a>
+                {% if user.is_authenticated %}
+                    {% if user.instructor %}
+                        <li>
+                            <a href="{% url 'my_profile' %}"><strong>{% trans 'Min profil' %}</strong></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'my_events' %}"><strong>{% trans 'Mina evenemang' %}</strong></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'create_event' %}"><strong>{% trans 'Skapa evenemang' %}</strong></a>
+                        </li>
+                        <li>
+                            <a href="{% url 'all_events' %}">{% trans 'Se alla evenemang' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'settings' %}">{% trans 'Kontoinställningar' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}">{% trans 'Logga ut' %}</a>
+                        </li>
+                    {% elif user.customer %}
+                        <li>
+                            <a href="{% url 'all_events' %}"><strong>{% trans 'Se alla Prova-på evenemang' %}</strong></a>
+                        </li>
+                        <li>
+                            <a href="{{ HTTP_HOST }}/#our-offerings"><strong>{% trans 'Hitta instruktör till en Hobby' %}</strong></a>
+                        </li>
                     {% endif %}
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#our-offerings">Våra erbjudanden</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#about-us">Om oss</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="#work-with-us">Jobba med oss</a>
-                </li>
+                {% else %}
+                    <li>
+                        <a href="{% url 'account_login' %}"><strong>{% trans 'Logga in som intruktör' %}</strong></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'account_signup' %}"><strong>{% trans 'Registrera dig som intruktör' %}</strong></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'all_events' %}"><strong>{% trans 'Se alla Prova-på evenemang' %}</strong></a>
+                    </li>
+                    <li>
+                        <a href="{{ HTTP_HOST }}/#our-offerings"><strong>{% trans 'Hitta instruktör till en Hobby' %}</strong></a>
+                    </li>
+                {% endif %}
             </ul>
         </nav>
         <div class="copyright">

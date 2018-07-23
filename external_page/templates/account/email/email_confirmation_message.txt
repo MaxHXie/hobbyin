@@ -1,8 +1,9 @@
-{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Hello from {{ site_name }}!
+{% load account %}{% user_display user as user_display %}{% load i18n %}{% autoescape off %}{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Halloj från {{ site_name }}!
 
-You're receiving this e-mail because user {{ user_display }} has given yours as an e-mail address to connect their account.
+Du får detta mail eftersom du registrerat denna mail adress hos oss på www.hobbyin.se.
 
-To confirm this is correct, go to {{ activate_url }}
+För att verifiera denna mail adress, klicka på följande länk: {{ activate_url }}
+
 {% endblocktrans %}{% endautoescape %}
-{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Thank you from {{ site_name }}!
+{% blocktrans with site_name=current_site.name site_domain=current_site.domain %}Tack från oss på {{ site_name }}!
 {{ site_domain }}{% endblocktrans %}
