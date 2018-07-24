@@ -29,11 +29,11 @@
                             <a class="nav-link" href="{% url 'create_event' %}"><span style="font-size:1.3em;"><strong>{% trans 'Skapa evenemang' %}</strong></span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Se alla Prova-på evenemang</strong></span></a>
+                            <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Prova-på evenemang</strong></span></a>
                         </li>
                     {% elif user.customer %}
                         <li class="nav-item">
-                            <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Se alla Prova-på evenemang</strong></span></a>
+                            <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Prova-på evenemang</strong></span></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ HTTP_HOST }}/#our-offerings"><span style="font-size:1.3em;"><strong>Hitta instruktör till en Hobby</strong></span></a>
@@ -41,10 +41,10 @@
                     {% endif %}
                 {% else %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Se alla Prova-på evenemang</strong></span></a>
+                        <a class="nav-link" href="{{ HTTP_HOST }}/#our-offerings"><span style="font-size:1.3em;"><strong>Välj en hobby</strong></span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ HTTP_HOST }}/#our-offerings"><span style="font-size:1.3em;"><strong>Välj en hobby och hitta instruktör</strong></span></a>
+                        <a class="nav-link" href="{% url 'all_events' %}"><span style="font-size:1.3em;"><strong>Prova-på evenemang</strong></span></a>
                     </li>
                 {% endif %}
                 <!--

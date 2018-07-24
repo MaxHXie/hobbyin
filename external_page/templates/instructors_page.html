@@ -32,9 +32,23 @@
                         Denna hobby har inga instruktörer tillgängliga
                     {% endif %}
                 {% else %}
-                    Vi har inga hobbies som heter "{{hobby_name|title}}"
+                    Vi har inga hobbies som heter "{{hobby.hobby_name|title}}"
                 {% endif %}
                 </h2>
+                {% include 'djangospam/form.html' %}
+                <form class="form" method="get" action="{% url 'instructors' hobby.hobby_name %}">
+                    <div class="card-body">
+                        <div class="input-group form-group-no-border">
+                            <span class="input-group-addon">
+                                <i class="now-ui-icons location_pin"></i>
+                            </span>
+                            <input type="text" class="form-control" id="input_zip_code" name="input_zip_code" value="{% if input_zip_code %}{{ input_zip_code }}{% endif %}" placeholder="Skriv in ditt postnummer för att hitta instruktörer i närheten...">
+                        </div>
+                        <div style="text-align:left;">
+                            <input type="submit" class="btn btn-primary" value="Sök">
+                        </div>
+                    </div>
+                </form>
                 {% if hobby != None %}
                 <div class="team">
                     <div class="row row-instructor">

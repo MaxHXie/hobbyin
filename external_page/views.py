@@ -8,6 +8,7 @@ from smtplib import SMTPException
 from django.contrib.auth.models import User
 from .forms import InstructorForm, ContactInstructorForm
 from django.contrib.auth import logout as logout_function
+import hobbyin.functions as functions
 
 def check_user_valid_profile(request):
     current_user = request.user
@@ -99,6 +100,14 @@ def instructors(request, hobby_name):
         hobby = None
         hobby_events = None
         instructors = []
+
+    input_zip_code = request.GET.get('input_zip_code')
+
+    instructors = list(instructors)
+    worked, instructors, error = functions.sort_by_proximity(instructors, input_zip_code, request)
+    if worked == False and error != None:
+        messages.error(request, error)
+
     return render(request, 'instructors_page.html', context={'hobby': hobby, 'hobby_name': hobby_name, 'instructors': instructors, 'hobby_events': hobby_events})
 
 

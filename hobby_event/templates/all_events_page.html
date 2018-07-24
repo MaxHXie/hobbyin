@@ -21,6 +21,13 @@
                     <div class="text-center">
                         <a href="{% url 'instructors' hobby.hobby_name %}" class="btn btn-primary btn-round btn-lg" style="color:white; background-color:#2CA8FF;"><strong>Se alla instruktörer för {{ hobby.hobby_name }} ({{ hobby.instructor_set.all|length }})</strong></a>
                     </div>
+                    <div class="text-center">
+                        <h2 class="title">Prova-på evenemang för {{hobby.hobby_name}}</h2>
+                    </div>
+                {% else %}
+                    <div class="text-center">
+                        <h2 class="title">Alla prova-på evenemang</h2>
+                    </div>
                 {% endif %}
                 {% include 'djangospam/form.html' %}
                 <form class="form" method="get" action="{% url 'all_events' %}">
@@ -43,9 +50,9 @@
                 {% if event_list|length != 0 %}
                     <div class="row">
                     {% for event in event_list %}
-                        <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='{% url 'single_event' event.id %}'">
+                        <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
                             <!-- Tabs with Background on Card -->
-                            <div class="card">
+                            <div class="card" style="cursor:pointer;" onclick="window.location='{% url 'single_event' event.id %}'">
                                 <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                                     <li class="nav-item">
                                         <a class="nav-link"><strong>{{ event.event_name|upper }}</strong></a>

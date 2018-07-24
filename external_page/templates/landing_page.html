@@ -85,13 +85,14 @@ function search_key_press(e) {
                                         </span>
                                         <input type="text" class="form-control" id="search-hobby" onkeyup="scroll_alt()" onkeypress="search_key_press(event)" placeholder="Sök här eller scrolla ned för mer...">
                                     </div>
+                                    <ul id="search-list">
+                                        <li><a href="{% url 'all_events' %}" style="color:#2CA8FF;">Se alla hobbies</a></li>
                                     {% if hobbies != None %}
-                                        <ul id="search-list">
                                         {% for hobby in hobbies %}
-                                            <li><a href="{% url 'instructors' hobby.hobby_name %}" style="color:#3f3f3f">{{ hobby.hobby_name|title }}</a></li>
+                                            <li><a href="{% url 'all_events' %}?search_hobby_event={{ hobby.hobby_name }}" style="color:#3f3f3f">{{ hobby.hobby_name|title }}</a></li>
                                         {% endfor %}
-                                        </ul>
                                     {% endif %}
+                                    </ul>
                                 </div>
                             </form>
                         </div>
@@ -105,15 +106,18 @@ function search_key_press(e) {
             <div class="container">
                 <div class="row">
                 {% for hobby in hobbies %}
-                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='{% url 'instructors' hobby.hobby_name %}'">
+                    <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
                         <!-- Tabs with Background on Card -->
-                        <div class="card">
+                        <div class="card" style="cursor:pointer;" onclick="window.location='{% url 'all_events' %}?search_hobby_event={{ hobby.hobby_name }}'">
                             <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                                 <li class="nav-item">
                                     <a class="nav-link"><strong>{{ hobby.hobby_name|upper }}</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i>{{ hobby.instructor_set.count }} Instruktörer lediga</a>
+                                    <a class="nav-link active"><i class="now-ui-icons objects_spaceship"></i> {{ hobby.hobbyevent_set.count }} Evenemang</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i> {{ hobby.instructor_set.count }} Instruktörer</a>
                                 </li>
                             </ul>
                             <div class="card-body" style="height:250px; background-image: url('{% static 'external_page/assets/img/hobby/'|add:hobby.hobby_name|add:'_small_banner.jpg' %}');">

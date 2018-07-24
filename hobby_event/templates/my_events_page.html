@@ -21,9 +21,9 @@
                 {% if event_list|length != 0 %}
                     <div class="row">
                     {% for event in event_list %}
-                            <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto" style="cursor:pointer;" onclick="window.location='{% url 'single_event' event.id %}'">
+                            <div class="col-md-10 col-lg-8 col-xl-6 ml-auto mr-auto">
                                 <!-- Tabs with Background on Card -->
-                                <div class="card">
+                                <div class="card" style="cursor:pointer;" onclick="window.location='{% url 'single_event' event.id %}'">
                                     <ul class="nav nav-tabs nav-tabs-neutral justify-content-center" role="tablist" data-background-color="orange">
                                         <li class="nav-item">
                                             {% if event.is_active == False %}

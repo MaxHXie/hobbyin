@@ -3,6 +3,7 @@ from .forms import CreateEventForm, ContactEventForm
 from .models import HobbyEvent, HobbyEventSignup
 from external_page.models import Hobby, Instructor
 from django.contrib import messages
+import hobbyin.functions as functions
 import random
 
 colors = [(123,205,47), (119,172,236), (236,219,84), (240,237,229), (252,169,133), (209,255,244)]
@@ -126,35 +127,28 @@ def all_events(request):
         5. input_zip_code: Sort by having the closest events first. (Primary priority sort)
     """
 
-    def sort_zip_code(event, area_code):
-        if event.zip_code != None:
-            try:
-                return abs(area_code - int(event.zip_code[0] + event.zip_code[1]))
-            except:
-                return 1000
-        else:
-            return 1000
-
     search_hobby_event = request.GET.get('search_hobby_event')
     input_zip_code = request.GET.get('input_zip_code')
 
     #Filter away events that does not match the search string.
     if search_hobby_event != None:
-        event_list1 = HobbyEvent.objects.filter(event_name__contains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
+        event_list1 = HobbyEvent.objects.filter(event_name__icontains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
+        event_list3 = HobbyEvent.objects.filter(city__icontains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
+        event_list4 = HobbyEvent.objects.filter(city_district__icontains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
         try:
-            hobby = Hobby.objects.get(hobby_name=search_hobby_event)
+            hobby = Hobby.objects.get(hobby_name__iexact=search_hobby_event)
             event_list2 = HobbyEvent.objects.filter(hobby=hobby, is_active=True, is_accepted=True, is_hidden=False)
-            temp_list = event_list1 | event_list2
+            temp_list = event_list1 | event_list2 | event_list3 | event_list4
 
         except Hobby.DoesNotExist:
             hobby = None
             event_list2 = None
-            temp_list = event_list1
+            temp_list = event_list1 | event_list3 | event_list4
 
         event_list = temp_list.distinct()
 
         if len(event_list) == 0:
-            messages.error(request, 'Vi kunde inte hitta några evenemang på den hobbyn.')
+            messages.error(request, 'Vi kunde inte hitta några evenemang för den här hobbyn.')
             request.method = "GET"
 
     else:
@@ -167,31 +161,9 @@ def all_events(request):
     #Do not include events that already has happened
     event_list = [event for event in event_list if event.has_happened == False]
 
-    #Sort by having the closest events first. (Primary priority sort)
-    area_code = None
-    if input_zip_code != "" and input_zip_code != None:
-        try:
-            area_code = int(input_zip_code[0] + input_zip_code[1])
-        except:
-            messages.error(request, 'Vi kunde inte göra en sökning med ditt postnummer.')
-
-    elif request.user.is_authenticated and request.user.instructor:
-        try:
-            area_code = int(request.user.instructor.zip_code[0] + request.user.instructor.zip_code[1])
-        except:
-            pass
-
-    elif request.user.is_authenticated and request.user.customer:
-        try:
-            area_code = int(request.user.customer.zip_code[0] + request.user.customer.zip_code[1])
-        except:
-            pass
-
-    if area_code != None:
-        try:
-            event_list.sort(key=lambda x: sort_zip_code(x, area_code))
-        except:
-            messages.error(request, 'Något gick fel, vi kunde inte sortera evenemangen på avstånd. Dubbelkolla ditt postnummer.')
+    worked, event_list, error = functions.sort_by_proximity(event_list, input_zip_code, request)
+    if worked == False and error != None:
+        messages.error(request, error)
 
     return render(request, 'all_events_page.html', context={'event_list': event_list, 'hobby': hobby, 'search_hobby_event': search_hobby_event, 'input_zip_code': input_zip_code})
 
