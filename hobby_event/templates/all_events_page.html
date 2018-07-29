@@ -8,8 +8,8 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="landing-page sidebar-collapse">
     {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
@@ -17,16 +17,18 @@
 
         <div class="section section-tabs" id="our-offerings">
             <div class="container">
+                {% if user.instructor %}
+                <div class="text-center">
+                    <a class="btn btn-primary btn-round btn-lg" href="{% url 'create_event' %}" style="color:white; background-color:#2CA8FF;"><strong><i class="now-ui-icons arrows-1_share-66"></i> {% trans 'Skapa evenemang' %}</strong></a>
+                </div>
+                {% endif %}
                 {% if hobby %}
                     <div class="text-center">
-                        <a href="{% url 'instructors' hobby.hobby_name %}" class="btn btn-primary btn-round btn-lg" style="color:white; background-color:#2CA8FF;"><strong>Se alla instruktörer för {{ hobby.hobby_name }} ({{ hobby.instructor_set.all|length }})</strong></a>
-                    </div>
-                    <div class="text-center">
-                        <h2 class="title">Prova-på evenemang för {{hobby.hobby_name}}</h2>
-                    </div>
-                {% else %}
-                    <div class="text-center">
-                        <h2 class="title">Alla prova-på evenemang</h2>
+                        {% if instructors_for_hobby|length == 0 %}
+                            <a href="{% url 'all_events' %}?search_hobby_event={{ hobby.hobby_name }}" class="btn btn-primary btn-round btn-lg" style="color:white; background-color:rgb(130, 130, 130);" disabled>{% trans 'Det finns inga aktiva instruktörer för' %} {{ hobby.hobby_name }}</a>
+                        {% else %}
+                            <a href="{% url 'instructors' hobby.hobby_name %}" class="btn btn-primary btn-round btn-lg" style="color:white; background-color:#2CA8FF;"><strong>Se alla instruktörer för {{ hobby.hobby_name }} ({{ instructors_for_hobby|length }})</strong></a>
+                        {% endif %}
                     </div>
                 {% endif %}
                 {% include 'djangospam/form.html' %}
@@ -66,13 +68,14 @@
                                 {% else %}
                                     <div class="card-body" style="max-height:500px; background-color:rgba(200, 200, 200, 1.0);">
                                 {% endif %}
-                                    <div><strong>Tid:</strong>&emsp;&emsp;&nbsp;{{ event.datetime|date:'d M H:i, Y' }}</div>
-                                    <div><strong>Plats:</strong>&emsp;{{ event.address }}, {{ event.city_district }}, {{ event.city }}
-                                    {% if location_name %}
-                                        ({{ event.location_name }})
-                                    {% endif %}
-                                    </div>
-                                    <div><strong>Pris:</strong>&emsp;&nbsp;&nbsp;&nbsp;{% if event.price > 0 %}{{ event.price }} kr{% else %}Gratis{% endif %}</div>
+                                    <table class="table-responsive">
+                                        <tbody>
+                                            <tr><td style="padding-right:10px;">Tid:</td><td>{{ event.datetime|date:'d M H:i, Y' }}</td></tr>
+                                            <tr><td style="padding-right:10px;">Plats:</td><td>{{ event.address }}, {{ event.city_district }}, {{ event.city }} {% if location_name %}({{ event.location_name }}){% endif %}</td></tr>
+                                            <tr><td style="padding-right:10px;">Pris:</td><td>{% if event.price > 0 %}{{ event.price }} kr{% else %}Gratis{% endif %}</td></tr>
+                                            <tr><td style="padding-right:10px;">Arrangör:</td><td>{{ event.event_host.first_name|title }} {{ event.event_host.last_name|title }}</td></tr>
+                                        </tbody>
+                                    </table>
                                     {% if event.description %}
                                         <hr>
                                         <div class="text-center">{{ event.description }}</div>
@@ -95,6 +98,36 @@
                 {% endif %}
             </div>
         </div>
+
+        {% if user.is_authenticated %}
+        <div class="section section-contact-us text-center" id="work-with-us">
+            <div class="container">
+                <h2 class="title">{% trans 'Du är just nu inloggad som' %}</h2>
+                <h3>{{ user.instructor.first_name }} {{ user.instructor.last_name }}</h3>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <div class="send-button">
+                            <a href="{% url 'my_profile' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Till din profil' %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <div class="section section-contact-us text-center" id="work-with-us">
+            <div class="container">
+                <h2 class="title">{% trans 'Vill du arbeta med oss?' %}</h2>
+                <p class="description"><strong>{% trans 'Registrera dig och kom igång. Vi lovar att det går blixtsnabbt!' %}</strong></p>
+                <div class="row">
+                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                        <div class="send-button">
+                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig' %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endif %}
         {% include "html_parts/footer.html" %}
     </div>
     <script>
@@ -102,5 +135,4 @@
         $("label[for='id_hobbies_0']").hide()
         });
     </script>
-</body>
 {% endblock body %}

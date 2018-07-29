@@ -1,7 +1,8 @@
 from django.shortcuts import render
-from .forms import CreateEventForm, ContactEventForm
-from .models import HobbyEvent, HobbyEventSignup
+from .forms import CreateEventForm
+from .models import HobbyEvent, HobbyEventSignup, VisitHobbyEvent, EventSearch
 from external_page.models import Hobby, Instructor
+from external_page.views import edit_profile, logout
 from django.contrib import messages
 import hobbyin.functions as functions
 import random
@@ -10,12 +11,17 @@ colors = [(123,205,47), (119,172,236), (236,219,84), (240,237,229), (252,169,133
 
 # Create your views here.
 def create_event(request):
-    if request.user.is_authenticated and request.user.instructor:
+    if functions.is_instructor(request):
+        status = functions.check_user_valid_profile(request)
+        if status == 'not_valid':
+            request.method = "GET"
+            messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
+            return edit_profile(request)
+        elif status == 'not_active':
+            messages.error(request, 'Ditt konto är inte aktivt, kontakta maxhxie@gmail.com så hjälper vi dig.')
+            return logout(request)
+
         current_user = request.user
-        try:
-            instructor = Instructor.objects.get(user=current_user)
-        except Instructor.DoesNotExist:
-            instructor = create_instructor(current_user)
         if request.method == "POST":
             event_object = HobbyEvent.objects.create(event_host=instructor, hobby=instructor.hobbies, is_active=True)
             color = random.choice(colors)
@@ -36,6 +42,7 @@ def create_event(request):
         else:
             form = CreateEventForm()
             return render(request, 'create_event_page.html', context={'form': form, 'type': 'create', 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
+
     else:
         messages.error(request, 'Du är inte inloggad som instruktör.')
         return all_events(request)
@@ -43,8 +50,8 @@ def create_event(request):
 
 
 def create_event_terminal(request, event_id):
-    if request.user.is_authenticated and request.user.instructor:
-        this_user = request.user
+    if functions.is_instructor(request):
+        this_user = functions.get_this_user(request)
         try:
             this_event = HobbyEvent.objects.get(pk=event_id)
         except HobbyEvent.DoesNotExist:
@@ -77,35 +84,28 @@ def create_event_terminal(request, event_id):
 
 def single_event(request, event_id):
     if request.user.is_authenticated:
-        this_user = request.user
-    else:
-        this_user = None
+        status = functions.check_user_valid_profile(request)
+        if status == 'not_valid':
+            request.method = "GET"
+            messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
+            return edit_profile(request)
+        elif status == 'not_active':
+            messages.error(request, 'Ditt konto är inte aktivt, kontakta maxhxie@gmail.com så hjälper vi dig.')
+            return logout(request)
+
+    this_user = functions.get_this_user(request)
+
     try:
         this_event = HobbyEvent.objects.get(pk=event_id)
     except HobbyEvent.DoesNotExist:
         messages.error(request, 'Det där evenemanget existerar inte längre.')
         return all_events(request)
 
+    VisitHobbyEvent.objects.create(user=this_user, hobby_event=this_event)
+
     if this_event.event_host.user == this_user or (this_event.is_hidden == False and this_event.is_active == True and this_event.is_accepted == True and this_event.has_happened == False):
         if this_event.is_accepted == False:
             return create_event_terminal(request, this_event.id)
-
-        if request.method == "POST":
-            event_signup_object = HobbyEventSignup.objects.create(hobby_event=this_event)
-            form = ContactEventForm(request.POST, instance=event_signup_object)
-            if form.is_valid():
-                if this_event.is_active == True and this_event.is_accepted == True and this_event.hidden == False:
-                    form.save()
-                    messages.success(request, 'Nu är du anmäld till: "' + this_event.event_name + '"')
-                else:
-                    messages.error(request, 'Det här evenemanget verkar inte vara aktivt längre')
-            else:
-                messages.error(request, 'Du lyckades inte bli anmäld, dubbelkolla så att allting är rätt.')
-
-            return render(request, 'single_event_page.html', context={'this_event': this_event, 'this_user': this_user, 'form': form, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
-
-        else:
-            form = ContactEventForm()
     else:
         if this_event.has_happened:
             messages.error(request, 'Det här evenemanget har passerat')
@@ -113,7 +113,13 @@ def single_event(request, event_id):
             messages.error(request, 'Det här evenemanget går inte längre att ses.')
         return all_events(request)
 
-    return render(request, 'single_event_page.html', context={'this_event': this_event, 'this_user': this_user, 'form': form, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
+    try:
+        HobbyEventSignup.objects.get(hobby_event=this_event, user=this_user, is_success=True)
+        signed_up = True
+    except HobbyEventSignup.DoesNotExist:
+        signed_up = False
+
+    return render(request, 'single_event_page.html', context={'this_event': this_event, 'this_user': this_user, 'signed_up': signed_up, 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
 
 
 
@@ -127,22 +133,39 @@ def all_events(request):
         5. input_zip_code: Sort by having the closest events first. (Primary priority sort)
     """
 
+    if request.user.is_authenticated:
+        status = functions.check_user_valid_profile(request)
+        if status == 'not_valid':
+            request.method = "GET"
+            messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
+            return edit_profile(request)
+        elif status == 'not_active':
+            messages.error(request, 'Ditt konto är inte aktivt, kontakta maxhxie@gmail.com så hjälper vi dig.')
+            return logout(request)
+
+    this_user = functions.get_this_user(request)
+
     search_hobby_event = request.GET.get('search_hobby_event')
     input_zip_code = request.GET.get('input_zip_code')
 
     #Filter away events that does not match the search string.
-    if search_hobby_event != None:
+    if search_hobby_event != None or input_zip_code != None:
+        EventSearch.objects.create(user=this_user, search_string=search_hobby_event, zip_code_search=input_zip_code)
+
+    if search_hobby_event != None and search_hobby_event != "":
         event_list1 = HobbyEvent.objects.filter(event_name__icontains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
         event_list3 = HobbyEvent.objects.filter(city__icontains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
         event_list4 = HobbyEvent.objects.filter(city_district__icontains=search_hobby_event, is_active=True, is_accepted=True, is_hidden=False)
         try:
             hobby = Hobby.objects.get(hobby_name__iexact=search_hobby_event)
+            instructors_for_hobby = Instructor.objects.filter(hobbies=hobby, valid_profile=True, is_private_instructor=True, is_active=True)
             event_list2 = HobbyEvent.objects.filter(hobby=hobby, is_active=True, is_accepted=True, is_hidden=False)
             temp_list = event_list1 | event_list2 | event_list3 | event_list4
 
         except Hobby.DoesNotExist:
             hobby = None
             event_list2 = None
+            instructors_for_hobby = []
             temp_list = event_list1 | event_list3 | event_list4
 
         event_list = temp_list.distinct()
@@ -153,6 +176,7 @@ def all_events(request):
 
     else:
         hobby = None
+        instructors_for_hobby = []
         event_list = HobbyEvent.objects.filter(is_active=True, is_accepted=True, is_hidden=False)
 
     #Sort by having the most recent events first. (Secondary priority sort)
@@ -165,13 +189,23 @@ def all_events(request):
     if worked == False and error != None:
         messages.error(request, error)
 
-    return render(request, 'all_events_page.html', context={'event_list': event_list, 'hobby': hobby, 'search_hobby_event': search_hobby_event, 'input_zip_code': input_zip_code})
+    return render(request, 'all_events_page.html', context={'event_list': event_list, 'hobby': hobby, 'instructors_for_hobby': instructors_for_hobby, 'search_hobby_event': search_hobby_event, 'input_zip_code': input_zip_code})
 
 
 
 def my_events(request):
-    if request.user.is_authenticated and request.user.instructor:
-        this_instructors_events = HobbyEvent.objects.filter(event_host=request.user.instructor).order_by('-id')
+    if request.user.is_authenticated:
+        status = functions.check_user_valid_profile(request)
+        if status == 'not_valid':
+            request.method = "GET"
+            messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
+            return edit_profile(request)
+        elif status == 'not_active':
+            messages.error(request, 'Ditt konto är inte aktivt, kontakta maxhxie@gmail.com så hjälper vi dig.')
+            return logout(request)
+
+    if functions.is_instructor(request):
+        this_instructors_events = HobbyEvent.objects.filter(event_host=request.user.instructor).order_by('-datetime')
         return render(request, 'my_events_page.html', context={'event_list': this_instructors_events})
     else:
         messages.error(request, 'Du är inte inloggad som instruktör.')
@@ -180,7 +214,17 @@ def my_events(request):
 
 
 def edit_event(request, event_id):
-    if request.user.is_authenticated and request.user.instructor:
+    if request.user.is_authenticated:
+        status = functions.check_user_valid_profile(request)
+        if status == 'not_valid':
+            request.method = "GET"
+            messages.info(request, 'Det saknas fortfarande nödvändig information om dig. Fyll i dem för att komma igång.')
+            return edit_profile(request)
+        elif status == 'not_active':
+            messages.error(request, 'Ditt konto är inte aktivt, kontakta maxhxie@gmail.com så hjälper vi dig.')
+            return logout(request)
+
+    if functions.is_instructor(request):
         try:
             this_event = HobbyEvent.objects.get(pk=event_id)
         except HobbyEvent.DoesNotExist:
@@ -205,7 +249,7 @@ def edit_event(request, event_id):
                 return render(request, 'create_event_page.html', context={'form': form, 'type': 'edit', 'spam_uri': 'https://www.spelapaintball.com/#wpcf7-f2197-o1'})
         else:
             messages.error(request, 'Du har inte tillgång till det där evenmanget. Dubbelkolla så att du är inloggad på rätt konto.')
-            return create_events(request)
+            return single_event(request, event_id)
     else:
         messages.error(request, 'Du är inte inloggad som instruktör.')
         return all_events(request)
@@ -213,7 +257,7 @@ def edit_event(request, event_id):
 
 
 def event_participators(request, event_id):
-    if request.user.is_authenticated and request.user.instructor:
+    if functions.is_instructor(request):
         try:
             this_event = HobbyEvent.objects.get(pk=event_id)
         except HobbyEvent.DoesNotExist:
@@ -234,7 +278,7 @@ def event_participators(request, event_id):
 
 
 def hide_show_event(request, event_id):
-    if request.user.is_authenticated and request.user.instructor:
+    if functions.is_instructor(request):
         try:
             this_event = HobbyEvent.objects.get(pk=event_id)
         except HobbyEvent.DoesNotExist:
@@ -255,7 +299,7 @@ def hide_show_event(request, event_id):
 
                 this_event.save()
                 request.method = "GET"
-                return my_events(request)
+                return single_event(request, event_id)
 
             else:
                 messages.error(request, 'Det gick inte att ställa in evenemanget, försök igen.')
@@ -265,4 +309,36 @@ def hide_show_event(request, event_id):
             return all_events(request)
     else:
         messages.error(request, 'Du är inte inloggad som instruktör.')
+        return all_events(request)
+
+
+
+def signup_for_event(request, event_id):
+    if request.user.is_authenticated:
+        try:
+            this_event = HobbyEvent.objects.get(pk=event_id)
+        except HobbyEvent.DoesNotExist:
+            messages.error(request, 'Det där evenemanget existerar inte längre.')
+            return all_events(request)
+
+        try:
+            HobbyEventSignup.objects.get(hobby_event=this_event, user=request.user)
+            messages.error(request, 'Du har redan anmält dig till det här evenemanget.')
+            return single_event(request, event_id)
+        except HobbyEventSignup.DoesNotExist:
+            profile_model = functions.get_profile_model(request.user)
+            if profile_model != None:
+                profile = profile_model.objects.get(user=request.user)
+                if profile.user != this_event.event_host.user:
+                    HobbyEventSignup.objects.create(hobby_event=this_event, user=request.user, first_name=profile.first_name, last_name=profile.last_name, email=profile.email, telephone=profile.telephone, is_success=True)
+                    messages.success(request, 'Du är nu anmäld till evenemanget.')
+                    return single_event(request, event_id)
+                else:
+                    messages.error(request, 'Du kan inte anmäla dig till ditt egna evenemang.')
+                    return single_event(request, event_id)
+            else:
+                messages.error(request, 'Något gick fel. Kontakta oss på maxhxie@gmail.com så hjälper vi dig.')
+                return logout(request)
+    else:
+        messages.error(request, 'Du måste vara inloggad för att komma åt den här sidan.')
         return all_events(request)

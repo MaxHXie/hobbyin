@@ -1,1 +1,54 @@
-{{ this_event }}
+{% extends "base.html" %}
+{% load static %}
+{% load i18n %}
+
+{% block extra_css %}
+{% endblock extra_css %}
+
+{% block extra_head %}
+{% endblock extra_head %}
+
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
+{% block body %}
+    {% include "html_parts/message_banner.html" %}
+    <!-- Navbar -->
+    {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
+    <div class="wrapper">
+        <div class="section section-contact-us section-javascript" id="javascriptComponents">
+            <div class="container">
+                <h2 class="title text">
+                    {% if this_event.is_active == False %}
+                        [EJ AKTIV]
+                    {% elif this_event.is_accepted == False %}
+                        [EJ PUBLICERAD]
+                    {% elif this_event.is_hidden == True %}
+                        [LÅST]
+                    {% elif this_event.has_happened == True %}
+                        [PASSERAT]
+                    {% endif %}
+                    <a href="{% url 'single_event' this_event.id  %}">{{ this_event.event_name }}</a>
+                </h2>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr><th>Namn</th><th>Telefonnummer</th><th>Email adress</th><th><a href="" class="btn btn-primary btn-block btn-sm" style="margin:0; background-color:#2CA8FF;">Mejla alla</a></th></tr>
+                        </thead>
+                        <tbody>
+                            {% for signup in this_event.hobbyeventsignup_set.all %}
+                                {% if signup.is_success == True and signup.is_removed == False %}
+                                    <tr><td><a href="{% url 'profile_with_user' signup.user.id %}">{{ signup.first_name }} {{signup.last_name}}</a></td><td>{{ signup.telephone }}</td><td>{{ signup.email }}</td><td>{% if signup.email != None %}<a href="" class="btn btn-primary btn-block btn-sm" style="margin:0; background-color:#2CA8FF;"><i class="now-ui-icons ui-1_email-85"></i></a>{% endif %}</td></tr>
+                                {% endif %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        {% include "html_parts/footer.html" %}
+    </div>
+<script>
+$(function(){
+    $("label[for='id_hobbies_0']").hide()
+});
+</script>
+{% endblock body %}

@@ -34,6 +34,9 @@
 $(function(){
     $('#verification_sent_modal').modal('show');
 });
+$("#verification_sent_modal").on("hidden.bs.modal", function () {
+    window.location = "{% url 'index' %}";
+});
 </script>
 <!--  End Modal -->
 {% endblock verification_sent_modal %}

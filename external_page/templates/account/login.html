@@ -5,18 +5,10 @@
 
 {% get_providers as socialaccount_providers %}
 
+{% block bodyclass %}login-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="login-page sidebar-collapse">
     <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg bg-primary fixed-top navbar-transparent " color-on-scroll="400">
-        <div class="container">
-            <div class="navbar-translate">
-                <a class="navbar-brand" href="{% url 'index' %}" rel="tooltip" data-placement="bottom">
-                    <span style="font-size:1.5em;"><strong>Hobbyin</strong></span>
-                </a>
-            </div>
-        </div>
-    </nav>
+    {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
     {% include "html_parts/message_banner.html" %}
     <!-- End Navbar -->
     <div class="page-header" filter-color="orange">
@@ -31,6 +23,10 @@
                             <div class="logo-container">
                                 <img src="{% static 'external_page/assets/img/now-logo.png' %}" alt="">
                             </div>
+                        </div>
+                        <div style="margin-bottom:30px;">
+                            <div><a class="button secondaryAction" href="{% url 'instructor_signup' %}" style="color:#2CA8FF;">{% trans "Registrera dig som instruktör" %}</a></div>
+                            <div><a class="button secondaryAction" href="{% url 'customer_signup' %}" style="color:#F96332;">{% trans "Registrera dig som hobbyist" %}</a></div>
                         </div>
                         <div class="content">
                             {% for error_field, error_message in form.errors.items %}
@@ -51,7 +47,7 @@
                             {% if redirect_field_value %}
                             <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
                             {% endif %}
-                            <span color="black"><a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Glömt lösenord?" %}</a></span>
+                            <div color="black"><a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Glömt lösenord?" %}</a></div>
                         </div>
                         <div class="footer text-center">
                             <input type="submit" class="btn btn-primary btn-round btn-lg btn-block" value="{% trans 'Logga in' %}">
@@ -61,7 +57,6 @@
             </div>
         </div>
     </div>
-</body>
 {% endblock body %}
 {% block extra_head %}
 <script type="text/javascript">

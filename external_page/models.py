@@ -16,14 +16,15 @@ class Instructor(models.Model):
         User,
         on_delete=models.CASCADE,
     )
-    first_name = models.CharField(max_length=64, null=True, blank=False)
-    last_name = models.CharField(max_length=64, null=True, blank=False)
+    first_name = models.CharField(max_length=32, null=True, blank=False)
+    last_name = models.CharField(max_length=32, null=True, blank=False)
     hobbies = models.ForeignKey(Hobby, on_delete=models.CASCADE, blank=False, null=True)
-    email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
+    email = models.EmailField(max_length=64, blank=True, null=True, unique=True)
+    telephone = models.CharField(max_length=16, blank=True, null=True)
     city = models.CharField(max_length=64, null=True, blank=False)
     city_district = models.CharField(max_length=64, null=True, blank=False)
     zip_code = models.CharField(max_length=6, null=True, blank=False)
-    description = models.TextField(max_length=2048, null=True, blank=True)
+    description = models.TextField(max_length=2500, null=True, blank=True)
     gender = models.CharField(max_length=1,
                            choices=(
                                     ('N', 'No answer'),
@@ -46,6 +47,9 @@ class Instructor(models.Model):
                            )
     profile_picture = models.ImageField(upload_to="profile_picture", blank=True, null=True)
     valid_profile = models.BooleanField(default=False)
+    is_private_instructor = models.BooleanField(default=True, blank=False)
+    is_active = models.BooleanField(default=True)
+    accepted_terms = models.BooleanField(default=True)
 
     def __str__(self):
         try:
@@ -60,9 +64,10 @@ class InstructorMessage(models.Model):
         on_delete=models.CASCADE,
     )
     first_name = models.CharField(max_length=64, null=True, blank=False)
+    last_name = models.CharField(max_length=64, null=True, blank=False)
     email = models.CharField(max_length=128, blank=True, null=True)
-    telephone = models.CharField(max_length=32, blank=True, null=True)
-    message = models.CharField(max_length=2048, null=True, blank=True)
+    telephone = models.CharField(max_length=16, blank=True, null=True)
+    message = models.CharField(max_length=2500, null=True, blank=True)
     message_sent = models.BooleanField(default=False)
     time_now = models.DateTimeField(default=datetime.now, blank=True)
 
@@ -78,11 +83,10 @@ class Customer(models.Model):
         User,
         on_delete=models.CASCADE,
     )
-    first_name = models.CharField(max_length=64, null=True, blank=False)
-    last_name = models.CharField(max_length=64, null=True, blank=False)
-    email = models.EmailField(max_length=128, blank=True, null=True, unique=True)
-    city = models.CharField(max_length=64, null=True, blank=False)
-    city_district = models.CharField(max_length=64, null=True, blank=False)
+    first_name = models.CharField(max_length=32, null=True, blank=False)
+    last_name = models.CharField(max_length=32, null=True, blank=False)
+    email = models.EmailField(max_length=64, blank=True, null=True, unique=True)
+    telephone = models.CharField(max_length=16, blank=True, null=True)
     zip_code = models.CharField(max_length=6, null=True, blank=False)
     gender = models.CharField(max_length=1,
                            choices=(
@@ -93,6 +97,9 @@ class Customer(models.Model):
                            ), null=True, blank=True, default="N"
                            )
     profile_picture = models.ImageField(upload_to="profile_picture", blank=True, null=True)
+    valid_profile = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
+    accepted_terms = models.BooleanField(default=True)
 
     def __str__(self):
         try:
@@ -101,8 +108,72 @@ class Customer(models.Model):
             string = "name_error"
         return string
 
+class VisitInstructor(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    instructor = models.ForeignKey(
+        Instructor,
+        on_delete=models.CASCADE,
+    )
+    hobby = models.ForeignKey(
+        Hobby,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    datetime = models.DateTimeField(auto_now_add=True, blank=False, null=True)
 
+    def __str__(self):
+        if self.user == None:
+            string = "Anonymous visited " + self.instructor.first_name + " " + self.instructor.last_name
+        else:
+            string = self.user.email + " visited " + self.instructor.first_name + " " + self.instructor.last_name
+        return string
 
+class InstructorSearch(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    search_string = models.CharField(max_length=128, null=True, blank=True)
+    zip_code_search = models.CharField(max_length=128, null=True, blank=False)
+    datetime = models.DateTimeField(auto_now_add=True, blank=False, null=True)
+
+    def __str__(self):
+        if self.user == None:
+            this_user = 'Anonymous'
+        else:
+            this_user = '"' + self.user.email + '"'
+
+        if self.search_string == None:
+            this_search_string = 'nothing'
+        else:
+            this_search_string = '"' + self.search_string + '"'
+
+        if self.zip_code_search == None:
+            this_zip_code_search = 'empty zip code search'
+        else:
+            this_zip_code_search = 'zip code: "' + self.zip_code_search + '"'
+
+        string = this_user + ' searched for: ' + this_search_string + ' and ' + this_zip_code_search
+        return string
+
+class Follower(models.Model):
+    instructor = models.ForeignKey(
+        Instructor,
+        on_delete=models.CASCADE,
+    )
+    follower = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+    )
+    datetime = models.DateTimeField(auto_now_add=True, blank=False, null=True)
+
+    class Meta:
+        unique_together = ('instructor', 'follower')
 try:
     akismet.register(Instructor)
 except akismet.AlreadyModerated:
@@ -115,5 +186,15 @@ except akismet.AlreadyModerated:
 
 try:
     akismet.register(InstructorMessage)
+except akismet.AlreadyModerated:
+    pass
+
+try:
+    akismet.register(VisitInstructor)
+except akismet.AlreadyModerated:
+    pass
+
+try:
+    akismet.register(InstructorSearch)
 except akismet.AlreadyModerated:
     pass

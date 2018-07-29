@@ -31,13 +31,22 @@
                         <li>
                             <a href="{{ HTTP_HOST }}/#our-offerings"><strong>{% trans 'Hitta instruktör till en Hobby' %}</strong></a>
                         </li>
+                        <li>
+                            <a href="{% url 'settings' %}">{% trans 'Kontoinställningar' %}</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'logout' %}">{% trans 'Logga ut' %}</a>
+                        </li>
                     {% endif %}
                 {% else %}
                     <li>
-                        <a href="{% url 'account_login' %}"><strong>{% trans 'Logga in som intruktör' %}</strong></a>
+                        <a href="{% url 'account_login' %}"><strong>{% trans 'Logga in' %}</strong></a>
                     </li>
                     <li>
-                        <a href="{% url 'account_signup' %}"><strong>{% trans 'Registrera dig som intruktör' %}</strong></a>
+                        <a href="{% url 'instructor_signup' %}"><strong>{% trans 'Registrera dig som instruktör' %}</strong></a>
+                    </li>
+                    <li>
+                        <a href="{% url 'customer_signup' %}"><strong>{% trans 'Registrera dig som hobbyist' %}</strong></a>
                     </li>
                     <li>
                         <a href="{% url 'all_events' %}"><strong>{% trans 'Se alla Prova-på evenemang' %}</strong></a>

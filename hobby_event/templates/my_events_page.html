@@ -8,8 +8,8 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="landing-page sidebar-collapse">
     {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
@@ -17,6 +17,9 @@
 
         <div class="section section-tabs" id="our-offerings">
             <div class="container">
+                <div class="text-center">
+                    <a class="btn btn-primary btn-round btn-lg" href="{% url 'create_event' %}" style="color:white; background-color:#2CA8FF;"><strong><i class="now-ui-icons arrows-1_share-66"></i> {% trans 'Skapa evenemang' %}</strong></a>
+                </div>
                 <h2 class="title text-center">Mina evenemang</h2>
                 {% if event_list|length != 0 %}
                     <div class="row">
@@ -47,13 +50,14 @@
                                     {% else %}
                                         <div class="card-body" style="max-height:500px; background-color:rgba(200,200,200,1.0);">
                                     {% endif %}
-                                        <div><strong>Tid:</strong>&emsp;&emsp;&nbsp;{{ event.datetime|date:'d M H:i, Y' }}</div>
-                                        <div><strong>Plats:</strong>&emsp;{{ event.address }}, {{ event.city_district }}, {{ event.city }}
-                                        {% if location_name %}
-                                            ({{ event.location_name }})
-                                        {% endif %}
-                                        </div>
-                                        <div><strong>Pris:</strong>&emsp;&nbsp;&nbsp;&nbsp;{% if event.price > 0 %}{{ event.price }} kr{% else %}Gratis{% endif %}</div>
+                                        <table class="table-responsive">
+                                            <tbody>
+                                                <tr><td style="padding-right:10px;">Tid:</td><td>{{ event.datetime|date:'d M H:i, Y' }}</td></tr>
+                                                <tr><td style="padding-right:10px;">Plats:</td><td>{{ event.address }}, {{ event.city_district }}, {{ event.city }} {% if location_name %}({{ event.location_name }}){% endif %}</td></tr>
+                                                <tr><td style="padding-right:10px;">Pris:</td><td>{% if event.price > 0 %}{{ event.price }} kr{% else %}Gratis{% endif %}</td></tr>
+                                                <tr><td style="padding-right:10px;">Arrangör:</td><td>{{ event.event_host.first_name|title }} {{ event.event_host.last_name|title }}</td></tr>
+                                            </tbody>
+                                        </table>
                                         {% if event.description %}
                                             <hr>
                                             <div class="text-center">{{ event.description }}</div>
@@ -80,5 +84,4 @@
         $("label[for='id_hobbies_0']").hide()
         });
     </script>
-</body>
 {% endblock body %}

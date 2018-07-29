@@ -8,19 +8,19 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="landing-page sidebar-collapse">
     {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
     <div class="wrapper">
         <div class="section section-contact-us text-center section-javascript" id="javascriptComponents">
             <div class="container">
-                <h2 class="title">
+                <h2 class="title" style="margin-bottom:64px;">
                     {% if type == 'create' %}
                         Skapa ett nytt evenemang
                     {% else %}
-                        Ändra evenemang
+                        Gör ändringar på evenemanget
                     {% endif %}
                 </h2>
                 <div class="row">
@@ -43,6 +43,8 @@
                                         <div><strong>Kommun</strong></div>
                                     {% elif field.name == 'address' %}
                                         <div><strong>Adress</strong></div>
+                                    {% elif field.name == 'zip_code' %}
+                                        <div><strong>Postnummer</strong></div>
                                     {% elif field.name == 'location_name' %}
                                         <div><strong>Namn på platsen (Om det finns något)</strong></div>
                                     {% elif field.name == 'price' %}
@@ -150,5 +152,4 @@ $(function(){
     $("label[for='id_hobbies_0']").hide()
 });
 </script>
-</body>
 {% endblock body %}

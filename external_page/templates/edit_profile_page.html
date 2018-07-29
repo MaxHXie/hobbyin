@@ -8,8 +8,8 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="landing-page sidebar-collapse">
     {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
@@ -20,16 +20,28 @@
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
                         {% include 'djangospam/form.html' %}
-                        <form id="edit_profile_form" action="" method="POST" enctype="multipart/form-data">
+                        <form id="edit_profile_form" onsubmit="enable_all_fields()" action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
                         {% csrf_token %}
                         {% for field in form %}
                             {% with field.field.widget.input_type as input_type %}
                             {% if input_type == 'text' or input_type == 'number' %}
                                 <div id="inputs">
-                                    {% if field.name == 'maximum_students' %}
-                                        <h4> Antal personer jag kan ta upp till per tillfälle: </h4>
+                                    {% if field.name == 'first_name' %}
+                                        <div><strong>Förnamn</strong></div>
+                                    {% elif field.name == 'last_name' %}
+                                        <div><strong>Efternamn</strong></div>
+                                    {% elif field.name == 'telephone' %}
+                                        <div><strong>Telefonnummer</strong></div>
+                                    {% elif field.name == 'city' %}
+                                        <div><strong>Stad</strong></div>
+                                    {% elif field.name == 'city_district' %}
+                                        <div><strong>Kommun</strong></div>
+                                    {% elif field.name == 'zip_code' %}
+                                        <div><strong>Postnummer</strong></div>
+                                    {% elif field.name == 'maximum_students' %}
+                                        <div><strong>Antalet personer jag kan ta per tillfälle</strong></div>
                                     {% elif field.name == 'price' %}
-                                        <h4> Pris: </h4>
+                                        <div><strong>Pris</strong></div>
                                     {% endif %}
 
                                     {% if field.errors %}
@@ -50,6 +62,8 @@
                                                     <i class="now-ui-icons users_circle-08"></i>
                                                 {% elif field.name == 'last_name' %}
                                                     <i class="now-ui-icons users_circle-08"></i>
+                                                {% elif field.name == 'telephone' %}
+                                                    <i class="now-ui-icons tech_mobile"></i>
                                                 {% elif field.name == 'city' %}
                                                     <i class="now-ui-icons location_world"></i>
                                                 {% elif field.name == 'city_district' %}
@@ -69,10 +83,9 @@
                                     <span style="color:red">{{ field.errors|first }}</span>
                                 {% endif %}
                                 {{ field }}
-
                             {% elif input_type == 'checkbox' or input_type == 'radio' %}
                                 {% if field.name == 'hobbies' %}
-                                    <h4> Jag vill instruera: </h4>
+                                    <h4> Min hobby </h4>
                                     {% if field.errors %}
                                         <span style="color:red;">{{ field.errors|first }}</span>
                                     {% endif %}
@@ -89,16 +102,22 @@
                                                 <li>
                                                     {% if field.name == 'work_in_student_home' %}
                                                         <label for="{{ field.auto_id }}">
+                                                            Jag kan lära ut andras hem <br />
                                                             {{ alternative }}
-                                                        Jag kan lära ut andras hem
                                                         </label>
 
                                                     {% elif field.name == 'work_in_instructor_home' %}
                                                         <label for="{{ field.auto_id }}">
+                                                            Jag kan lära ut mitt hem <br />
                                                             {{ alternative }}
-                                                        Jag kan lära ut mitt hem
                                                         </label>
 
+                                                    {% elif field.name == 'is_private_instructor' %}
+                                                        <label style="margin-top:30px;">
+                                                            <span style="font-size:1.5em;">Jag är privatinstruktör</span> <br />
+                                                            {{ alternative }}
+                                                        </label>
+                                                        <hr id="instructor_line">
                                                     {% else %}
                                                         {{ alternative }}
                                                     {% endif %}
@@ -119,18 +138,19 @@
                                     </div>
                                 {% endif %}
 
-                            {% else %}
-                                {% if field.errors %}
-                                    <span style="color:red;">{{ field.errors|first }}</span>
-                                {% endif %}
+                            {% elif field.auto_id == 'id_description' %}
                                 <div class="textarea-container">
+                                    <div><strong>Kort biografi</strong></div>
+                                    {% if field.errors %}
+                                        <span style="color:red;">{{ field.errors|first }}</span>
+                                    {% endif %}
                                     {{ field }}
                                 </div>
                             {% endif %}
                             {% endwith %}
                         {% endfor %}
                         <div class="send-button">
-                            <a href="javascript:$('#edit_profile_form').submit();" class="btn btn-primary btn-round btn-block btn-lg">Ändra profil</a>
+                            <input type="submit" class="btn btn-primary btn-round btn-block btn-lg" value="Ändra profil">
                         </div>
                         </form>
                     </div>
@@ -140,9 +160,74 @@
         {% include "html_parts/footer.html" %}
     </div>
 <script>
+var field1_value;
+var field2_value;
+var field3_value;
+var field4_value;
+
+function hide_show_instructor_fields() {
+    if (document.getElementById("id_is_private_instructor").checked) {
+        document.getElementById("id_work_in_student_home").checked = window.field1_value;
+        document.getElementById("id_work_in_instructor_home").checked = window.field2_value;
+        document.getElementById("id_maximum_students").value = window.field3_value;
+        document.getElementById("id_price").value = window.field4_value;
+
+
+        document.getElementById("id_work_in_student_home").disabled = false;
+        document.getElementById("id_work_in_instructor_home").disabled = false;
+        document.getElementById("id_maximum_students").disabled = false;
+        document.getElementById("id_price").disabled = false;
+        document.getElementById("id_price_model_0").disabled = false;
+        document.getElementById("id_price_model_1").disabled = false;
+        document.getElementById("id_price_model_2").disabled = false;
+        document.getElementById("id_price_model_3").disabled = false;
+        document.getElementById("instructor_line").style.border = "";
+    } else {
+        document.getElementById("id_work_in_student_home").checked = true;
+        document.getElementById("id_work_in_instructor_home").checked = true;
+        document.getElementById("id_maximum_students").value = 0;
+        document.getElementById("id_price").value = 0;
+
+
+        document.getElementById("id_work_in_student_home").disabled = true;
+        document.getElementById("id_work_in_instructor_home").disabled = true;
+        document.getElementById("id_maximum_students").disabled = true;
+        document.getElementById("id_price").disabled = true;
+        document.getElementById("id_price_model_0").disabled = true;
+        document.getElementById("id_price_model_1").disabled = true;
+        document.getElementById("id_price_model_2").disabled = true;
+        document.getElementById("id_price_model_3").disabled = true;
+        document.getElementById("instructor_line").style.border = "1px solid red";
+    }
+}
+
+function enable_all_fields(){
+    document.getElementById("id_work_in_student_home").disabled = false;
+    document.getElementById("id_work_in_instructor_home").disabled = false;
+    document.getElementById("id_maximum_students").disabled = false;
+    document.getElementById("id_price").disabled = false;
+    document.getElementById("id_price_model_0").disabled = false;
+    document.getElementById("id_price_model_1").disabled = false;
+    document.getElementById("id_price_model_2").disabled = false;
+    document.getElementById("id_price_model_3").disabled = false;
+}
+
 $(function(){
-    $("label[for='id_hobbies_0']").hide()
+    $("label[for='id_hobbies_0']").hide();
+
+    field1_value = document.getElementById("id_work_in_student_home").checked;
+    field2_value = document.getElementById("id_work_in_instructor_home").checked;
+    field3_value = document.getElementById("id_maximum_students").value;
+    field4_value = document.getElementById("id_price").value;
+
+    hide_show_instructor_fields();
 });
+
+$('#form_id').submit(function() {
+    $("#input_disabled_id").prop('disabled', false);
+
+    //Rest of code
+});
+
 </script>
-</body>
 {% endblock body %}

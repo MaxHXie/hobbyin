@@ -8,27 +8,27 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block bodyclass %}profile-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="profile-page sidebar-collapse">
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="navbar-transparent" %}
     <!-- End Navbar -->
     {% include "html_parts/message_banner.html" %}
 
     <div class="wrapper">
-        {% if instructor %}
+        {% if profile %}
         <div class="page-header page-header-small" filter-color="orange">
             <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');"></div>
             <div class="container">
                 <div class="content-center" style="margin-top:36px;">
                     <div class="photo-container">
-                        {% if instructor.profile_picture %}
-                            <img src="{{ instructor.profile_picture.url }}">
+                        {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}">
                         {% else %}
                             <img src="{% static 'external_page/assets/img/placeholder.png'%}">
                         {% endif %}
                     </div>
-                    <h3 class="title" style="margin-top:0px; padding:0px;">{{ instructor.first_name|title }} {{ instructor.last_name|title }}</h3>
+                    <h3 class="title" style="margin-top:0px; padding:0px;">{{ profile.first_name|title }} {{ profile.last_name|title }}</h3>
                     <p class="category">
                         {% if hobby %}
                             {{ hobby }}
@@ -39,124 +39,107 @@
                         {% endif %}
                     </p>
                     <div class="content">
-                        {% if instructor.maximum_students > 0 %}
-                        <div class="social-description">
-                            <h2>{{ instructor.maximum_students }}</h2>
-                            <p>personer/tillfälle</p>
-                        </div>
-                        {% endif %}
-                        {% if instructor.price > 0 %}
-                        <div class="social-description" style="margin-left:20px;">
-                            <h2>{{ instructor.price }}</h2>
-                            <p>kr {{ instructor.get_price_model_display }}</p>
-                        </div>
-                        {% endif %}
-                    </div>
-                </div>
-            </div>
-        </div>
-
-
-        {% if hobby and this_user != user %}
-        <div class="section section-contact-us text-center">
-            <div class="container">
-                {% if this_user != user %}
-                    {% if instructor.description %}
-                        <div class="button-container">
-                                <a href="#about-me" class="btn btn-primary btn-round btn-lg">Läs mer om {{ instructor.first_name }}</a>
-                        </div>
-                    {% endif %}
-                {% endif %}
-                <h2 class="title">Kontakta {{ instructor.first_name }}</h2>
-                <p class="description">Du är ett steg ifrån att lära dig en ny färdighet.</p>
-                <div class="row">
-                    <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
-                        {% include 'djangospam/form.html' %}
-                        <form id="send_instructor_message" action="" method="POST">
-                            {% csrf_token %}
-                            {% for field in form %}
-                                {% if field.errors %}
-                                    <span style="color:red; float:center;">{{ field.errors|first }}</span>
-                                    <div class="form-group has-danger">
-                                        <script type="text/javascript">
-                                            $(function(){
-                                                $('#{{field.auto_id}}').addClass('form-control-danger');
-                                                $('#{{field.auto_id}}').attr('placeholder', '{{ field.errors|first }}');
-                                            });
-                                        </script>
-                                        {{ field }}
-                                    </div>
-
-                                {% else %}
-
-                                    {% if field.name == 'first_name' %}
-                                    <div class="input-group input-lg">
-                                        <span class="input-group-addon">
-                                            <i class="now-ui-icons users_circle-08"></i>
-                                        </span>
-                                        {{ field }}
-                                    </div>
-                                    {% elif field.name == 'email' %}
-                                    <div class="input-group input-lg">
-                                        <span class="input-group-addon">
-                                            <i class="now-ui-icons ui-1_email-85"></i>
-                                        </span>
-                                        {{ field }}
-                                    </div>
-                                    <strong>eller...</strong>
-                                    {% elif field.name == 'telephone' %}
-                                    <div class="input-group input-lg">
-                                        <span class="input-group-addon">
-                                            <i class="now-ui-icons tech_mobile"></i>
-                                        </span>
-                                        {{ field }}
-                                    </div>
-                                    {% elif field.name == 'message' %}
-                                    <div class="textarea-container">
-                                        {{ field }}
-                                    </div>
-                                    {% endif %}
-
-                                {% endif %}
-
-                            {% endfor %}
-                            <div class="send-button">
-                                <a href="javascript:$('#send_instructor_message').submit();" class="btn btn-primary btn-round btn-block btn-lg">Skicka meddelande</a>
+                        {% if profile %}
+                            <div class="social-description">
+                                <h2>{{ followers }}</h2>
+                                <p>Följare</p>
                             </div>
-                        </form>
+                        {% endif %}
                     </div>
                 </div>
             </div>
         </div>
+
+
+        {% if hobby and this_user != profile.user %}
+            <div class="section section-contact-us text-center">
+                <div class="container">
+                    {% if this_user != profile.user %}
+                        {% if following == False %}
+                            <form action="{% url 'follow_instructor' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                <div class="button-container">
+                                    <input type="submit" class="btn btn-primary btn-round btn-lg" style="background-color:#2CA8FF;"value="Följ {{ profile.first_name }}">
+                                </div>
+                            </form>
+                        {% else %}
+                            <form action="{% url 'unfollow_instructor' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="user_id" value="{{ profile.user.id }}">
+                                <div class="button-container">
+                                    <input type="submit" class="btn btn-primary btn-round btn-lg" style="background-color:#2CA8FF;" value="Avfölj {{ profile.first_name }}">
+                                </div>
+                            </form>
+                        {% endif %}
+                    {% endif %}
+                    <h2 class="title">Kontakta {{ profile.first_name }}</h2>
+                    <div class="row">
+                        <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
+                            {% if this_user.customer or this_user.instructor %}
+                                <p class="description">Du är ett steg ifrån att lära dig en ny färdighet.</p>
+                                <form action="{% url 'send_instructor_message' profile_user.id hobby.hobby_name %}" method="POST">
+                                    {% csrf_token %}
+                                    <textarea class="form-control" name="message_text" rows="8" cols="80" placeholder="[FRIVILLIGT FÄLT] Övrig information..."></textarea>
+                                    <div class="send-button">
+                                        <input type="submit" class="btn btn-primary btn-round btn-block btn-lg" value="Skicka meddelande">
+                                    </div>
+                                </form>
+                            {% else %}
+                                <div style="margin-top:25px;">
+                                    <p class="description">Du måste registrera dig för att kontakta {{ profile.first_name }}</p>
+                                    <a href="{% url 'customer_signup' %}"><button class="btn btn-primary btn-round btn-block btn-lg">Registrera dig</button></a>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
         {% endif %}
         <div class="section">
             <div class="container">
-                {% if this_user == user %}
-                <div class="button-container">
+                {% if this_user == profile.user %}
+                    <div class="button-container">
                         <a href="{% url 'edit_profile' %}" class="btn btn-primary btn-round btn-lg">Ändra profil</a>
-                </div>
+                    </div>
                 {% endif %}
-                {% if instructor.description %}
-                <h3 class="title" id="about-me">Om {{ instructor.first_name }}</h3>
-                <h5 class="description">{{ instructor.description }}</h5>
+                {% if profile.description %}
+                    <h3 class="title" id="about-me">Om {{ profile.first_name }}</h3>
+                    <div class="text-center">
+                        {% if profile.is_private_instructor %}
+                            {% if profile.maximum_students > 0 %}
+                                <p class="description"><strong>Kan ta emot: {{ profile.maximum_students }} personer/tillfälle</strong></p>
+                            {% endif %}
+                            {% if profile.price > 0 %}
+                                <p class="description"><strong>Pris: {{ profile.price }} kr</strong></p>
+                            {% endif %}
+                            {% if profile.work_in_student_home %}
+                                <p class="description"><strong>Jag kan hålla lektioner i andras hem</strong></p>
+                            {% endif %}
+                            {% if profile.work_in_instructor_home %}
+                                <p class="description"><strong>Jag kan hålla lektioner i mitt hem</strong></p>
+                            {% endif %}
+                        {% endif %}
+                    <hr>
+                    <h5 class="description">{{ profile.description }}</h5>
+                    </div>
                 {% endif %}
             </div>
         </div>
         {% elif error_message %}
-        <div class="page-header page-header-small" filter-color="orange">
-            <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');">
-            </div>
-            <div class="container">
-                <div class="content-center">
-                    <div class="photo-container">
-                        <img src="{% static 'external_page/assets/img/placeholder.png' %}">
+            <div class="page-header page-header-small" filter-color="orange">
+                <div class="page-header-image" data-parallax="true" style="background-image: url('{% static 'external_page/assets/img/bg5.jpg' %}');">
+                </div>
+                <div class="container">
+                    <div class="content-center">
+                        <div class="photo-container">
+                            <img src="{% static 'external_page/assets/img/placeholder.png' %}">
+                        </div>
+                        <h3 class="title">{{ error_message }}</h3>
                     </div>
-                    <h3 class="title">{{ error_message }}</h3>
                 </div>
             </div>
-        </div>
         {% endif %}
         {% include "html_parts/footer.html" %}
     </div>
-</body>
 {% endblock body %}

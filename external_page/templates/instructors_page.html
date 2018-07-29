@@ -8,8 +8,8 @@
 {% block extra_head %}
 {% endblock extra_head %}
 
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="landing-page sidebar-collapse">
     {% include "html_parts/message_banner.html" %}
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="none" navbar_class=""%}
@@ -123,5 +123,4 @@
         <!-- End work with us section -->
         {% include "html_parts/footer.html" %}
     </div>
-</body>
 {% endblock body %}

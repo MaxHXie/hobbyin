@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% load i18n %}
+{% load my_filters %}
 
 {% block extra_css %}
 <style>
@@ -44,7 +45,9 @@ function scroll_alt() {
         if (a.innerHTML.toUpperCase().indexOf(filter) > -1) {
             li[i].style.display = "";
         } else {
-            li[i].style.display = "none";
+            if (li[i].id != "immune"){
+                li[i].style.display = "none";
+            }
         }
     }
 }
@@ -58,8 +61,8 @@ function search_key_press(e) {
 </script>
 {% endblock extra_head %}
 
+{% block bodyclass %}landing-page sidebar-collapse{% endblock bodyclass %}
 {% block body %}
-<body class="landing-page sidebar-collapse">
     <!-- Navbar -->
     {% include "html_parts/navbar1.html" with color_on_scroll="400" navbar_class="" %}
     <!-- End Navbar -->
@@ -86,7 +89,7 @@ function search_key_press(e) {
                                         <input type="text" class="form-control" id="search-hobby" onkeyup="scroll_alt()" onkeypress="search_key_press(event)" placeholder="Sök här eller scrolla ned för mer...">
                                     </div>
                                     <ul id="search-list">
-                                        <li><a href="{% url 'all_events' %}" style="color:#2CA8FF;">Se alla hobbies</a></li>
+                                        <li id="immune"><a href="{% url 'all_events' %}" style="color:#2CA8FF;">Klicka här för att komma igång snabbt</a></li>
                                     {% if hobbies != None %}
                                         {% for hobby in hobbies %}
                                             <li><a href="{% url 'all_events' %}?search_hobby_event={{ hobby.hobby_name }}" style="color:#3f3f3f">{{ hobby.hobby_name|title }}</a></li>
@@ -114,10 +117,10 @@ function search_key_press(e) {
                                     <a class="nav-link"><strong>{{ hobby.hobby_name|upper }}</strong></a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active"><i class="now-ui-icons objects_spaceship"></i> {{ hobby.hobbyevent_set.count }} Evenemang</a>
+                                    <a class="nav-link active"><i class="now-ui-icons objects_spaceship"></i> {{ hobby_event_dictionary|lookup_dict:hobby.hobby_name|length }} Evenemang</a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i> {{ hobby.instructor_set.count }} Instruktörer</a>
+                                    <a class="nav-link active"><i class="now-ui-icons users_single-02"></i> {{ hobby_instructor_dictionary|lookup_dict:hobby.hobby_name|length }} Instruktörer</a>
                                 </li>
                             </ul>
                             <div class="card-body" style="height:250px; background-image: url('{% static 'external_page/assets/img/hobby/'|add:hobby.hobby_name|add:'_small_banner.jpg' %}');">
@@ -212,7 +215,7 @@ function search_key_press(e) {
                 <div class="row">
                     <div class="col-lg-6 text-center col-md-8 ml-auto mr-auto">
                         <div class="send-button">
-                            <a href="{% url 'account_signup' %}" class="btn btn-primary btn-round btn-block btn-lg">{% trans 'Registrera dig' %}</a>
+                            <a href="{% url 'instructor_signup' %}" class="btn btn-primary btn-round btn-block btn-lg" style="background-color:#2CA8FF;">{% trans 'Registrera dig som instruktör' %}</a>
                         </div>
                     </div>
                 </div>
@@ -237,5 +240,4 @@ function search_key_press(e) {
 
         {% include "html_parts/footer.html" %}
     </div>
-</body>
 {% endblock body %}

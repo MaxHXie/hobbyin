@@ -21,6 +21,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'kfxwht576@(2b@lk3c_4e380uswc!=p-ov--7356y%$=r2ch)1'
+GOOGLE_RECAPTCHA_SECRET_KEY = '6Lc25WYUAAAAABjYcf7odbpYepqm1gKMSrxmnXLD'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -31,6 +32,8 @@ ALLOWED_HOSTS = ['www.hobbyin.se', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    'jet.dashboard',
+    'jet',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sites',
@@ -129,7 +132,8 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = DEFAULT_FROM_EMAIL = 'hobbyin.se@gmail.com'
-EMAIL_HOST_PASSWORD = 'ttrdipoikttbflxz'
+EMAIL_HOST_PASSWORD = 'qgobvejywequckpz'
+
 
 GOOGLE_ANALYTICS = {
     'google_analytics_id': 'UA-122697450-1',

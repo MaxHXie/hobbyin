@@ -1,0 +1,93 @@
+{% extends "landing_page.html" %}
+{% load i18n %}
+{% load static %}
+{% block signup_form %}
+
+<div class="modal fade modal-primary" id="signupModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-login">
+        <div class="modal-content">
+            <div class="card card-login card-plain">
+                <div class="modal-header justify-content-center">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        <i class="now-ui-icons ui-1_simple-remove"></i>
+                    </button>
+                    <div class="header header-primary text-center">
+                        <div class="logo-container">
+                            <img src="{% static 'external_page/assets/img/now-logo.png' %}" alt="">
+                        </div>
+                    </div>
+                </div>
+                <form class="signup" id="signup_form" method="post" action="{% url 'customer_signup' %}" onsubmit="checkForm(this);">
+                    {% csrf_token %}
+                    <div class="modal-body">
+                        <div class="card-content">
+                            {% for field, error_message in form.errors.items %}
+                                <span name="registration-error" style="color:black; text-align:left;">{{ error_message }}</span>
+                            {% endfor %}
+                            {% for field in form %}
+                                <div class="input-group form-group-no-border input-lg">
+                                    <span class="input-group-addon">
+                                        {% if field.name == "email" %}
+                                            <i class="now-ui-icons ui-1_email-85"></i>
+                                        {% elif field.name == "password1" %}
+                                            <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                                        {% elif field.name == "password2" %}
+                                            <i class="now-ui-icons ui-1_lock-circle-open"></i>
+                                        {% endif %}
+                                    </span>
+                                    {{ field }}
+                                </div>
+                            {% endfor %}
+                            <div class="input-group">
+                                <label style="cursor:pointer;">
+                                    <table>
+                                        <tbody>
+                                            <td>
+                                                <input type="checkbox" name="terms" id="terms" style="padding: 10px; margin:10px;" required>
+                                            </td>
+                                            <td>
+                                                <span class="form-check-sign"></span>
+                                                <span style="color:black; font-size:0.85em;">{% trans 'Jag godkänner ' %}
+                                                    <a style="color:#2CA8FF;" href="{% url 'terms_of_use' %}" target="_blank">{% trans 'användarvillkoren' %}</a>
+                                                    och
+                                                    <a style="color:#2CA8FF;" href="{% url 'integrity' %}" target="_blank">{% trans 'integritetspolicyn' %}</a>
+                                                </span>
+                                            </td>
+                                        </tbody>
+                                    </table>
+                                </label>
+                            </div>
+                            {% if redirect_field_value %}
+                            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+                            {% endif %}
+                            <span style="color:black; font-size:0.85em;">{% blocktrans %}Har du redan ett konto? <a style="color:#2CA8FF;" href="{{ login_url }}">Logga in här</a>{% endblocktrans %}</span>
+                        </div>
+                        <div class="modal-footer text-center">
+                            <input type="submit" name="submit_login" class="btn btn-neutral btn-round btn-lg btn-block" value="Registrera">
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/javascript">
+function initialize_modal() {
+    $(function(){
+        $('#signupModal').modal('show');
+    });
+    $("#signupModal").on("hidden.bs.modal", function () {
+        window.location = "{% url 'index' %}";
+    });
+    $("#id_email").addClass("form-control");
+    $("#id_password1").addClass("form-control");
+    $("#id_password2").addClass("form-control");
+    $("#id_email").attr('placeholder', 'Mejl adress...');
+    $("#id_password1").attr('placeholder', 'Lösenord');
+    $("#id_password2").attr('placeholder', 'Lösenord igen');
+}
+window.onload = initialize_modal;
+</script>
+{% endblock signup_form %}

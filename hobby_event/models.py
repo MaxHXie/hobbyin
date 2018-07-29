@@ -47,16 +47,71 @@ class HobbyEventSignup(models.Model):
         HobbyEvent,
         on_delete=models.CASCADE,
     )
-    first_name = models.CharField(max_length=64, null=True, blank=False)
-    last_name = models.CharField(max_length=64, null=True, blank=False)
-    email = models.CharField(max_length=128, blank=True, null=True)
-    telephone = models.CharField(max_length=32, blank=True, null=True)
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True,
+    )
+    first_name = models.CharField(max_length=32, null=True, blank=False)
+    last_name = models.CharField(max_length=32, null=True, blank=False)
+    email = models.CharField(max_length=64, blank=True, null=True, unique=True)
+    telephone = models.CharField(max_length=16, blank=True, null=True)
+    is_success = models.BooleanField(default=False)
+    is_removed = models.BooleanField(default=False)
 
     def __str__(self):
         try:
             string = self.first_name + " " + self.last_name + " to " + self.hobby_event.event_name
         except:
             string = "event_signup_name_error"
+        return string
+
+class VisitHobbyEvent(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    hobby_event = models.ForeignKey(
+        HobbyEvent,
+        on_delete=models.CASCADE,
+    )
+    datetime = models.DateTimeField(auto_now_add=True, blank=False, null=True)
+
+    def __str__(self):
+        if self.user == None:
+            string = "Anonymous visited " + self.hobby_event.event_name
+        else:
+            string = self.user.email + " visited " + self.hobby_event.event_name
+        return string
+
+class EventSearch(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        null=True
+    )
+    search_string = models.CharField(max_length=128, null=True, blank=False)
+    zip_code_search = models.CharField(max_length=128, null=True, blank=False)
+    datetime = models.DateTimeField(auto_now_add=True, blank=False, null=True)
+
+    def __str__(self):
+        if self.user == None:
+            this_user = 'Anonymous'
+        else:
+            this_user = '"' + self.user.email + '"'
+
+        if self.search_string == None:
+            this_search_string = 'nothing'
+        else:
+            this_search_string = '"' + self.search_string + '"'
+
+        if self.zip_code_search == None:
+            this_zip_code_search = 'empty zip code search'
+        else:
+            this_zip_code_search = 'zip code: "' + self.zip_code_search + '"'
+
+        string = this_user + ' searched for: ' + this_search_string + ' and ' + this_zip_code_search
         return string
 
 try:
@@ -66,5 +121,15 @@ except akismet.AlreadyModerated:
 
 try:
     akismet.register(HobbyEventSignup)
+except akismet.AlreadyModerated:
+    pass
+
+try:
+    akismet.register(VisitHobbyEvent)
+except akismet.AlreadyModerated:
+    pass
+
+try:
+    akismet.register(EventSearch)
 except akismet.AlreadyModerated:
     pass
