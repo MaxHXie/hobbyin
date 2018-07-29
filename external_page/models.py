@@ -198,3 +198,8 @@ try:
     akismet.register(InstructorSearch)
 except akismet.AlreadyModerated:
     pass
+
+try:
+    akismet.register(Follower)
+except akismet.AlreadyModerated:
+    pass

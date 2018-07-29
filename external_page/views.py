@@ -341,7 +341,7 @@ def follow_instructor(request):
 
         try:
             Follower.objects.get(instructor=instructor_user.instructor, follower=this_user)
-            messages.error(request, 'Du följer redan ' + instructor_user.instructor.first_name + ' ' + instructor_user.instructor.last_name)
+            messages.error(request, 'Du följer redan ' + instructor_user.instructor.first_name + ' ' + instructor_user.instructor.last_name + '.')
             return profile_with_user(request, user_id)
         except Follower.DoesNotExist:
             pass
@@ -376,7 +376,7 @@ def unfollow_instructor(request):
             instructor_user = User.objects.get(pk=user_id)
             temp_model = functions.get_profile_model(instructor_user)
             if temp_model != Instructor:
-                messages.error(request, 'Du kan inte avfölja någon du inte följer.')
+                messages.error(request, 'Du kan bara avfölja instruktörer.')
                 return profile_with_user(request, user_id)
         except User.DoesNotExist:
             messages.error(request, 'Den här profilen existerar inte längre.')
@@ -392,8 +392,12 @@ def unfollow_instructor(request):
                 return profile_with_user(request, user_id)
             else:
                 follow_objects = Follower.objects.filter(instructor=instructor_user.instructor, follower=this_user)
-                for object in follow_objects:
-                    object.delete()
+                if len(follow_objects) == 0:
+                    messages.error(request, 'Du följer redan inte den här instruktören.')
+                    return profile_with_user(request, user_id)
+                else:
+                    for object in follow_objects:
+                        object.delete()
                 messages.info(request, 'Du har nu avföljt ' + instructor_user.instructor.first_name + ' ' + instructor_user.instructor.last_name)
                 return profile_with_user(request, user_id)
 
