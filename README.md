@@ -1,6 +1,14 @@
-WWW.HOBBYIN.SE
+# HOBBYIN
+---------------
+Author: Max Xie, maxxie@kth.se
+Website: www.hobbyin.se
 
-############DESCRIPTION############
-A WEBSITE PROJECT BUILT IN PYTHON USING THE FRAMEWORK DJANGO.
-THE APPLICATION CONNECTS OLDER PEOPLE (50-60 YEARS) THAT ASPIRE TO LEARN A NEW HOBBY WITH PEOPLE WHO CAN TEACH THAT HOBBY.
-WWW.HOBBYIN.SE
+### DESCRIPTION
+---------------
+Website project built in python using Django Framework.  
+Application connects older people that aspire to learn a new hobby with experienced instructors.  
+
+External services:  
+  Cloud computing: PythonAnywhere  
+  Hosting: GoDaddy  
+  Automated email: Mailgun  
