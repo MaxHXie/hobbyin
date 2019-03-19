@@ -26,7 +26,7 @@ GOOGLE_RECAPTCHA_SECRET_KEY = '6Lc25WYUAAAAABjYcf7odbpYepqm1gKMSrxmnXLD'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['www.hobbyin.se', 'localhost']
+ALLOWED_HOSTS = ['*', 'www.hobbyin.se', 'localhost']
 
 
 # Application definition
