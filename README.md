@@ -12,3 +12,5 @@ External services:
   1. Cloud computing: PythonAnywhere  
   2. Hosting: GoDaddy  
   3. Automated email: Mailgun  
+
+/Max
