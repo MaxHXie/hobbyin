@@ -6,7 +6,7 @@ Website: www.hobbyin.se
 ### DESCRIPTION
 ---------------
 Website project built in python using Django Framework.  
-Application connects older people that aspire to learn a new hobby with experienced instructors.  Ey
+Application connects older people that aspire to learn a new hobby with experienced instructors. 
 
 External services:  
   1. Cloud computing: PythonAnywhere  
@@ -14,4 +14,3 @@ External services:
   3. Automated email: Mailgun  
 
 /Max
-ewfuhwoidq
