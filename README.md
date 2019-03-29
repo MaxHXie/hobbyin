@@ -11,6 +11,6 @@ Application connects older people that aspire to learn a new hobby with experien
 External services:  
   1. Cloud computing: PythonAnywhere  
   2. Hosting: GoDaddy  
-  3. Automated email: Mailgun  
+  3. Automated email: Mailgun  .
 
 /Max
