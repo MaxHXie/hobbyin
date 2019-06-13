@@ -1,4 +1,4 @@
-from external_page.models import Hobby, Instructor, Grade
+from external_page.models import Hobby, Instructor
 
 def populate_database():
     piano = Hobby.objects.create(hobby_name="piano")
