@@ -1,6 +1,6 @@
 asn1crypto==0.24.0
 bcrypt==3.1.4
-certifi==2018.4.16
+certifi==2022.12.7
 cffi==1.11.5
 chardet==3.0.4
 cryptography==2.2.2
@@ -27,7 +27,7 @@ akismet==1.0.1
 antispam==0.0.10
 asn1crypto==0.24.0
 bcrypt==3.1.4
-certifi==2018.4.16
+certifi==2022.12.7
 cffi==1.11.5
 chardet==3.0.4
 cryptography==2.2.2
@@ -63,7 +63,7 @@ bcrypt==3.1.4
 beautifulsoup4==4.6.0
 billiard==3.3.0.23
 celery==3.1.26.post2
-certifi==2018.4.16
+certifi==2022.12.7
 cffi==1.11.5
 chardet==3.0.4
 cryptography==2.2.2
